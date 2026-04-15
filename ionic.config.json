@@ -1,0 +1,7 @@
+{
+  "name": "byte-and-bite",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
