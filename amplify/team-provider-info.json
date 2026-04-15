@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-byteandbite-dev-19ed8-authRole",
+      "UnauthRoleArn": "arn:aws:iam::121470661829:role/amplify-byteandbite-dev-19ed8-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::121470661829:role/amplify-byteandbite-dev-19ed8-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-byteandbite-dev-19ed8-deployment",
+      "UnauthRoleName": "amplify-byteandbite-dev-19ed8-unauthRole",
+      "StackName": "amplify-byteandbite-dev-19ed8",
+      "StackId": "arn:aws:cloudformation:us-east-2:121470661829:stack/amplify-byteandbite-dev-19ed8/d85325a0-390a-11f1-b252-02e38359bc2b",
+      "AmplifyAppId": "d3lq5g907611ar"
+    },
+    "categories": {
+      "auth": {
+        "byteandbitebff1f0d3": {}
+      }
+    }
+  }
+}
