@@ -1,0 +1,49 @@
+<!--<ion-header [translucent]="true">
+  <!--<ion-toolbar color="primary">
+    <ion-title>login</ion-title>
+  </ion-toolbar>
+</ion-header>-->
+
+<ion-content class="ion-padding">
+  <div class="login-container">
+
+    <div class="ion-margin-bottom">
+      <ion-avatar class="avatar">
+        <ion-icon name="person-outline"></ion-icon>
+      </ion-avatar>
+    </div>
+
+    <ion-item>
+      <ion-label position="floating">Correo</ion-label>
+      <ion-input type="email"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input type="password"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-checkbox slot="start"></ion-checkbox>
+      <ion-label>I would like to receive your newsletter and other promotional information.</ion-label>
+    </ion-item>
+
+
+    <ion-button expand="block" class="ion-margin-top">
+      Login
+    </ion-button>
+    
+
+    <div class="ion-text-center ion-margin-top">
+      <p>— O —</p>
+      <ion-button expand="block" fill="outline" color="medium">
+        <ion-icon slot="start" name="logo-google"></ion-icon>
+        Continuar con Google
+      </ion-button>
+    </div>
+
+    <ion-text>
+      <p>Don't you have an account?<a href="#">Register</a></p>
+    </ion-text>
+  </div>
+</ion-content>
