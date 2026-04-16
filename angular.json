@@ -80,7 +80,7 @@
               "buildTarget": "app:build:development"
             },
             "ci": {
-              "progress": false
+              
             }
           },
           "defaultConfiguration": "development"
@@ -137,6 +137,7 @@
     "schematicCollections": [
       "@ionic/angular-toolkit"
     ],
+    "packageManager": "pnpm",
     "analytics": false
   },
   "schematics": {
