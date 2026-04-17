@@ -12,6 +12,10 @@ const routes: Routes = [
   },  {
     path: 'signup',
     loadChildren: () => import('./signup/signup.module').then( m => m.SignupPageModule)
+  },
+  {
+    path: 'calculadora',
+    loadChildren: () => import('./calculadora/calculadora.module').then( m => m.CalculadoraPageModule)
   }
 
 ];
