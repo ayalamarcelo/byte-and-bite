@@ -1,13 +1,60 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>signup</ion-title>
+  <ion-toolbar color="translucent">
+    <p class="ion-margin-start">
+      <a href="#">Login</a>
+    </p>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">signup</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <div class="signup-container">
+    <h1 class="ion-padding-bottom ion-text-center">Sign Up</h1>
+
+    <div class="ion-content-center">
+      <ion-avatar class="avatar">
+        <ion-icon name="person-outline"></ion-icon>
+      </ion-avatar>
+
+      <div class="ion-form ion-margin-top">
+        <ion-item>
+          <ion-label position="floating">Nombre</ion-label>
+          <ion-input type="text"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Apellido</ion-label>
+          <ion-input type="text"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input label="Fecha de Nacimiento" label-placement="floating" type="date"
+            placeholder="Selecciona una fecha">
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Peso</ion-label>
+          <ion-input type="number"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Contraseña</ion-label>
+          <ion-input type="password"></ion-input>
+        </ion-item>
+
+        <ion-item lines="none" class="tems-item">
+          <ion-checkbox slot="start" mode="md"></ion-checkbox>
+          <ion-label class="text-wrap">Do you agree with the terms and conditions?</ion-label>
+        </ion-item>
+      </div>
+
+      <ion-button expand="block" class="ion-margin-top">
+        Create Account
+      </ion-button>
+
+      <p class="ion-text-center"><a href="http://">Do you already have an account?</a></p>
+
+    </div>
+
+  </div>
 </ion-content>
