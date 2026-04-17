@@ -1,0 +1,44 @@
+ion-content {
+    --background: url('../../assets/images/bg.svg') no-repeat center center / cover;
+
+    .welcome-wrapper {
+        width: 100%;
+        height: 80%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px;
+
+        ion-img, .img {
+            width: 100%;
+            max-width: 280px;
+            align-self: center;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .terms-item {
+            width: 100%;
+            max-width: 320px;
+            align-self: center;
+            background: transparent;
+            --background: transparent;
+            --background-focused: transparent;
+            --background-hover: transparent;
+
+            ion-label {
+                background: transparent;
+            }
+
+            a {
+                color: white;
+            }
+        }
+
+        ion-button {
+            width: 100%;
+            max-width: 250px;
+            align-self: center;
+        }
+
+    }
+}
