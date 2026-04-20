@@ -35,3 +35,25 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
+
+:root {
+  --fondo-principal: #eef5e9;
+  --fondo-tarjeta: #ffffff;
+  --texto-principal: #333333;
+  --texto-secundario: #666666;
+  --texto-fecha: #888888;
+  --acento-amarillo: #ffcc00;
+  --acento-verde: #26bba4;
+  --progreso-azul: #4db8ff;
+  --progreso-vacio: #f0f0f0;
+  --fondo-navegacion: #11332a;
+  --texto-blanco: #ffffff;
+}
+
+.barra-navegacion {
+  --background: var(--fondo-navegacion);
+  --color: var(--texto-blanco);
+  --color-selected: var(--acento-amarillo);
+  border: none;
+  height: 65px;
+}
