@@ -1,14 +1,155 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>calculadora</ion-title>
+  <ion-toolbar color="translucent">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+  <ion-title class="ion-text-center">Buscar Alimento</ion-title>
   </ion-toolbar>
+
+  <div class="search-container">
+    <ion-searchbar placeholder="Buscar alimento" mode="ios"></ion-searchbar>
+  </div>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">calculadora</ion-title>
-      <h1 class="ion-text-center"> hola </h1>
-    </ion-toolbar>
-  </ion-header>
+<div class="main-container">
+    
+    <h3 class="section-title">Recientes</h3>
+    
+    <div class="food-card">
+      <div class="food-info">
+        <img src="assets/aguacate.png" alt="Aguacate" class="food-image">
+        <div class="food-text">
+          <span class="food-name">Aguacate</span>
+          <span class="food-portion">Porcion: 1 und</span>
+        </div>
+      </div>
+      <div class="food-action">
+        <span class="food-calories">120 Kcal</span>
+        <ion-button class="add-button">
+          <ion-icon name="add"></ion-icon>
+        </ion-button>
+        <ion-button class="circle-btn btn-fav">
+            <ion-icon name="heart-outline"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+
+    <div class="food-card">
+      <div class="food-info">
+        <img src="assets/manzana.png" alt="Manzana" class="food-image">
+        <div class="food-text">
+          <span class="food-name">Manzana</span>
+          <span class="food-portion">Porcion: 1 und</span>
+        </div>
+      </div>
+      <div class="food-action">
+        <span class="food-calories">120 Kcal</span>
+        <ion-button class="add-button">
+          <ion-icon name="add"></ion-icon>
+        </ion-button>
+        <ion-button class="circle-btn btn-fav">
+            <ion-icon name="heart-outline"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+
+    <h3 class="section-title">Resultado De Búsqueda</h3>
+    
+    <div class="search-result-card">
+      <span class="food-name">Tomate</span>
+      <div class="search-action">
+        <ion-button class="add-text-button">Agregar</ion-button>
+        <ion-button class="circle-btn btn-fav">
+          <ion-icon name="heart-outline"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+
+    <div class="search-result-card">
+      <span class="food-name">Pechuga de pollo</span>
+      <div class="search-action">
+        <ion-button class="add-text-button">Agregar</ion-button>
+        <ion-button class="circle-btn btn-fav ">
+          <ion-icon name="heart"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="floating-cart-card"> <!--is collapsed-->
+
+  <div class="cart-header">
+    <h3>Alimentos a añadir (3)</h3>
+    <ion-button class="btn-minimize">
+      <ion-icon name="chevron-down-outline"></ion-icon>
+    </ion-button>
+  </div>
+
+  <div class="cart-items-container">
+
+    <div class="cart-item">
+      
+      <div class="item-details">
+        <img src="assets/pollo.png" alt="Pollo" class="item-img">
+        <div class="item-texts">
+          <span class="item-name">Pechuga de pollo</span>
+          <span class="item-kcal">120 kcal</span>
+        </div>
+      </div>
+
+      <div class="item-actions">
+        <div class="gram-input-box">
+          <input type="number" placeholder="100" class="input-raw">
+          <span class="gram-label">g</span>
+        </div>
+        <ion-button class="btn-delete">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+    <div class="cart-item">
+      <div class="item-details">
+        <img src="assets/aguacate.png" alt="Aguacate" class="item-img">
+        <div class="item-texts">
+          <span class="item-name">Aguacate</span>
+          <span class="item-kcal">160 kcal</span>
+        </div>
+      </div>
+
+      <div class="item-actions">
+        <div class="gram-input-box">
+          <input type="number" placeholder="50" class="input-raw">
+          <span class="gram-label">g</span>
+        </div>
+        <ion-button class="btn-delete">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+    <div class="cart-item">
+      <div class="item-details">
+        <img src="assets/aguacate.png" alt="Aguacate" class="item-img">
+        <div class="item-texts">
+          <span class="item-name">Aguacate</span>
+          <span class="item-kcal">160 kcal</span>
+        </div>
+      </div>
+
+      <div class="item-actions">
+        <div class="gram-input-box">
+          <input type="number" placeholder="50" class="input-raw">
+          <span class="gram-label">g</span>
+        </div>
+        <ion-button class="btn-delete">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+  </div> 
+  <ion-button class="btn-submit-cart">
+    Añadir Alimentos
+  </ion-button>
+</div>
 </ion-content>

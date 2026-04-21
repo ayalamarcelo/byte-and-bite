@@ -1,0 +1,239 @@
+ion-content {
+  --padding-bottom: 400px;
+}
+
+.main-container {
+  padding: 15px;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 500;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.food-card, .search-result-card {
+  border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+  padding: 15px;
+  margin-bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &:first-of-type {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+  
+  &:last-of-type {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-bottom: none;
+  }
+}
+
+.food-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  .food-image {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+  }
+
+  .food-text {
+    display: flex;
+    flex-direction: column;
+
+    .food-name {
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .food-portion {
+      font-size: 13px;
+      margin-top: 4px;
+      opacity: 0.7;
+    }
+  }
+}
+
+.food-action, .search-action {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .food-calories {
+    font-size: 14px;
+    margin-right: 5px;
+    font-weight: bold;
+  }
+}
+
+.add-button {
+  --padding-start: 0;
+  --padding-end: 0;
+  --border-radius: 6px;
+  width: 32px;
+  height: 32px;
+  margin: 0;
+}
+
+.add-text-button {
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --border-radius: 6px;
+  font-size: 13px;
+  font-weight: bold;
+  height: 36px;
+  margin: 0;
+}
+
+.circle-btn {
+  --background: transparent;
+  --box-shadow: none;
+  --padding-start: 0;
+  --padding-end: 0;
+  margin: 0;
+  height: 32px;
+  width: 32px;
+  font-size: 24px;
+}
+
+.floating-cart-card {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border-top: 1px solid rgba(128, 128, 128, 0.2);
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  padding: 20px;
+  z-index: 100;
+  background: inherit;
+
+//   &.is-collapsed {
+//     .cart-items-container, .btn-submit-cart {
+//       display: none;
+//     }
+//     .btn-minimize ion-icon {
+//       transform: rotate(180deg);
+//     }
+//   }
+}
+
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+
+  h3 {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+  }
+
+  .btn-minimize {
+    --background: transparent;
+    --box-shadow: none;
+    --padding-start: 0;
+    --padding-end: 0;
+    margin: 0;
+    font-size: 24px;
+    height: 32px;
+    width: 32px;
+    transition: transform 0.3s ease;
+  }
+}
+
+.cart-items-container {
+  max-height: 250px;
+  overflow-y: auto;
+  margin-bottom: 15px;
+  padding-right: 5px;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid rgba(128, 128, 128, 0.2);
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.item-details {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .item-img {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+  }
+
+  .item-texts {
+    display: flex;
+    flex-direction: column;
+    .item-name { font-size: 14px; font-weight: 500; }
+    .item-kcal { font-size: 12px; font-weight: bold; }
+  }
+}
+
+.gram-input-box {
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(128, 128, 128, 0.3);
+  border-radius: 6px;
+  padding: 4px 8px;
+
+  .input-raw {
+    width: 45px;
+    background: transparent;
+    border: none;
+    outline: none;
+    text-align: right;
+    font-size: 14px;
+    color: inherit;
+  }
+
+  .gram-label {
+    font-size: 14px;
+    margin-left: 4px;
+    opacity: 0.8;
+  }
+}
+
+.btn-delete {
+  --background: transparent;
+  --box-shadow: none;
+  --color: #ff4d4d;
+  --padding-start: 0;
+  --padding-end: 0;
+  margin: 0;
+  height: 32px;
+  width: 32px;
+}
+
+.btn-submit-cart {
+  --border-radius: 8px;
+  --padding-top: 14px;
+  --padding-bottom: 14px;
+  margin: 0;
+  width: 100%;
+  font-weight: bold;
+}
+
+.search-container {
+  padding: 10px 15px;
+}
