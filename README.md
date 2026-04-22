@@ -73,3 +73,30 @@ Realiza un Pull Request (PR) hacia la rama dev.
 Tras la aprobación y el merge, podes borrar tu rama local.
 
 `git branch -d <nombre-de-la-rama>`
+
+## 4. Estándares de Desarrollo
+
+Uso de Componentes Standalone (Angular 17+)
+Para esta etapa del proyecto, hemos migrado a una arquitectura de Componentes Standalone. Esto significa que las páginas son independientes y no dependen de un módulo central para funcionar.
+
+* **`Sin Declaraciones`**: No debés agregar las páginas nuevas al array declarations de ningún módulo.
+* **`Auto-importación`**: Cada página debe importar sus propias herramientas (Ionic, CommonModule, etc.) en su propio archivo .ts.
+
+Ejemplo de configuración en el archivo .page.ts:
+
+```bash
+@Component({
+  selector: 'app-nombre',
+  templateUrl: './nombre.page.html',
+  styleUrls: ['./nombre.page.scss'],
+  standalone: true, // <--- Importante
+  imports: [IonicModule, CommonModule, FormsModule] // <--- Importante
+})
+```
+
+## Gestión de Estilos y Colores
+
+Para mantener la identidad visual de la aplicación, el uso de colores debe estar centralizado:
+
+* **`Variables Globales`**: Utilizar siempre las variables definidas en src/global.scss (ej: var(--acento-verde), var(--fondo-principal)).
+* **`Modo Oscuro`**: Evitar el uso de colores "hardcodeados" (como #ffffff o #000000) directamente en el CSS de la página para asegurar que el diseño sea consistente en todos los dispositivos.

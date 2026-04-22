@@ -1,0 +1,80 @@
+<ion-content [fullscreen]="true">
+  
+  <div class="encabezado-bienvenida">
+    <div class="contenedor-texto">
+      <p class="texto-bienvenida">Bienvenido</p>
+      <h1 class="nombre-usuario">Usuario 1</h1>
+      <p class="texto-fecha">Martes, 7 de Abril de 2026</p>
+    </div>
+    <ion-avatar>
+      <img src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+    </ion-avatar>
+  </div>
+
+  <div class="contenedor-circulo">
+    <svg viewBox="0 0 100 100" class="grafico-circular">
+      <circle class="circulo-fondo" cx="50" cy="50" r="40" />
+      <circle class="circulo-progreso" cx="50" cy="50" r="40" />
+      
+      <text x="50" y="38" class="texto-ratio">PROGRESO</text>
+      <text x="50" y="58" class="texto-numero">390</text>
+      <text x="50" y="72" class="texto-subtitulo">Kcal Consumidas</text>
+    </svg>
+  </div>
+
+  <ion-card class="tarjeta-nutricion">
+    <ion-card-content>
+      <div class="fila-nutriente">
+        <ion-label>Grasas</ion-label>
+        <ion-progress-bar color="warning" value="0.5"></ion-progress-bar>
+      </div>
+
+      <div class="fila-nutriente">
+        <ion-label>Proteínas</ion-label>
+        <ion-progress-bar color="success" value="0.4"></ion-progress-bar>
+      </div>
+
+      <div class="fila-nutriente">
+        <ion-label>Carbohidratos</ion-label>
+        <ion-progress-bar color="danger" value="0.2"></ion-progress-bar>
+      </div>
+
+      <div class="fila-nutriente">
+        <ion-label>Agua</ion-label>
+        <ion-progress-bar color="primary" value="0.7"></ion-progress-bar>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card class="tarjeta-nutricion">
+    <ion-card-content>
+      <div class="seccion-agua">
+        <div class="contenedor-progreso-agua">
+          <ion-progress-bar class="barra-agua" [value]="0.75"></ion-progress-bar>
+          <div class="texto-sobre-barra">1500 / 2000 ml</div>
+        </div>
+
+        <div class="selector-medidas">
+          <div class="opcion-medida">
+            <ion-icon name="water-outline"></ion-icon>
+            <span>150 ml</span>
+            <ion-button size="small" fill="clear">Agregar</ion-button>
+          </div>
+          
+          <div class="opcion-medida">
+            <ion-icon name="cafe-outline"></ion-icon>
+            <span>250 ml</span>
+            <ion-button size="small" fill="clear">Agregar</ion-button>
+          </div>
+
+          <div class="opcion-medida">
+            <ion-icon name="beaker-outline"></ion-icon>
+            <span>500 ml</span>
+            <ion-button size="small" fill="clear">Agregar</ion-button>
+          </div>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

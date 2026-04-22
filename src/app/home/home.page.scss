@@ -1,0 +1,152 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+ion-content {
+  --background: var(--fondo-principal);
+}
+
+.encabezado-bienvenida {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  margin-top: 10px;
+}
+
+.texto-bienvenida { margin: 0; color: var(--texto-secundario); font-size: 0.9rem; }
+.nombre-usuario { margin: 0; font-weight: bold; font-size: 1.4rem; color: var(--texto-principal); }
+.texto-fecha { margin: 0; color: var(--texto-fecha); font-size: 0.8rem; }
+
+.encabezado-bienvenida ion-avatar {
+  width: 55px;
+  height: 55px;
+  border: 2px solid var(--acento-amarillo);
+}
+
+.contenedor-circulo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  height: 250px;
+}
+
+.grafico-circular {
+  max-width: 220px;
+  width: 100%;
+}
+
+.circulo-fondo {
+  fill: none;
+  stroke: var(--fondo-tarjeta); 
+  stroke-width: 6;
+}
+
+.circulo-progreso {
+  fill: none;
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke: var(--progreso-azul); 
+  transform: rotate(-90deg);
+  transform-origin: center;
+  animation: animacion-progreso 1.2s ease-out forwards;
+}
+
+.texto-ratio { 
+    fill: var(--acento-verde); 
+    font-size: 6px; 
+    text-anchor: middle; 
+    font-weight: bold; }
+.texto-numero { 
+    fill: var(--texto-principal); 
+    font-size: 18px; font-weight: bold; 
+    text-anchor: middle; }
+.texto-subtitulo { 
+    fill: var(--texto-fecha); 
+    font-size: 4px; 
+    text-anchor: middle; }
+
+@keyframes animacion-progreso {
+  0% { 
+    stroke-dasharray: 0, 251; }
+  100% { 
+    stroke-dasharray: 200, 251; }
+}
+
+.tarjeta-nutricion {
+  background: var(--fondo-tarjeta); 
+  border-radius: 30px; 
+  box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+  margin: 20px;
+  padding: 10px;
+}
+
+.fila-nutriente {
+  margin-bottom: 18px;
+}
+
+.fila-nutriente ion-label { 
+  display: block;
+  font-weight: 600; 
+  color: var(--texto-principal); 
+  margin-bottom: 6px;
+}
+
+.fila-nutriente ion-progress-bar { 
+  height: 10px; 
+  border-radius: 5px; 
+  --background: var(--progreso-vacio);
+}
+
+.seccion-agua {
+  margin-top: 20px;
+  padding: 10px;
+}
+
+.contenedor-progreso-agua {
+  position: relative;
+  height: 35px;
+  margin-bottom: 25px;
+}
+
+.barra-agua {
+  height: 100%;
+  border-radius: 15px;
+  --progress-background: var(--progreso-azul);
+}
+
+.texto-sobre-barra {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 50%;
+  transform: translateY(-50%);
+  color: white;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.selector-medidas {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 15px;
+}
+
+.opcion-medida {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.opcion-medida ion-icon {
+  font-size: 30px;
+  color: var(--progreso-azul);
+}
+
+.opcion-medida span {
+  font-size: 0.8rem;
+  color: var(--texto-secundario);
+}
