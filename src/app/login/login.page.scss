@@ -12,3 +12,8 @@
     color: var(--ion-color-medium);
   }
 }
+
+ion-button {
+  --padding-top: 15px;
+  --padding-bottom: 15px;
+}
