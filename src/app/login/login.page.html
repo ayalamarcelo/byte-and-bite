@@ -1,52 +1,58 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="translucent">
-    <p class="ion-text-right ion-margin-end">
-      <a href="#">Sign Up</a>
-    </p>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content class="ion-padding">
   <div class="login-container">
 
-    <h1 class="ion-padding-bottom ion-text-center">Welcome</h1>
-
-    <div class="ion-margin-bottom">
-      <ion-avatar class="avatar">
-        <ion-icon name="person-outline"></ion-icon>
-      </ion-avatar>
-    </div>
-
-    <ion-item>
-      <ion-label position="floating">Correo</ion-label>
-      <ion-input type="email"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="floating">Contraseña</ion-label>
-      <ion-input type="password"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-checkbox slot="start"></ion-checkbox>
-      <ion-label>I would like to receive your newsletter and other promotional information.</ion-label>
-    </ion-item>
-
-    <ion-button expand="block" class="ion-margin-top">
-      Login
-    </ion-button>
-    
-
-    <div class="ion-text-center ion-margin-top">
-      <p>— O —</p>
-      <ion-button expand="block" fill="outline" color="medium">
-        <ion-icon slot="start" name="logo-google"></ion-icon>
-        Continuar con Google
+    <div class="ion-text-right">
+      <ion-button fill="clear" size="medium" (click)="goToSignUp()" style="font-weight: 300; text-transform: capitalize;">
+        Sign Up
       </ion-button>
     </div>
 
-    <ion-text class="ion-text-center">
-      <p>Don't you have an account? <a href="#">Register</a></p>
-    </ion-text>
+    <h1 class="ion-padding-bottom ion-text-center">Welcome</h1>
+
+    <div class="ion-margin-bottom ion-justify-content-center" style="display: flex;">
+      <ion-avatar class="avatar"
+        style="width: 120px; height: 120px; background: var(--ion-color-light); display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+        <ion-icon name="person-outline" style="font-size: 60px; color: var(--ion-color-medium);"></ion-icon>
+      </ion-avatar>
+    </div>
+
+    <div class="ion-margin-vertical">
+      <ion-button expand="block" fill="outline" color="primary" >
+        <ion-icon slot="start" name="logo-google"></ion-icon>
+         Continue with Google
+      </ion-button>
+    </div>
+
+    <div class="ion-text-center ion-margin-vertical">
+      <p style="color: var(--ion-color-medium); margin: 0;">— O —</p>
+    </div>
+
+    <ion-input label="Email" label-placement="floating" fill="outline" type="email" class="ion-margin-bottom">
+    </ion-input>
+
+    <ion-input label="Password" label-placement="floating" fill="outline" type="password" class="ion-margin-bottom">
+    </ion-input>
+
+    <ion-item lines="none" class="ion-margin-bottom" style="--background: transparent;">
+      <ion-checkbox label-placement="end" style="
+          --background: transparent; 
+          --border-color: var(--ion-color-medium); 
+          --background-checked: var(--ion-color-primary);
+          --border-color-checked: var(--ion-color-primary);
+        ">
+        <p style="font-size: 0.85rem; white-space: normal; margin: 0; color: var(--ion-color-step-600);">
+          I would like to receive your newsletter and other promotional information.
+        </p>
+      </ion-checkbox>
+    </ion-item>
+
+    <ion-button expand="block" (click)="goToHome()">
+      Login
+    </ion-button>
+
+    <div class="ion-text-center ion-margin-top">
+      <p>Don't you have an account? <a (click)="goToSignUp()" style="cursor: pointer;"> Register</a></p>
+    </div>
+
   </div>
 </ion-content>
