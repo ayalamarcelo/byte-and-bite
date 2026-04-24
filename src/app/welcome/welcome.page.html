@@ -1,25 +1,32 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="translucent">
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="welcome-container">
 
-  </ion-toolbar>
-</ion-header>
+    <div class="top-content">
+      <h1 class="welcome-title">Welcome to</h1>
 
-<ion-content [fullscreen]="true" class="ion-content ion-padding">
-  <div class="welcome-wrapper">
-
-    <ion-img src="../../assets/images/splash-text.svg"
-      alt="byte && bite logo font" class="img" draggable="false">
-    </ion-img>
-
-    <div class="terms-item">
-      <ion-item lines="none" class="terms-item">
-        <ion-checkbox slot="start" mode="md"></ion-checkbox>
-        <ion-label class="ion-text-nowrap"><a href="#">I accept the terms and conditions</a></ion-label>
-      </ion-item>
+      <div class="logo-container">
+        <div class="top-row"> 
+          <span class="main-text">Byte</span>
+          <span class="symbols">&&</span>
+        </div>
+        <div class="bottom-row">
+          <ion-icon name="leaf" class="leaf-icon"></ion-icon>
+          <span class="main-text">Bite</span>
+        </div>
+      </div>
     </div>
 
-    <ion-button expand="block" class="ion-margin-top" color="medium" (click)="goToHome()">
-      Start
-    </ion-button>
+    <div class="bottom-content">
+      <p class="terms-text">
+        By clicking on next, you agree to Byte && Bite's
+        <a href="#">Terms and Condition of Use</a>
+      </p>
+
+      <!--Al parecer routerLink es más rápido-->
+      <ion-button routerLink="/login"  expand="block" class="next-btn">
+        Next
+      </ion-button>
+    </div>
+
   </div>
 </ion-content>
