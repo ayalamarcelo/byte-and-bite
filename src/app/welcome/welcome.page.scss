@@ -1,44 +1,117 @@
 ion-content {
-    --background: url('../../assets/images/bg.svg') no-repeat center center / cover;
 
-    .welcome-wrapper {
-        width: 100%;
-        height: 80%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 10px;
+  &::part(background) {
+    background: #1f1f1f url('../../assets/images/pattern.svg') no-repeat center center;
+    background-size: cover;
+  }
+}
 
-        ion-img, .img {
-            width: 100%;
-            max-width: 280px;
-            align-self: center;
-            -webkit-tap-highlight-color: transparent;
-        }
+.welcome-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  min-height: 100%;
+  text-align: center;
+}
 
-        .terms-item {
-            width: 100%;
-            max-width: 320px;
-            align-self: center;
-            background: transparent;
-            --background: transparent;
-            --background-focused: transparent;
-            --background-hover: transparent;
+.top-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
 
-            ion-label {
-                background: transparent;
-            }
+.welcome-title {
+  font-weight: 200;
+  font-size: 1.5rem;
+  margin: 0;
+  margin-top: 30px;
+  line-height: 1;
+}
 
-            a {
-                color: white;
-            }
-        }
+.bottom-content {
+  width: 100%;
+  padding-bottom: 10px;
+}
 
-        ion-button {
-            width: 100%;
-            max-width: 250px;
-            align-self: center;
-        }
+.terms-text {
+  font-size: 1rem;
+  color: #fff;
+  margin-bottom: 30px;
+}
 
+.next-btn {
+  --background: #1c1c1c;
+  --color: #fff;
+  --padding-top: 20px;
+  --padding-bottom: 20px;
+  --box-shadow: 0 2px 6px 0 rgba(30, 29, 29, 0.25);
+  text-transform: capitalize;
+  font-size: medium;
+}
+
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  padding: 10px 0;
+  height: auto;
+
+  .main-text {
+    color: #fff;
+    font-size: 5rem;
+    font-weight: 800;
+    line-height: 0.85;
+    letter-spacing: -2px;
+  }
+
+  .top-row {
+    display: flex;
+    align-items: flex-start;
+
+    .symbols {
+      color: #fff;
+      font-size: 3rem;
+      margin-left: 10px;
+      margin-top: 10px;
+      font-weight: 100;
     }
+  }
+
+  .bottom-row {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+
+    .leaf-icon {
+      color: #fff;
+      font-size: 4.5rem;
+      margin-right: 5px;
+      transform: rotate(-10deg);
+    }
+
+    .leaf-icon {
+      display: inline-block;
+      animation: leafSwing 3s ease-in-out infinite;
+      transform-origin: bottom left;
+    }
+
+    @keyframes leafSwing {
+
+      0%,
+      100% {
+        transform: rotate(-10deg);
+      }
+
+      50% {
+        transform: rotate(10deg);
+      }
+    }
+  }
 }

@@ -1,60 +1,109 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="translucent">
-    <p class="ion-margin-start">
-      <a href="#">Login</a>
-    </p>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content class="ion-padding">
   <div class="signup-container">
+
+    <div class="ion-text-left">
+      <ion-button 
+      routerLink="/welcome" 
+      fill="clear" 
+      size="medium" 
+      style="font-weight: 300; text-transform: capitalize;">
+        Close
+      </ion-button>
+    </div>
+
     <h1 class="ion-padding-bottom ion-text-center">Sign Up</h1>
 
-    <div class="ion-content-center">
-      <ion-avatar class="avatar">
-        <ion-icon name="person-outline"></ion-icon>
+    <div 
+    class="ion-margin-bottom ion-justify-content-center" 
+    style="display: flex;">
+      <ion-avatar 
+      class="avatar"
+        style="width: 120px; height: 120px; background: var(--ion-color-light); display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+        <ion-icon 
+        name="person-outline" 
+        style="font-size: 60px; color: var(--ion-color-medium);"></ion-icon>
       </ion-avatar>
-
-      <div class="ion-form ion-margin-top">
-        <ion-item>
-          <ion-label position="floating">Nombre</ion-label>
-          <ion-input type="text"></ion-input>
-        </ion-item>
-
-        <ion-item>
-          <ion-label position="floating">Apellido</ion-label>
-          <ion-input type="text"></ion-input>
-        </ion-item>
-
-        <ion-item>
-          <ion-input label="Fecha de Nacimiento" label-placement="floating" type="date"
-            placeholder="Selecciona una fecha">
-          </ion-input>
-        </ion-item>
-
-        <ion-item>
-          <ion-label position="floating">Peso</ion-label>
-          <ion-input type="number"></ion-input>
-        </ion-item>
-
-        <ion-item>
-          <ion-label position="floating">Contraseña</ion-label>
-          <ion-input type="password"></ion-input>
-        </ion-item>
-
-        <ion-item lines="none" class="tems-item">
-          <ion-checkbox slot="start" mode="md"></ion-checkbox>
-          <ion-label class="text-wrap">Do you agree with the terms and conditions?</ion-label>
-        </ion-item>
-      </div>
-
-      <ion-button expand="block" class="ion-margin-top">
-        Create Account
-      </ion-button>
-
-      <p class="ion-text-center"><a href="http://">Do you already have an account?</a></p>
-
     </div>
+
+    <div 
+    class="form-section">
+      <ion-grid 
+      class="ion-no-padding">
+        <ion-row>
+          <ion-col 
+          size="6" 
+          class="ion-padding-end">
+            <ion-input 
+            label="Name" 
+            label-placement="floating" 
+            fill="outline" 
+            type="text" 
+            placeholder="Chandler"
+              class="custom-input">
+            </ion-input>
+          </ion-col>
+
+          <ion-col size="6">
+            <ion-input 
+            label="Lastname" 
+            label-placement="floating" 
+            fill="outline" 
+            type="text"
+              placeholder="Riggs" 
+              class="custom-input">
+            </ion-input>
+          </ion-col>
+        </ion-row>
+      </ion-grid> 
+      
+      <ion-input 
+      label="Email" 
+      label-placement="floating" 
+      fill="outline" 
+      type="email"
+        placeholder="user@mail.com" 
+        class="custom-input ion-margin-top">
+      </ion-input>
+
+      <ion-input 
+      label="Password" 
+      label-placement="floating" 
+      fill="outline" 
+      type="password"
+        placeholder="Enter your password" 
+        class="custom-input ion-margin-top">
+      </ion-input>
+
+      <ion-input 
+      label="Repeat Password" 
+      label-placement="floating" 
+      fill="outline" 
+      type="password"
+        placeholder="Repeat password" 
+        class="custom-input ion-margin-top">
+      </ion-input>
+
+      <div 
+      class="terms-container ion-margin-vertical">
+        <ion-checkbox 
+        mode="md" 
+        label-placement="end">
+          <p>I agree with the <span>Terms and Conditions</span></p>
+        </ion-checkbox>
+      </div>
+    </div>
+
+    <ion-button 
+    expand="block" 
+    color="primary" 
+    class="main-button">
+      Create Account
+    </ion-button>
+
+    <p 
+    class="ion-text-center login-footer">
+      Already have an account? <a routerLink="/login"> Log In</a>
+    </p>
 
   </div>
 </ion-content>
