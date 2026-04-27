@@ -1,35 +1,38 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Bookmarks</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content class="bookmarks-content">
 
-  <div class="bookmarks-header">
-    <h2>Mis guardados</h2>
-    <p>Tus recetas saludables favoritas en un solo lugar</p>
+  <!-- Buscador -->
+  <div class="search-container">
+    <ion-searchbar placeholder="Buscar alimentos..." animated></ion-searchbar>
+  </div>
+
+  <!-- Filtros -->
+  <div class="filter-buttons">
+    <ion-button fill="outline" size="small" shape="round">Todos</ion-button>
+    <ion-button fill="outline" size="small" shape="round">Carbohidratos</ion-button>
+    <ion-button fill="outline" size="small" shape="round">Proteínas</ion-button>
+    <ion-button fill="outline" size="small" shape="round">Grasas</ion-button>
+    <ion-button fill="outline" size="small" shape="round">Vitaminas</ion-button>
   </div>
 
   <!-- Empty state -->
   <div class="empty-state">
     <ion-icon name="bookmark-outline"></ion-icon>
-    <p>Guardá tus recetas saludables favoritas y accedé a ellas cuando quieras</p>
+    <p>Guardá tus alimentos favoritos y accedé a ellos cuando quieras</p>
   </div>
 
-  <!-- Lista de bookmarks -->
+  <!-- Lista de alimentos -->
   <ion-list class="bookmarks-list">
 
     <ion-card class="bookmark-card">
-      <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=400&h=200&fit=crop" alt="Receta">
-      <div class="card-badge">Desayuno</div>
+      <img src="https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=400&h=200&fit=crop" alt="Palta">
+      <div class="card-badge">Grasas</div>
       <ion-card-content>
         <div class="card-info">
-          <h3>Nombre de la receta</h3>
+          <h3>Palta</h3>
           <div class="card-meta">
-            <span class="calories">🔥 450 kcal</span>
+            <span class="calories">🔥 160 kcal</span>
             <span class="separator">·</span>
-            <span>20 min</span>
+            <span>100g</span>
           </div>
         </div>
         <ion-button fill="clear" class="remove-btn">
@@ -39,15 +42,33 @@
     </ion-card>
 
     <ion-card class="bookmark-card">
-      <img src="https://images.unsplash.com/photo-1547592180-85f173990554?w=400&h=200&fit=crop" alt="Receta">
-      <div class="card-badge">Almuerzo</div>
+      <img src="https://images.unsplash.com/photo-1536304993881-ff6e9eefa2a6?w=400&h=200&fit=crop" alt="Arroz integral">
+      <div class="card-badge">Carbohidratos</div>
       <ion-card-content>
         <div class="card-info">
-          <h3>Otra receta guardada</h3>
+          <h3>Arroz integral</h3>
           <div class="card-meta">
-            <span class="calories">🔥 320 kcal</span>
+            <span class="calories">🔥 130 kcal</span>
             <span class="separator">·</span>
-            <span>35 min</span>
+            <span>100g</span>
+          </div>
+        </div>
+        <ion-button fill="clear" class="remove-btn">
+          <ion-icon slot="icon-only" name="bookmark" color="primary"></ion-icon>
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="bookmark-card">
+      <img src="https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=400&h=200&fit=crop" alt="Pechuga de pollo">
+      <div class="card-badge">Proteínas</div>
+      <ion-card-content>
+        <div class="card-info">
+          <h3>Pechuga de pollo</h3>
+          <div class="card-meta">
+            <span class="calories">🔥 165 kcal</span>
+            <span class="separator">·</span>
+            <span>100g</span>
           </div>
         </div>
         <ion-button fill="clear" class="remove-btn">
