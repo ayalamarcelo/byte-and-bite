@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./src/assets/images/logo.png" alt="Logo">
+  <img src="./src/assets/images/logo.png" alt="Logo" width="250">
 </p>
 
 # Guía de Flujo de Trabajo en Git
