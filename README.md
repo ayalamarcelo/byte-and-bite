@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./src/assets/images/logo.png" alt="Logo">
+</p>
+
 # Guía de Flujo de Trabajo en Git
 
 ## 1. Preparación del Proyecto (Solo la primera vez)
