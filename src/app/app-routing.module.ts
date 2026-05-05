@@ -4,12 +4,12 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'tabs',
+    redirectTo: 'welcome',
     pathMatch: 'full'
   },
   {
-    path: 'tabs',
-    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+    path: 'welcome',
+    loadChildren: () => import('./welcome/welcome.module').then( m => m.WelcomePageModule)
   },
   {
     path: 'login',
@@ -23,9 +23,14 @@ const routes: Routes = [
     path: 'welcome',
     loadChildren: () => import('./welcome/welcome.module').then( m => m.WelcomePageModule)
   },
-  {
-    path: 'bookmarks',
-    loadChildren: () => import('./bookmarks/bookmarks.module').then( m => m.BookmarksPageModule)  }
+   {
+      path: 'bookmarks',
+      loadChildren: () => import('./bookmarks/bookmarks.module').then( m => m.BookmarksPageModule)
+    },
+    {
+      path: 'tabs',
+      loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+    }
 ];
 
 @NgModule({
