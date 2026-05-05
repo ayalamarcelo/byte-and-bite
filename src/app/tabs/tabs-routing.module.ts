@@ -12,8 +12,8 @@ const routes: Routes = [
         loadChildren: () => import('../home/home.module').then(m => m.HomePageModule)
       },
       {
-        path: 'calculator',
-        loadChildren: () => import('../calculadora/calculadora.module').then(m => m.CalculadoraPageModule)
+        path: 'search',
+        loadChildren: () => import('../search/search.module').then(m => m.SearchPageModule)
       },
       {
         path: 'bookmarks',
