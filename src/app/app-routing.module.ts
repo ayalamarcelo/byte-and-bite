@@ -20,9 +20,17 @@ const routes: Routes = [
     loadChildren: () => import('./signup/signup.module').then(m => m.SignupPageModule)
   },
   {
-    path: 'tabs',
-    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
-  }
+    path: 'welcome',
+    loadChildren: () => import('./welcome/welcome.module').then( m => m.WelcomePageModule)
+  },
+   {
+      path: 'bookmarks',
+      loadChildren: () => import('./bookmarks/bookmarks.module').then( m => m.BookmarksPageModule)
+    },
+    {
+      path: 'tabs',
+      loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+    }
 ];
 
 @NgModule({
