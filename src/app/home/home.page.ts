@@ -12,6 +12,14 @@ import { IonicModule } from '@ionic/angular';
 })
 export class HomePage implements OnInit {
 
+  porcentajeGrasas: number = 30;
+  porcentajeProteinas: number = 60;
+  porcentajeCarbos: number = 10;
+
+  sodioMg: number = 1500;
+  fibraG: number = 25;
+  potasioMg: number = 3500;
+
   constructor() { }
 
   ngOnInit() {
