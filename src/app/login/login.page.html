@@ -2,11 +2,13 @@
   <div class="login-container">
 
     <div class="ion-text">
-      <ion-button fill="clear" size="medium" (click)="goToWelcome()" style="font-weight: 300; text-transform: capitalize;">
+      <ion-button fill="clear" size="medium" (click)="goToWelcome()"
+        style="font-weight: 300; text-transform: capitalize;">
         <ion-icon name="chevron-back"></ion-icon>
       </ion-button>
 
-      <ion-button fill="clear" size="medium" (click)="goToSignUp()" style="font-weight: 300; text-transform: capitalize;">
+      <ion-button fill="clear" size="medium" (click)="goToSignUp()"
+        style="font-weight: 300; text-transform: capitalize;">
         Sign Up
       </ion-button>
     </div>
@@ -21,7 +23,7 @@
     </div>
 
     <div class="ion-margin-vertical">
-      <ion-button expand="block" fill="outline" color="primary" >
+      <ion-button expand="block" fill="outline" color="primary" (click)="continueWithGoogle()">
         <ion-icon slot="start" name="logo-google"></ion-icon>
         Continue with Google
       </ion-button>
@@ -31,22 +33,13 @@
       <p style="color: var(--ion-color-medium); margin: 0;">— O —</p>
     </div>
 
-    <ion-input 
-    label="Email" 
-    label-placement="floating" 
-    fill="outline" 
-    type="email"
-    class="ion-margin-bottom"
-    [(ngModel)]="email"> <!-- capturamos lo que el usuario escribe en el campo email -->
+    <ion-input label="Email" label-placement="floating" fill="outline" type="email" class="ion-margin-bottom"
+      [(ngModel)]="email"> <!-- capturamos lo que el usuario escribe en el campo email -->
       <ion-icon slot="start" name="mail-outline" aria-hidden="true"></ion-icon>
     </ion-input>
 
-    <ion-input 
-    label="Password" 
-    label-placement="floating" 
-    fill="outline" type="password" 
-    class="ion-margin-bottom"
-    [(ngModel)]="password"> <!-- capturamos el password -->
+    <ion-input label="Password" label-placement="floating" fill="outline" type="password" class="ion-margin-bottom"
+      [(ngModel)]="password"> <!-- capturamos el password -->
       <ion-icon slot="start" name="lock-closed-outline" aria-hidden="true"></ion-icon>
     </ion-input>
 
@@ -63,9 +56,7 @@
       </ion-checkbox>
     </ion-item>
 
-    <ion-button 
-    expand="block" 
-    (click)="handleLogin()"> <!-- Cambié la función a handleLogin -->
+    <ion-button expand="block" (click)="handleLogin()"> <!-- Cambié la función a handleLogin -->
       Login
     </ion-button>
 

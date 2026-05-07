@@ -35,6 +35,7 @@
           class="ion-padding-end">
             <ion-input 
             label="Name" 
+            [(ngModel)]="name"
             label-placement="floating" 
             fill="outline" 
             type="text" 
@@ -45,7 +46,8 @@
 
           <ion-col size="6">
             <ion-input 
-            label="Lastname" 
+            label="Lastname"
+            [(ngModel)]="lastname"
             label-placement="floating" 
             fill="outline" 
             type="text"
@@ -57,7 +59,8 @@
       </ion-grid> 
       
       <ion-input 
-      label="Email" 
+      label="Email"
+      [(ngModel)]="email" 
       label-placement="floating" 
       fill="outline" 
       type="email"
@@ -66,7 +69,8 @@
       </ion-input>
 
       <ion-input 
-      label="Password" 
+      label="Password"
+      [(ngModel)]="password" 
       label-placement="floating" 
       fill="outline" 
       type="password"
@@ -75,7 +79,8 @@
       </ion-input>
 
       <ion-input 
-      label="Repeat Password" 
+      label="Repeat Password"
+      [(ngModel)]="repeatPassword" 
       label-placement="floating" 
       fill="outline" 
       type="password"
@@ -85,7 +90,8 @@
 
       <div 
       class="terms-container ion-margin-vertical">
-        <ion-checkbox 
+        <ion-checkbox
+        [(ngModel)]="termsAccepted" 
         mode="md" 
         label-placement="end">
           <p>I agree with the <span>Terms and Conditions</span></p>
@@ -94,6 +100,7 @@
     </div>
 
     <ion-button 
+    (click)="handleSignUp()"
     expand="block" 
     color="primary" 
     class="main-button">

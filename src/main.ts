@@ -10,14 +10,15 @@ import { environment } from './environments/environment';
 Amplify.configure({
   Auth: {
     Cognito: {
-      userPoolId: 'environment.cognito.userPoolId', 
-      userPoolClientId: 'environment.cognito.userPoolClientId',
+      userPoolId: 'us-east-2_xLYbSjR5t',
+      userPoolClientId: '4chf4i2mf7qpa5r9qhe9aphal4',
       loginWith: {
-        email: true,
+        email: true
       }
     }
   }
 });
+
 
 // arranca la app después
 platformBrowserDynamic().bootstrapModule(AppModule)
