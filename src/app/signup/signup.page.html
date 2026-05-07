@@ -88,15 +88,24 @@
         class="custom-input ion-margin-top">
       </ion-input>
 
-      <div 
-      class="terms-container ion-margin-vertical">
+      <ion-item
+      class="terms-container ion-margin-vertical"
+      lines="none"
+      style="--background: transparent; background: transparent;">
         <ion-checkbox
         [(ngModel)]="termsAccepted" 
         mode="md" 
-        label-placement="end">
-          <p>I agree with the <span>Terms and Conditions</span></p>
+        label-placement="end"
+        style="
+          --background: transparent; 
+          --border-color: var(--ion-color-medium); 
+          --background-checked: var(--ion-color-primary);
+          --border-color-checked: var(--ion-color-primary);
+        "
+        >
+          <p style="font-size: 0.85rem; white-space: normal; margin: 0; color: var(--ion-color-step-600);">I agree with the <span style="color: #4d8dff;">Terms and Conditions</span></p>
         </ion-checkbox>
-      </div>
+      </ion-item>
     </div>
 
     <ion-button 
