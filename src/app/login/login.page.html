@@ -31,11 +31,22 @@
       <p style="color: var(--ion-color-medium); margin: 0;">— O —</p>
     </div>
 
-    <ion-input label="Email" label-placement="floating" fill="outline" type="email" class="ion-margin-bottom">
+    <ion-input 
+    label="Email" 
+    label-placement="floating" 
+    fill="outline" 
+    type="email"
+    class="ion-margin-bottom"
+    [(ngModel)]="email"> <!-- capturamos lo que el usuario escribe en el campo email -->
       <ion-icon slot="start" name="mail-outline" aria-hidden="true"></ion-icon>
     </ion-input>
 
-    <ion-input label="Password" label-placement="floating" fill="outline" type="password" class="ion-margin-bottom">
+    <ion-input 
+    label="Password" 
+    label-placement="floating" 
+    fill="outline" type="password" 
+    class="ion-margin-bottom"
+    [(ngModel)]="password"> <!-- capturamos el password -->
       <ion-icon slot="start" name="lock-closed-outline" aria-hidden="true"></ion-icon>
     </ion-input>
 
@@ -52,7 +63,9 @@
       </ion-checkbox>
     </ion-item>
 
-    <ion-button expand="block" (click)="goToHome()">
+    <ion-button 
+    expand="block" 
+    (click)="handleLogin()"> <!-- Cambié la función a handleLogin -->
       Login
     </ion-button>
 
