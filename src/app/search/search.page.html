@@ -1,22 +1,27 @@
-<ion-content>
-  <ion-toolbar color="translucent">
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/"></ion-back-button>
-    </ion-buttons>
-    <ion-title class="ion-text-center">Buscar Alimento</ion-title>
-  </ion-toolbar>
+<ion-content class="ion-padding">
+  <ion-header class="ion-no-border">
+    <ion-toolbar class="transparent-toolbar">
 
-  <div class="search-container">
-    <ion-searchbar placeholder="Buscar alimento" mode="ios"></ion-searchbar>
-  </div>
+        <ion-button slot="start" fill="clear">
+          <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+        </ion-button>
+
+      <ion-searchbar placeholder="Buscar alimento" mode="md" fill="clear">
+      </ion-searchbar>
+
+    </ion-toolbar>
+  </ion-header>
 
   <div class="main-container">
-    
+
     <h3 class="section-title">Recientes</h3>
-    
+
     <div class="food-card">
       <div class="food-info">
-        <img src="assets/aguacate.png" alt="Aguacate" class="food-image">
+        <ion-thumbnail>
+          <img src="https://ionicframework.com/docs/img/demos/thumbnail.svg" alt="Aguacate" class="food-image">
+        </ion-thumbnail>
+
         <div class="food-text">
           <span class="food-name">Aguacate</span>
           <span class="food-portion">Porcion: 1 und</span>
@@ -28,14 +33,17 @@
           <ion-icon name="add"></ion-icon>
         </ion-button>
         <ion-button class="circle-btn btn-fav">
-            <ion-icon name="heart-outline"></ion-icon>
+          <ion-icon name="bookmark-outline"></ion-icon>
         </ion-button>
       </div>
     </div>
 
     <div class="food-card">
       <div class="food-info">
-        <img src="assets/manzana.png" alt="Manzana" class="food-image">
+        <ion-thumbnail>
+          <img src="https://ionicframework.com/docs/img/demos/thumbnail.svg" alt="Manzana" class="food-image">
+        </ion-thumbnail>
+
         <div class="food-text">
           <span class="food-name">Manzana</span>
           <span class="food-portion">Porcion: 1 und</span>
@@ -47,19 +55,20 @@
           <ion-icon name="add"></ion-icon>
         </ion-button>
         <ion-button class="circle-btn btn-fav">
-            <ion-icon name="heart-outline"></ion-icon>
+          <ion-icon name="bookmark-outline"></ion-icon>
         </ion-button>
       </div>
     </div>
 
+    <br>
     <h3 class="section-title">Resultado De Búsqueda</h3>
-    
+
     <div class="search-result-card">
       <span class="food-name">Tomate</span>
       <div class="search-action">
         <ion-button class="add-text-button">Agregar</ion-button>
         <ion-button class="circle-btn btn-fav">
-          <ion-icon name="heart-outline"></ion-icon>
+          <ion-icon name="bookmark-outline"></ion-icon>
         </ion-button>
       </div>
     </div>
@@ -68,8 +77,8 @@
       <span class="food-name">Pechuga de pollo</span>
       <div class="search-action">
         <ion-button class="add-text-button">Agregar</ion-button>
-        <ion-button class="circle-btn btn-fav ">
-          <ion-icon name="heart"></ion-icon>
+        <ion-button class="circle-btn btn-fav">
+          <ion-icon name="bookmark-outline"></ion-icon>
         </ion-button>
       </div>
     </div>
@@ -77,7 +86,7 @@
 </ion-content>
 
 <ion-footer class="ion-no-border">
-  <div class="floating-cart-card"> 
+  <div class="floating-cart-card">
     <div class="cart-header">
       <h3>Alimentos a añadir (3)</h3>
       <ion-button class="btn-minimize">
@@ -90,7 +99,7 @@
       <div class="cart-item">
         <div class="item-details">
           <ion-thumbnail class="item-img">
-            <img src="assets/pollo.png" alt="Pollo">
+            <img src="https://ionicframework.com/docs/img/demos/thumbnail.svg" alt="Pollo">
           </ion-thumbnail>
           <div class="item-texts">
             <span class="item-name">Pechuga de pollo</span>
@@ -108,11 +117,11 @@
           </ion-button>
         </div>
       </div>
-      
+
       <div class="cart-item">
         <div class="item-details">
           <ion-thumbnail class="item-img">
-            <img src="assets/aguacate.png" alt="Aguacate">
+            <img src="https://ionicframework.com/docs/img/demos/thumbnail.svg" alt="Aguacate">
           </ion-thumbnail>
           <div class="item-texts">
             <span class="item-name">Aguacate</span>
@@ -134,7 +143,7 @@
       <div class="cart-item">
         <div class="item-details">
           <ion-thumbnail class="item-img">
-            <img src="assets/aguacate.png" alt="Aguacate">
+            <img src="https://ionicframework.com/docs/img/demos/thumbnail.svg" alt="Aguacate">
           </ion-thumbnail>
           <div class="item-texts">
             <span class="item-name">Aguacate</span>
@@ -152,13 +161,13 @@
           </ion-button>
         </div>
       </div>
-    </div> 
-    
+    </div>
+
     <div class="cart-total-container">
       <span class="total-label">Total:</span>
       <span class="total-value">400 kcal</span>
     </div>
-    
+
     <ion-button class="btn-submit-cart">
       Añadir Alimentos
     </ion-button>
