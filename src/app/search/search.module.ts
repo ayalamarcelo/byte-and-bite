@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { CalculadoraPageRoutingModule } from './calculadora-routing.module';
+import { SearchPageRoutingModule } from './search-routing.module';
 
-import { CalculadoraPage } from './calculadora.page';
+import { SearchPage } from './search.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    CalculadoraPageRoutingModule
+    SearchPageRoutingModule
   ],
-  declarations: [CalculadoraPage]
+  declarations: [SearchPage]
 })
-export class CalculadoraPageModule {}
+export class SearchPageModule {}

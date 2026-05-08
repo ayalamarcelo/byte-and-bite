@@ -1,3 +1,8 @@
+.ion-text {
+  display: flex;
+  justify-content: space-between;
+}
+
 .avatar {
   margin: 0 auto;
   width: 100px;
@@ -11,4 +16,9 @@
     font-size: 60px;
     color: var(--ion-color-medium);
   }
+}
+
+ion-button {
+  --padding-top: 15px;
+  --padding-bottom: 15px;
 }

@@ -25,23 +25,46 @@
   <ion-card class="tarjeta-nutricion">
     <ion-card-content>
       <div class="fila-nutriente">
-        <ion-label>Grasas</ion-label>
-        <ion-progress-bar color="warning" value="0.5"></ion-progress-bar>
+        <div class="info-nutriente">
+          <ion-label>Grasas</ion-label>
+          <span class="porcentaje-texto">{{ porcentajeGrasas }}%</span>
+        </div>
+        <ion-progress-bar color="warning" [value]="porcentajeGrasas / 100"></ion-progress-bar>
       </div>
 
       <div class="fila-nutriente">
-        <ion-label>Proteínas</ion-label>
-        <ion-progress-bar color="success" value="0.4"></ion-progress-bar>
+        <div class="info-nutriente">
+          <ion-label>Proteínas</ion-label>
+          <span class="porcentaje-texto">{{ porcentajeProteinas }}%</span>
+        </div>
+        <ion-progress-bar color="success" [value]="porcentajeProteinas / 100"></ion-progress-bar>
       </div>
 
       <div class="fila-nutriente">
-        <ion-label>Carbohidratos</ion-label>
-        <ion-progress-bar color="danger" value="0.2"></ion-progress-bar>
+        <div class="info-nutriente">
+          <ion-label>Carbohidratos</ion-label>
+          <span class="porcentaje-texto">{{ porcentajeCarbos }}%</span>
+        </div>
+        <ion-progress-bar color="danger" [value]="porcentajeCarbos / 100"></ion-progress-bar>
       </div>
+    </ion-card-content>
+  </ion-card>
 
-      <div class="fila-nutriente">
-        <ion-label>Agua</ion-label>
-        <ion-progress-bar color="primary" value="0.7"></ion-progress-bar>
+  <ion-card class="tarjeta-nutricion">
+    <ion-card-content>
+      <ion-label style="font-weight: bold; color: #333; display: block; margin-bottom: 10px;">Detalles adicionales</ion-label>
+      
+      <div class="fila-micronutriente">
+        <span>Sodio</span>
+        <strong>{{ sodioMg }} mg</strong>
+      </div>
+      <div class="fila-micronutriente">
+        <span>Fibra</span>
+        <strong>{{ fibraG }} g</strong>
+      </div>
+      <div class="fila-micronutriente">
+        <span>Potasio</span>
+        <strong>{{ potasioMg }} mg</strong>
       </div>
     </ion-card-content>
   </ion-card>
