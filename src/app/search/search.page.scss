@@ -248,3 +248,9 @@ ion-content {
   width: calc(100% - 30px); 
   font-weight: bold;
 }
+
+.transparent-toolbar {
+  --background: transparent;
+  --border-style: none;
+  border: none;
+}
