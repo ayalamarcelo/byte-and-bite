@@ -4,4 +4,4 @@
 
 #
 
-<p align="center">Una aplicación intuitiva diseñada para gestionar tu nutrición diaria</p>
+<p align="center">An intuitive app built to streamline your daily nutrition.</p>
