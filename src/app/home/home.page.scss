@@ -4,7 +4,12 @@
 }
 
 ion-content {
-  --background: var(--fondo-principal);
+  --background: transparent; 
+
+  background-image: url('../../assets/images/pattern.svg'); 
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
 
 .encabezado-bienvenida {
@@ -76,11 +81,30 @@ ion-content {
 }
 
 .tarjeta-nutricion {
-  background: var(--fondo-tarjeta); 
+  background: var(--fondo-tarjeta);
   border-radius: 30px; 
   box-shadow: 0 8px 25px rgba(0,0,0,0.05);
   margin: 20px;
   padding: 10px;
+  
+  color: #333333 !important;
+
+  ion-label {
+    --color: #333333 !important;
+    color: #333333 !important;
+  }
+}
+
+.porcentaje-texto {
+  color: #333333 !important; 
+  font-weight: bold; 
+  opacity: 1 !important;
+}
+
+.seccion-agua {
+  ion-label, span {
+    color: #333333 !important;
+  }
 }
 
 .fila-nutriente {
@@ -149,4 +173,37 @@ ion-content {
 .opcion-medida span {
   font-size: 0.8rem;
   color: var(--texto-secundario);
+}
+
+.info-nutriente {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+
+  .porcentaje-texto {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--texto-secundario);
+  }
+}
+
+.fila-micronutriente {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--progreso-vacio);
+  color: #333333 !important; 
+
+  &:last-child {
+    border-bottom: none; 
+  }
+
+  span {
+    font-weight: 500;
+  }
+
+  strong {
+    color: var(--acento-verde);
+  }
 }
