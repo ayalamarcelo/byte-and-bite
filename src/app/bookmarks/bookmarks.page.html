@@ -1,78 +1,70 @@
 <ion-content class="bookmarks-content">
 
   <div class="search-container">
-    <ion-searchbar placeholder="Buscar alimentos..." animated></ion-searchbar>
+    <ion-button fill="clear" routerLink="/tabs/home" class="home-btn">
+      <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+    </ion-button>
+    <ion-searchbar placeholder="Buscar alimentos..." mode="ios"></ion-searchbar>
   </div>
 
   <div class="filter-buttons">
-    <ion-button fill="outline" size="small" shape="round">Todos</ion-button>
-    <ion-button fill="outline" size="small" shape="round">Carbohidratos</ion-button>
-    <ion-button fill="outline" size="small" shape="round">Proteínas</ion-button>
-    <ion-button fill="outline" size="small" shape="round">Grasas</ion-button>
-    <ion-button fill="outline" size="small" shape="round">Vitaminas</ion-button>
+    <ion-button fill="outline" size="small" shape="round"
+      [class.active]="filtroActivo === 'Todos'"
+      (click)="setFiltro('Todos')">Todos</ion-button>
+    <ion-button fill="outline" size="small" shape="round"
+      [class.active]="filtroActivo === 'Carbohidratos'"
+      (click)="setFiltro('Carbohidratos')">Carbohidratos</ion-button>
+    <ion-button fill="outline" size="small" shape="round"
+      [class.active]="filtroActivo === 'Proteínas'"
+      (click)="setFiltro('Proteínas')">Proteínas</ion-button>
+    <ion-button fill="outline" size="small" shape="round"
+      [class.active]="filtroActivo === 'Grasas'"
+      (click)="setFiltro('Grasas')">Grasas</ion-button>
+    <ion-button fill="outline" size="small" shape="round"
+      [class.active]="filtroActivo === 'Vitaminas'"
+      (click)="setFiltro('Vitaminas')">Vitaminas</ion-button>
   </div>
 
-  <div class="empty-state">
+  <div class="empty-state" *ngIf="alimentosFiltrados.length === 0">
     <ion-icon name="bookmark-outline"></ion-icon>
-    <p>Guardá tus alimentos favoritos y accedé a ellos cuando quieras</p>
+    <p>No hay alimentos en esta categoría</p>
   </div>
 
   <ion-list class="bookmarks-list">
-
-    <ion-card class="bookmark-card">
-      <img src="https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=400&h=200&fit=crop" alt="Palta">
-      <div class="card-badge">Grasas</div>
+    <ion-card class="bookmark-card" *ngFor="let alimento of alimentosFiltrados">
+      <img [src]="alimento.img" [alt]="alimento.nombre">
+      <div class="card-badge">{{ alimento.categoria }}</div>
       <ion-card-content>
         <div class="card-info">
-          <h3>Palta</h3>
+          <h3>{{ alimento.nombre }}</h3>
           <div class="card-meta">
-            <span class="calories">🔥 160 kcal</span>
+            <span class="calories">🔥 {{ alimento.kcal }} kcal</span>
             <span class="separator">·</span>
-            <span>100g</span>
+            <span>{{ alimento.gramos }}g</span>
           </div>
         </div>
-        <ion-button fill="clear" class="remove-btn">
-          <ion-icon slot="icon-only" name="bookmark" color="primary"></ion-icon>
-        </ion-button>
-      </ion-card-content>
-    </ion-card>
-
-    <ion-card class="bookmark-card">
-      <img src="https://images.unsplash.com/photo-1536304993881-ff6e9eefa2a6?w=400&h=200&fit=crop" alt="Arroz integral">
-      <div class="card-badge">Carbohidratos</div>
-      <ion-card-content>
-        <div class="card-info">
-          <h3>Arroz integral</h3>
-          <div class="card-meta">
-            <span class="calories">🔥 130 kcal</span>
-            <span class="separator">·</span>
-            <span>100g</span>
-          </div>
+        <div class="card-actions">
+          <ion-button fill="clear" class="add-btn" (click)="toggleMenu(alimento)">
+            <ion-icon slot="icon-only" name="add-circle-outline" color="primary"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" class="remove-btn">
+            <ion-icon slot="icon-only" name="bookmark" color="primary"></ion-icon>
+          </ion-button>
         </div>
-        <ion-button fill="clear" class="remove-btn">
-          <ion-icon slot="icon-only" name="bookmark" color="primary"></ion-icon>
-        </ion-button>
       </ion-card-content>
-    </ion-card>
-
-    <ion-card class="bookmark-card">
-      <img src="https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=400&h=200&fit=crop" alt="Pechuga de pollo">
-      <div class="card-badge">Proteínas</div>
-      <ion-card-content>
-        <div class="card-info">
-          <h3>Pechuga de pollo</h3>
-          <div class="card-meta">
-            <span class="calories">🔥 165 kcal</span>
-            <span class="separator">·</span>
-            <span>100g</span>
-          </div>
+      <div class="gramos-menu" *ngIf="alimento.menuAbierto">
+        <p>¿Cuántos gramos querés comer?</p>
+        <div class="gramos-options">
+          <ion-button fill="outline" size="small" shape="round" (click)="seleccionarGramos(alimento, 50)">50g</ion-button>
+          <ion-button fill="outline" size="small" shape="round" (click)="seleccionarGramos(alimento, 100)">100g</ion-button>
+          <ion-button fill="outline" size="small" shape="round" (click)="seleccionarGramos(alimento, 150)">150g</ion-button>
+          <ion-button fill="outline" size="small" shape="round" (click)="seleccionarGramos(alimento, 200)">200g</ion-button>
         </div>
-        <ion-button fill="clear" class="remove-btn">
-          <ion-icon slot="icon-only" name="bookmark" color="primary"></ion-icon>
-        </ion-button>
-      </ion-card-content>
+        <p *ngIf="alimento.gramosSeleccionados" class="gramos-selected">
+          Seleccionaste {{ alimento.gramosSeleccionados }}g
+        </p>
+      </div>
     </ion-card>
-
   </ion-list>
 
 </ion-content>

@@ -3,7 +3,20 @@
 }
 
 .search-container {
+  display: flex;
+  align-items: center;
   padding: 12px 16px 0;
+
+  ion-searchbar {
+    flex: 1;
+    padding: 0;
+  }
+
+  .home-btn {
+    --padding-start: 0;
+    --padding-end: 4px;
+    color: var(--ion-color-medium);
+  }
 }
 
 .filter-buttons {
@@ -16,6 +29,11 @@
     --border-radius: 20px;
     font-size: 0.8rem;
     white-space: nowrap;
+
+    &.active {
+      --background: var(--ion-color-primary);
+      --color: white;
+    }
   }
 }
 
@@ -103,4 +121,31 @@
       font-size: 1.4rem;
     }
   }
+  .card-actions {
+  display: flex;
+  align-items: center;
+}
+
+.gramos-menu {
+  padding: 8px 12px 12px;
+  border-top: 1px solid var(--ion-color-light);
+
+  p {
+    font-size: 0.85rem;
+    color: var(--ion-color-medium);
+    margin: 0 0 8px;
+  }
+
+  .gramos-options {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .gramos-selected {
+    margin-top: 8px;
+    color: var(--ion-color-primary);
+    font-weight: 600;
+  }
+}
 }
