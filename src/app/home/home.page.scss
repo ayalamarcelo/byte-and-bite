@@ -1,18 +1,25 @@
 :host {
   display: block;
   height: 100%;
+  --card-background: #ffffff;
+  --main-text: #ffffff;
+  --secondary-text: #d1d1d1;
+  --date-text: #888888;
+  --yellow-accent: #ffcc00;
+  --green-accent: #26bba4;
+  --blue-progress: #4db8ff;
+  --empty-progress: #f0f0f0;
 }
 
 ion-content {
   --background: transparent; 
 
-  background-image: url('../../assets/images/pattern.svg'); 
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
 }
 
-.encabezado-bienvenida {
+.welcome-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -20,17 +27,32 @@ ion-content {
   margin-top: 10px;
 }
 
-.texto-bienvenida { margin: 0; color: var(--texto-secundario); font-size: 0.9rem; }
-.nombre-usuario { margin: 0; font-weight: bold; font-size: 1.4rem; color: var(--texto-principal); }
-.texto-fecha { margin: 0; color: var(--texto-fecha); font-size: 0.8rem; }
-
-.encabezado-bienvenida ion-avatar {
-  width: 55px;
-  height: 55px;
-  border: 2px solid var(--acento-amarillo);
+.welcome-text { 
+  margin: 0; 
+  color: var(--secondary-text); 
+  font-size: 0.9rem; 
 }
 
-.contenedor-circulo {
+.username { 
+  margin: 0; 
+  font-weight: bold; 
+  font-size: 1.4rem; 
+  color: var(--main-text); 
+}
+
+.text-date { 
+  margin: 0; 
+  color: var(--text-date); 
+  font-size: 0.8rem; 
+}
+
+.welcome-header ion-avatar {
+  width: 55px;
+  height: 55px;
+  border: 2px solid var(--yellow-accent);
+}
+
+.circular-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,55 +60,62 @@ ion-content {
   height: 250px;
 }
 
-.grafico-circular {
+.pie-chart {
   max-width: 220px;
   width: 100%;
 }
 
-.circulo-fondo {
+.circle-background {
   fill: none;
-  stroke: var(--fondo-tarjeta); 
+  stroke: var(--card-background); 
   stroke-width: 6;
 }
 
-.circulo-progreso {
+.progress-circle {
   fill: none;
   stroke-width: 8;
   stroke-linecap: round;
-  stroke: var(--progreso-azul); 
+  stroke: var(--blue-progress); 
   transform: rotate(-90deg);
   transform-origin: center;
-  animation: animacion-progreso 1.2s ease-out forwards;
+  animation: animation-progress 1.2s ease-out forwards;
 }
 
-.texto-ratio { 
-    fill: var(--acento-verde); 
+.text-ratio { 
+    fill: var(--green-accent); 
     font-size: 6px; 
     text-anchor: middle; 
-    font-weight: bold; }
-.texto-numero { 
-    fill: var(--texto-principal); 
-    font-size: 18px; font-weight: bold; 
-    text-anchor: middle; }
-.texto-subtitulo { 
-    fill: var(--texto-fecha); 
-    font-size: 4px; 
-    text-anchor: middle; }
+    font-weight: bold; 
+  }
 
-@keyframes animacion-progreso {
+.text-number { 
+    fill: var(--main-text); 
+    font-size: 18px; font-weight: bold; 
+    text-anchor: middle; 
+  }
+
+.subtitle-text { 
+  font-size: 4px; 
+  text-anchor: middle; 
+  fill: #ffffff;
+}
+
+@keyframes animation-progress {
   0% { 
     stroke-dasharray: 0, 251; }
   100% { 
     stroke-dasharray: 200, 251; }
 }
 
-.tarjeta-nutricion {
-  background: var(--fondo-tarjeta);
+.nutrition-card {
+  background: var(--card-background);
   border-radius: 30px; 
   box-shadow: 0 8px 25px rgba(0,0,0,0.05);
-  margin: 20px;
-  padding: 10px;
   
+  margin: 20px auto;
+  max-width: 500px;
+  width: calc(100% - 40px);
+  padding: 10px;
   color: #333333 !important;
 
   ion-label {
@@ -95,53 +124,53 @@ ion-content {
   }
 }
 
-.porcentaje-texto {
+.percentage-text {
   color: #333333 !important; 
   font-weight: bold; 
   opacity: 1 !important;
 }
 
-.seccion-agua {
+.water-section {
   ion-label, span {
     color: #333333 !important;
   }
 }
 
-.fila-nutriente {
+.nutrient-row {
   margin-bottom: 18px;
 }
 
-.fila-nutriente ion-label { 
+.nutrient-row ion-label { 
   display: block;
   font-weight: 600; 
-  color: var(--texto-principal); 
+  color: var(--main-text); 
   margin-bottom: 6px;
 }
 
-.fila-nutriente ion-progress-bar { 
+.nutrient-row ion-progress-bar { 
   height: 10px; 
   border-radius: 5px; 
-  --background: var(--progreso-vacio);
+  --background: var(--empty-progress);
 }
 
-.seccion-agua {
+.water-section {
   margin-top: 20px;
   padding: 10px;
 }
 
-.contenedor-progreso-agua {
+.progress-water {
   position: relative;
   height: 35px;
   margin-bottom: 25px;
 }
 
-.barra-agua {
+.water-bar {
   height: 100%;
   border-radius: 15px;
-  --progress-background: var(--progreso-azul);
+  --progress-background: var(--blue-progress);
 }
 
-.texto-sobre-barra {
+.text-over-bar {
   position: absolute;
   width: 100%;
   text-align: center;
@@ -152,47 +181,78 @@ ion-content {
   font-size: 0.9rem;
 }
 
-.selector-medidas {
+.measure-selector {
   display: flex;
   justify-content: space-around;
   margin-top: 15px;
 }
 
-.opcion-medida {
+.custom-option {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 5px;
 }
 
-.opcion-medida ion-icon {
+.custom-option ion-icon {
   font-size: 30px;
-  color: var(--progreso-azul);
+  color: var(--blue-progress);
 }
 
-.opcion-medida span {
-  font-size: 0.8rem;
-  color: var(--texto-secundario);
+.measure-selector {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  margin-top: 15px;
 }
 
-.info-nutriente {
+.custom-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex: 1;
+
+  ion-icon {
+    font-size: 32px;
+    color: var(--blue-progress);
+    margin-bottom: 4px;
+  }
+
+  span {
+    font-size: 0.8rem;
+    color: var(--secondary-text);
+    font-weight: 500;
+  }
+
+  ion-button {
+    --padding-start: 0;
+    --padding-end: 0;
+    margin-top: 4px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+}
+
+.nutrient-info {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 5px;
 
-  .porcentaje-texto {
+  .percentage-text {
     font-size: 0.9rem;
     font-weight: bold;
-    color: var(--texto-secundario);
+    color: var(--secondary-text);
   }
 }
 
-.fila-micronutriente {
+.row-micronutrient {
   display: flex;
   justify-content: space-between;
   padding: 12px 0;
-  border-bottom: 1px solid var(--progreso-vacio);
+  border-bottom: 1px solid var(--empty-progress);
   color: #333333 !important; 
 
   &:last-child {
@@ -204,6 +264,81 @@ ion-content {
   }
 
   strong {
-    color: var(--acento-verde);
+    color: var(--green-accent);
+  }
+}
+
+.month-selector {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .month-name { font-weight: bold; font-size: 1.1rem; color: #333; }
+}
+
+.week-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-weight: bold;
+  color: #888;
+  margin-bottom: 10px;
+  font-size: 0.8rem;
+}
+
+.schedule-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.day {
+  min-height: 45px; 
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  background: #f4f4f4;
+  box-sizing: border-box; 
+
+  .num-day { 
+    font-size: 0.8rem;
+    font-weight: bold; 
+    line-height: 1;
+  }
+  .kcal-day { 
+    font-size: 0.55rem;
+    margin-top: 2px;
+    white-space: nowrap;
+  }
+
+  &.completed {
+    background: rgba(45, 211, 111, 0.2); 
+    border: 1px solid #2dd36f;
+    .num-day, .kcal-day { color: #2dd36f; }
+  }
+
+  &.failed {
+    background: rgba(235, 68, 68, 0.1); 
+    border: 1px solid #eb4444;
+    .num-day { color: #eb4444; }
+  }
+
+  &.empty { background: transparent; }
+
+  &.today {
+    background: rgba(56, 128, 255, 0.2); 
+    border: 2px solid #3880ff; 
+    transform: scale(1.1); 
+    z-index: 10;
+    
+    .num-day {
+      color: #3880ff;
+      font-weight: 800; 
+    }
+    .kcal-day {
+      color: #3880ff;
+    }
   }
 }
