@@ -3,12 +3,14 @@
   <div class="welcome-header">
     <div class="text-container">
       <p class="welcome-text">Bienvenido</p>
-      <h1 class="username">Usuario 1</h1>
-      <p class="text-date">Martes, 7 de Abril de 2026</p>
+      <h1 class="username">Alberto Acosta</h1>
+      <p class="text-date">{{ currentDate | date:"EEEE, d 'de' MMMM 'de' yyyy":"":"es-AR" }}</p>
     </div>
-    <ion-avatar>
-      <img src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-    </ion-avatar>
+    <div class="profile-button" (click)="goToProfile()">
+      <ion-avatar class="avatar-animated">
+        <img src="../../assets/images/avatar-user.png" />
+      </ion-avatar>
+    </div>
   </div>
 
   <div class="circular-container">
@@ -17,7 +19,7 @@
       <circle class="progress-circle" cx="50" cy="50" r="40" />
       
       <text x="50" y="38" class="text-ratio">PROGRESO</text>
-      <text x="50" y="58" class="text-number">390</text>
+      <text x="50" y="58" class="text-number">1410</text>
       <text x="50" y="72" class="subtitle-text">Kcal Consumidas</text>
     </svg>
   </div>
