@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, DatePipe]
 })
 export class HomePage implements OnInit {
 
@@ -24,8 +25,9 @@ export class HomePage implements OnInit {
   daysOfTheMonth: any[] = [];
   emptySpaces: number[] = [];
   rightNow: number = new Date().getDate();
+  currentDate: Date = new Date();
 
- generarCalendario() {
+  generarCalendario() {
     const now = new Date();
     const year = now.getFullYear();
     const month = now.getFullYear() === 2026 && now.getMonth() === 4 ? 4 : now.getMonth();
@@ -51,6 +53,9 @@ export class HomePage implements OnInit {
       if (i === 7) consumptionExample = 2400; 
       if (i === 8) consumptionExample = 3400; 
       if (i === 9) consumptionExample = 1200; 
+      if (i === 10) consumptionExample = 2100; 
+      if (i === 11) consumptionExample = 2550; 
+      if (i === 12) consumptionExample = 2670; 
       this.daysOfTheMonth.push({
         numero: i,
         consumido: consumptionExample,
@@ -59,11 +64,13 @@ export class HomePage implements OnInit {
     }
   }
 
-  constructor() { }
+ goToProfile() {
+  this.router.navigate(['/tabs/profile']); 
+}
+
+  constructor(private router: Router) { }
 
   ngOnInit() {
-  this.generarCalendario();
+    this.generarCalendario();
   }
-  
-
 }
