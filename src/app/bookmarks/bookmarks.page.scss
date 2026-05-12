@@ -21,6 +21,7 @@
 
 .filter-buttons {
   display: flex;
+  justify-content: space-around;
   gap: 8px;
   padding: 8px 16px;
   overflow-x: auto;
@@ -29,6 +30,7 @@
     --border-radius: 20px;
     font-size: 0.8rem;
     white-space: nowrap;
+    flex: 1;
 
     &.active {
       --background: var(--ion-color-primary);
