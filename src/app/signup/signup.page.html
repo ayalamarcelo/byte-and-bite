@@ -85,7 +85,8 @@
       fill="outline" 
       type="password"
         placeholder="Repeat password" 
-        class="custom-input ion-margin-top">
+        class="custom-input ion-margin-top"
+      [color]="(repeatPassword && password !== repeatPassword) ? 'danger' : ''">
       </ion-input>
 
       <ion-item

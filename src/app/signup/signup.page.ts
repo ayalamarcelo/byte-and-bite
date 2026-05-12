@@ -28,7 +28,6 @@ export class SignupPage implements OnInit {
   ngOnInit() { }
 
   async handleSignUp() {
-    // Validaciones básicas
     if (this.password !== this.repeatPassword) {
       this.presentAlert('Error', 'Las contraseñas no coinciden.');
       return;

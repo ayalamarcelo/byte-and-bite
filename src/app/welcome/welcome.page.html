@@ -19,11 +19,11 @@
     <div class="bottom-content">
       <p class="terms-text">
         By clicking on next, you agree to Byte && Bite's
-        <a href="#">Terms and Condition of Use</a>
+        <a (click)="presentTermsModal()">Terms and Condition of Use</a>
       </p>
 
-      <!--Al parecer routerLink es más rápido-->
-      <ion-button routerLink="/login" expand="block" class="next-btn">
+      <!--al parecer routerLink es más rápido-->
+      <ion-button (click)="validateAndGo()" expand="block" class="next-btn">
         Start 
       </ion-button>
     </div>

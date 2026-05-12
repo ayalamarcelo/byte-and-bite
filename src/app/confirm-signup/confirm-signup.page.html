@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Verify Account</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cancel()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding ion-text-center">
+  <ion-icon name="mail-open-outline" style="font-size: 4rem; color: var(--ion-color-medium);"></ion-icon>
+  
+  <h2>Confirm your email</h2>
+  <p>Please enter the code sent to: <br><strong>{{ email }}</strong></p>
+
+  <ion-item lines="outline" class="ion-margin-vertical">
+    <ion-label position="stacked">Verification Code</ion-label>
+    <ion-input type="tel" [(ngModel)]="code" placeholder="000000" maxlength="6"></ion-input>
+  </ion-item>
+
+  <ion-button expand="block" (click)="handleConfirm()" [disabled]="!code || code.length < 6">
+    Confirm Registration
+  </ion-button>
+
+  <ion-button fill="clear" (click)="resend()">
+    Resend Code
+  </ion-button>
+</ion-content>

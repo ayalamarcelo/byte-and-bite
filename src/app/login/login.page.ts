@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { signIn } from 'aws-amplify/auth';
-import { AlertController, LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController } from '@ionic/angular';
+import { ConfirmSignupPage } from '../confirm-signup/confirm-signup.page';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,8 @@ export class LoginPage implements OnInit {
   constructor(
     private router: Router,
     private alertController: AlertController,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private modalController: ModalController
   ) { }
 
   ngOnInit() { }
@@ -65,10 +67,25 @@ export class LoginPage implements OnInit {
           case 'CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED':
             this.presentAlert('New password', 'Your user was created in the console and requires you to change your temporary password.');
             break;
-
+          // lo envio para confirmar
           case 'CONFIRM_SIGN_UP':
-            this.presentAlert('Verification', 'You must confirm your account with the code sent to your email.');
-            // this.router.navigate(['/confirm-signup']);
+            await loading.dismiss(); // quita el loading antes de mostrar el modal
+
+            const modal = await this.modalController.create({
+              component: ConfirmSignupPage,
+              componentProps: {
+                email: this.email // pasamos el email como @Input al modal
+              }
+            });
+
+            await modal.present();
+
+            const { data } = await modal.onWillDismiss();
+
+            if (data?.confirmed) {
+              // si el usuario se confirmó con éxito en el modal
+              this.presentAlert('Verified', 'Your account is active. You can login now.');
+            }
             break;
 
           case 'DONE':
