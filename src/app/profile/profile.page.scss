@@ -1,0 +1,64 @@
+.profile-card-container {
+  position: relative;
+  margin-top: 70px;
+}
+
+.avatar {
+  position: absolute;
+  top: -60px;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  z-index: 10;
+}
+
+.main-card {
+  margin: 0 16px;
+  padding-top: 60px; // empuja el contenido de la card hacia abajo para que no lo tape el círculo
+  border-radius: 10px;
+}
+
+
+.data-card {
+  margin: 15px 16px;
+  border-radius: 10px;
+
+  ion-item {
+    --padding-start: 0;
+    --background: transparent;
+  }
+}
+
+.user-name {
+  margin-top: 0;
+  font-weight: bold;
+}
+
+.nav-actions {
+  display: flex;
+  justify-content: space-between; // esto empuja uno a la izquierda y otro a la derecha
+  align-items: center;
+  padding: 8px 16px; 
+  width: 100%;
+  position: absolute; // para que flote sobre el contenido
+  top: 0;
+  z-index: 20;
+}
+
+ion-icon {
+  font-size: 26px;
+}
+
+ion-toolbar {
+  --background: transparent;
+  --border-style: none;
+}
+
+ion-content {
+  --offset-top: 0px !important;
+}
+
+.nav-actions {
+  margin-bottom: 20px; 
+}

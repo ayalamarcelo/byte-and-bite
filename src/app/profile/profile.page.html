@@ -1,13 +1,135 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>profile</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true" class="ion-padding background-custom">
+  
+  <!-- buttons -->
+  <ion-header class="ion-no-border">
+    <ion-toolbar mode="md">
+      <ion-buttons slot="start">
+        <ion-button fill="clear" color="dark">
+          <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+        </ion-button>
+      </ion-buttons>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">profile</ion-title>
+      <ion-buttons slot="end">
+        <ion-button fill="clear" color="dark">
+          <ion-icon slot="icon-only" name="close"></ion-icon>
+        </ion-button>
+      </ion-buttons>
     </ion-toolbar>
   </ion-header>
+
+  <!-- Componente de Perfil-->
+  <div class="cointainer">
+    <div class="profile-card-container">
+      <div class="ion-margin-bottom ion-justify-content-center" style="display: flex;">
+        <ion-avatar class="avatar"
+          style="width: 120px; height: 120px; background: var(--ion-color-light); display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+          <ion-icon name="person-outline" style="font-size: 60px; color: var(--ion-color-medium);"></ion-icon>
+        </ion-avatar>
+      </div>
+
+      <ion-card class="main-card">
+        <ion-card-content class="ion-text-center">
+          <h2 class="user-name">Alberto Acosta</h2>
+          <ion-button fill="clear" color="success" size="small" class="logout-btn">
+            Cerrar sesión
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+
+  <!-- Bloque: Datos Personales -->
+  <ion-card class="data-card">
+    <ion-card-header>
+      <ion-card-title>DATOS PERSONALES</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <!-- Campo Edad -->
+      <ion-item lines="full">
+        <ion-label>
+          <p>Edad</p>
+          <h3>25 años</h3>
+        </ion-label>
+        <ion-button slot="end" fill="clear" size="small">Editar</ion-button>
+      </ion-item>
+
+      <!-- Campo Peso -->
+      <ion-item lines="full">
+        <ion-label>
+          <p>Peso</p>
+          <h3>70 kg</h3>
+        </ion-label>
+        <ion-button slot="end" fill="clear" size="small">Editar</ion-button>
+      </ion-item>
+
+      <!-- Campo Altura -->
+      <ion-item lines="none">
+        <ion-label>
+          <p>Altura</p>
+          <h3>1.75 m</h3>
+        </ion-label>
+        <ion-button slot="end" fill="clear" size="small">Editar</ion-button>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Bloque: Cuenta -->
+  <ion-card class="data-card">
+    <ion-card-header>
+      <ion-card-title>CUENTA</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item lines="full">
+        <ion-label>
+          <p>Email</p>
+          <h3>usuario@ejemplo.com</h3>
+        </ion-label>
+        <ion-button slot="end" fill="clear" size="small">Editar</ion-button>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>
+          <p>Contraseña</p>
+          <h3>********</h3>
+        </ion-label>
+        <ion-button slot="end" fill="clear" size="small">Editar</ion-button>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Bloque: Notificaciones -->
+  <ion-card class="data-card">
+    <ion-card-header>
+      <ion-card-title>NOTIFICACIONES</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item lines="full">
+        <ion-icon slot="start" name="notifications-outline"></ion-icon>
+        <ion-label>Recordatorio de comida</ion-label>
+        <ion-toggle slot="end"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-icon slot="start" name="notifications-outline"></ion-icon>
+        <ion-label>Alertas</ion-label>
+        <ion-toggle slot="end"></ion-toggle>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Bloque: Dispositivos -->
+  <ion-card class="data-card">
+    <ion-card-header>
+      <ion-card-title>DISPOSITIVOS CONECTADOS</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item lines="full">
+        <ion-label>Reloj inteligente</ion-label>
+        <ion-text slot="end" color="primary"><b>Vincular</b></ion-text>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>Smartphone</ion-label>
+        <ion-text slot="end" color="primary"><b>Vincular</b></ion-text>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
 </ion-content>
