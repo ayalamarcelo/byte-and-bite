@@ -69,6 +69,11 @@ testem.log
 .DS_Store
 Thumbs.db
 
+
+# Environments (Credenciales de Cognito)
+src/environments/environment.ts
+src/environments/environment.prod.ts
+
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
 amplify/.config/local-*
@@ -90,7 +95,4 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
-
-# Environments (Credenciales de Cognito)
-src/environments/environment.ts
-src/environments/environment.prod.ts
+amplifyconfiguration.json

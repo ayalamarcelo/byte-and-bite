@@ -1,14 +1,13 @@
 {
-  "auth": {
-    "plugins": {
-      "awsCognitoAuthPlugin": {
-        "CognitoUserPool": {
-          "Default": {
-            "PoolId": "REGION_XXXXX",
-            "AppClientId": "CLIENT_ID",
-            "Region": "REGION"
-          }
-        }
+  "Auth": {
+    "Cognito": {
+      "userPoolId": "",
+      "userPoolClientId": "",
+      "identityPoolId": "",
+      "allowGuestAccess": true,
+      "signUpVerificationMethod": "code",
+      "loginWith": {
+        "email": true
       }
     }
   }
