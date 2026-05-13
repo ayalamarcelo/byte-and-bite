@@ -30,7 +30,12 @@
       <ion-card class="main-card">
         <ion-card-content class="ion-text-center">
           <h2 class="user-name">Alberto Acosta</h2>
-          <ion-button fill="clear" color="success" size="small" class="logout-btn">
+          <ion-button
+          (click)="handleLogout()" 
+          fill="clear" 
+          color="success" 
+          size="small" 
+          class="logout-btn">
             Cerrar sesión
           </ion-button>
         </ion-card-content>

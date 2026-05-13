@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
   styleUrls: ['tabs.page.scss'],
-  standalone: false,
+  standalone: false
 })
 export class TabsPage {
 
