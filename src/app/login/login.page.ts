@@ -60,7 +60,7 @@ export class LoginPage implements OnInit {
 
       if (isSignedIn) {
         // usuario autenticado completamente
-        this.router.navigate(['/tabs/home']);
+        this.router.navigate(['/tabs/home'], { replaceUrl: true });
       } else {
         // manejo de estados intermedios de cognito
         switch (nextStep.signInStep) {
@@ -89,7 +89,7 @@ export class LoginPage implements OnInit {
             break;
 
           case 'DONE':
-            this.router.navigate(['/tabs/home']);
+            this.router.navigate(['/tabs/home'], { replaceUrl: true });
             break;
 
           default:

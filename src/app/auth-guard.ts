@@ -2,31 +2,49 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router, UrlTree } from '@angular/router';
 import { fetchAuthSession } from 'aws-amplify/auth';
 
+// --- 1. GUARD PARA RUTAS PRIVADAS  ---
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-
   constructor(private router: Router) {}
 
   async canActivate(): Promise<boolean | UrlTree> {
     try {
-      // intentamos obtener la sesión actual de cognito
       const session = await fetchAuthSession();
-      
-      // verifica si existen los tokens (esto confirmaría que está logueado)
       const isAuthenticated = !!session.tokens?.accessToken;
 
       if (isAuthenticated) {
-        return true; // deja pasar al usuario
+        return true; // usuario logueado, adelante.
       } else {
-        // si no está autenticado, lo mandamos al login
-        return this.router.parseUrl('/login');
+        return this.router.parseUrl('/login'); // sin sesión, pal login.
       }
     } catch (error) {
-      // si hay un error (ej: sesión expirada o sin internet), pal lobby
-      console.error('Auth Guard Error:', error);
       return this.router.parseUrl('/login');
+    }
+  }
+}
+
+// --- 2. GUARD PARA RUTAS PÚBLICAS (Bloquea a logueados en Login/Welcome) ---
+@Injectable({
+  providedIn: 'root'
+})
+export class PublicGuard implements CanActivate {
+  constructor(private router: Router) {}
+
+  async canActivate(): Promise<boolean | UrlTree> {
+    try {
+      const session = await fetchAuthSession();
+      const isAuthenticated = !!session.tokens?.accessToken;
+
+      if (isAuthenticated) {
+        // si ya tiene sesión, no tiene sentido ver el Welcome/Login
+        return this.router.parseUrl('/tabs/home'); 
+      } else {
+        return true; // no está logueado, puede ver la página pública.
+      }
+    } catch (error) {
+      return true;
     }
   }
 }

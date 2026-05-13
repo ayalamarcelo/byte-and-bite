@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from './auth-guard';
+import { AuthGuard, PublicGuard } from './auth-guard';
 
 const routes: Routes = [
   {
@@ -10,26 +10,31 @@ const routes: Routes = [
   },
   {
     path: 'welcome',
-    loadChildren: () => import('./welcome/welcome.module').then(m => m.WelcomePageModule)
+    loadChildren: () => import('./welcome/welcome.module').then(m => m.WelcomePageModule),
+    canActivate: [PublicGuard]
   },
   {
     path: 'login',
-    loadChildren: () => import('./login/login.module').then(m => m.LoginPageModule)
+    loadChildren: () => import('./login/login.module').then(m => m.LoginPageModule),
+    canActivate: [PublicGuard]
   },
   {
     path: 'signup',
-    loadChildren: () => import('./signup/signup.module').then(m => m.SignupPageModule)
+    loadChildren: () => import('./signup/signup.module').then(m => m.SignupPageModule),
+    canActivate: [PublicGuard]
   },
   {
     path: 'bookmarks',
-    loadChildren: () => import('./bookmarks/bookmarks.module').then(m => m.BookmarksPageModule)
+    loadChildren: () => import('./bookmarks/bookmarks.module').then(m => m.BookmarksPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'tabs',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule),
     // esta línea bloquea el acceso
     canActivate: [AuthGuard]
-  },  {
+  },
+  {
     path: 'terms',
     loadChildren: () => import('./terms/terms.module').then( m => m.TermsPageModule)
   }
