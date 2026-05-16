@@ -48,6 +48,7 @@
 
 ion-icon {
   font-size: 26px;
+  margin: 0;
 }
 
 ion-toolbar {
@@ -61,4 +62,101 @@ ion-content {
 
 .nav-actions {
   margin-bottom: 20px; 
+}
+
+.info-card {
+  margin: 15px 16px;
+  border-radius: 10px;
+  padding: 16px; // Ajusta el padding interno para que respire el contenido */
+}
+
+
+.info-row {
+  display: flex;
+  justify-content: space-between; // Empuja el toggle al extremo derecho 
+  align-items: center;           // Centra verticalmente icono/texto con el toggle 
+  padding: 10px 0;
+  border-bottom: 1px solid var(--ion-color-light); // Opcional: línea divisoria 
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.label-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 12px; // Espacio entre el icono y el nombre de la notificación 
+  
+  span {
+    font-size: 1rem;
+  }
+}
+
+// Asegura que el icono no sea gigante 
+ion-icon[size="large"] {
+  font-size: 32px;
+}
+
+ion-icon[name="create-outline"] {
+  font-size: 22px; // Ajusta el tamaño 
+  font-weight: bold;
+  color: var(--ion-color-step-600); // Un gris oscuro 
+}
+
+//cambia el color de las cards
+.data-card, .info-card {
+  margin: 15px 16px;
+  border-radius: 10px;
+  
+  // Este es el gris claro 
+  --background: #333333 ; 
+  background: #f4f4f4d9;
+  
+  // Añade una sombra muy suave para dar profundidad 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  
+  ion-item {
+    --background: transparent; // Importante para que se vea el color de la card 
+    --color: #333333 ; // Color de texto oscuro para que resalte 
+  }
+
+  ion-card-title {
+    color: #333333 ;  // Gris intermedio para los títulos 
+    font-weight: bold;
+  }
+}
+
+ion-item {
+  --inner-border-color: #e0e0e0; // Color de la línea divisoria 
+  --padding-start: 16px;
+  --padding-end: 8px;
+}
+
+p {
+  color: #333333 !important; // El color de la etiqueta (Edad, Peso) 
+  font-weight: bold;
+}
+
+h3 {
+  color: #222 !important; // El valor (25 años, 68 kg) 
+}
+
+.user-name {
+  // Esto empuja el nombre debajo del avatar sin mover la card 
+  margin-top: 40px !important; 
+  font-weight: bold;
+  color: white; // Para que resalte en el fondo oscuro 
+  font-size: 1.4rem;
+}
+
+.logout-btn {
+ 
+  margin-top: 2px;
+  --color: #2fdf75; 
+}
+
+.transparent-list {
+  background: transparent !important;
+  --ion-item-background: transparent;
 }
