@@ -8,6 +8,8 @@
   <img src="https://img.shields.io/badge/Ionic-3880FF?style=for-the-badge&logo=ionic&logoColor=white" alt="Ionic">
   <img src="https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white" alt="Angular">
   <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript">
+  <img src="https://img.shields.io/badge/Capacitor-119EFF?style=for-the-badge&logo=capacitor&logoColor=white" alt="Capacitor">
+  <img src="https://img.shields.io/badge/AWS%20Cognito-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white" alt="AWS Cognito">
   <img src="https://img.shields.io/badge/Status-In%20Development-green?style=for-the-badge" alt="Status">
 </p>
 
