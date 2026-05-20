@@ -3,5 +3,11 @@ export const environment = {
   cognito: {
     userPoolId: '', 
     userPoolClientId: '',
+  },
+  edamam: {
+    appId: '',
+    appKey: '',
+    baseUrl: '',
+    autocompleteUrl: ''
   }
 };
