@@ -29,23 +29,23 @@ export class LoginPage implements OnInit {
     try {
       // acá va el await signInWithRedirect({ provider: 'Google' });
       // por ahora, simulamos la espera y lanzamos el aviso
-      console.log('Starting with Google...');
+      console.log('Iniciando sesión con Google...');
 
       // lanzamos mensaje informativo
       this.presentAlert(
-        'Coming soon',
-        'Google Sign-In will be available after configuring the credentials in the Google Cloud Console.'
+        'Próximamente',
+        'El inicio de sesión de Google se habilitará tras configurar las credenciales en la consola de Google Cloud.'
       );
 
     } catch (error: any) {
-      console.error('Google Login Error:', error);
-      this.presentAlert('Error', 'Could not connect to Google at this time.');
+      console.error('Error al iniciar sesión con Google:', error);
+      this.presentAlert('Error', 'Inténtalo de nuevo más tarde.');
     }
   }
 
   async handleLogin() {
     const loading = await this.loadingController.create({
-      message: 'Logging in...',
+      message: 'Accediendo...',
     });
     await loading.present();
 
@@ -55,7 +55,7 @@ export class LoginPage implements OnInit {
         password: this.password
       });
 
-      console.log('Login successful. Next step:', nextStep.signInStep);
+      console.log('Se ha iniciado sesión correctamente. Siguiente paso', nextStep.signInStep);
       await loading.dismiss();
 
       if (isSignedIn) {
@@ -65,7 +65,7 @@ export class LoginPage implements OnInit {
         // manejo de estados intermedios de cognito
         switch (nextStep.signInStep) {
           case 'CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED':
-            this.presentAlert('New password', 'Your user was created in the console and requires you to change your temporary password.');
+            this.presentAlert('Nueva contraseña', 'Tu usuario ha sido creado en la consola y requiere que cambies tu contraseña temporal.');
             break;
           // lo envio para confirmar
           case 'CONFIRM_SIGN_UP':
@@ -84,7 +84,7 @@ export class LoginPage implements OnInit {
 
             if (data?.confirmed) {
               // si el usuario se confirmó con éxito en el modal
-              this.presentAlert('Verified', 'Your account is active. You can login now.');
+              this.presentAlert('Verificado', 'Su cuenta está activa. Ya puede iniciar sesión.');
             }
             break;
 
@@ -93,17 +93,17 @@ export class LoginPage implements OnInit {
             break;
 
           default:
-            console.warn('Unhandled step:', nextStep.signInStep);
+            console.warn('Paso no definido:', nextStep.signInStep);
             break;
         }
       }
 
     } catch (error: any) {
       await loading.dismiss();
-      console.error('Login Error:', error);
+      console.error('Error de inicio de sesión:', error);
 
       // muestras el mensaje de error real que viene de AWS
-      this.presentAlert('Error', error.message || 'Incorrect credentials');
+      this.presentAlert('Error', error.message || 'Credenciales incorrectas');
     }
   }
 

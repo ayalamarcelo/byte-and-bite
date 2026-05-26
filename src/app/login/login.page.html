@@ -9,11 +9,11 @@
 
       <ion-button fill="clear" size="medium" (click)="goToSignUp()"
         style="font-weight: 300; text-transform: capitalize;">
-        Sign Up
+        Registrarse
       </ion-button>
     </div>
 
-    <h1 class="ion-padding-bottom ion-text-center">Welcome</h1>
+    <h1 class="ion-padding-bottom ion-text-center">Bienvenido/a</h1>
 
     <div class="ion-margin-bottom ion-justify-content-center" style="display: flex;">
       <ion-avatar class="avatar"
@@ -25,7 +25,7 @@
     <div class="ion-margin-vertical">
       <ion-button expand="block" fill="outline" color="primary" (click)="continueWithGoogle()">
         <ion-icon slot="start" name="logo-google"></ion-icon>
-        Continue with Google
+        Continuar con Google
       </ion-button>
     </div>
 
@@ -38,7 +38,7 @@
       <ion-icon slot="start" name="mail-outline" aria-hidden="true"></ion-icon>
     </ion-input>
 
-    <ion-input label="Password" label-placement="floating" fill="outline" type="password" class="ion-margin-bottom"
+    <ion-input label="Contraseña" label-placement="floating" fill="outline" type="password" class="ion-margin-bottom"
       [(ngModel)]="password"> <!-- capturamos el password -->
       <ion-icon slot="start" name="lock-closed-outline" aria-hidden="true"></ion-icon>
     </ion-input>
@@ -51,17 +51,17 @@
           --border-color-checked: var(--ion-color-primary);
         ">
         <p style="font-size: 0.85rem; white-space: normal; margin: 0; color: var(--ion-color-step-600);">
-          I would like to receive your newsletter and other promotional information.
+          Me gustaría suscribirme a su newsletter y recibir información sobre promociones.
         </p>
       </ion-checkbox>
     </ion-item>
 
     <ion-button expand="block" (click)="handleLogin()"> <!-- Cambié la función a handleLogin -->
-      Login
+      Iniciar sesión
     </ion-button>
 
     <div class="ion-text-center ion-margin-top">
-      <p>Don't you have an account? <a (click)="goToSignUp()" style="cursor: pointer;"> Register</a></p>
+      <p>¿Aún no tienes cuenta? <a (click)="goToSignUp()" style="cursor: pointer;"> Registrate</a></p>
     </div>
 
   </div>

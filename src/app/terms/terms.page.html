@@ -1,6 +1,6 @@
 <ion-header class="ion-no-border ion-padding">
   <ion-toolbar color="transparent">
-    <ion-title class="ion-text-center">Terms and Conditions for Byte && Bite</ion-title>
+    <ion-title class="ion-text-center">Términos y condiciones de Byte && Bite</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="dismiss(false)">
         <ion-icon name="close">
@@ -13,50 +13,55 @@
 
 <ion-content class="ion-padding">
   <div class="terms-text">
-    <p>Last Updated: May 11, 2026</p>
+    <p>[Última actualización]: 26 de Mayo del 2026</p>
 
-    <p>Welcome to https://www.byteandbite.com</p>
+    <p>Bienvenido/a a https://www.byteandbite.com</p>
 
-    <p>These terms and conditions outline the rules and regulations for the use of Byte && Bite's Website, located at
-      https://www.byteandbite.com.
+    <p>Estos términos y condiciones describen las normas y reglamentos para el uso del sitio web de Byte && Bite,
+      ubicado en https://www.byteandbite.com.
 
-      By accessing this website we assume you accept these terms and conditions. Do not continue to use
-      https://www.byteandbite.com if you do not agree to take all of the terms and conditions stated on this page.</p>
+      Al acceder a este sitio web, asumimos que aceptas estos términos y condiciones. No continúes utilizando
+      https://www.byteandbite.com si no estás de acuerdo con todos los términos y condiciones establecidos en esta
+      página.</p>
 
-    <h4>1. Introduction</h4>
-    <p>The following terminology applies to these Terms and Conditions, Privacy Statement and Disclaimer Notice and all
-      Agreements: "Client", "You" and "Your" refers to you, the person log on this website and compliant to the
-      Company's terms and conditions. "Byte && Bite", "Ourselves", "We", "Our" and "Us", refers to our Company.</p>
+    <h4>1. Introducción</h4>
+    <p>La siguiente terminología se aplica a estos Términos y Condiciones, Declaración de Privacidad y Aviso de Exención
+      de Responsabilidad, así como a todos los Acuerdos: "Cliente", "Usted" y "Su" se refieren a usted, la persona que
+      accede a este sitio web y acepta los términos y condiciones de la Compañía. "Byte && Bite", "Nosotros mismos",
+      "Nosotros", "Nuestro" y "Nos" se refieren a nuestra Compañía.</p>
 
-    <h4>2. License</h4>
-    <p>Unless otherwise stated, Byte && Bite and/or its licensors own the intellectual property rights for all material
-      on https://www.byteandbite.com. All intellectual property rights are reserved. You may access this from
-      https://www.byteandbite.com for your own personal use subjected to restrictions set in these terms and conditions.
+    <h4>2. Licencia</h4>
+    <p>A menos que se indique lo contrario, Byte && Bite y/o sus licenciantes poseen los derechos de propiedad
+      intelectual de todo el material en https://www.byteandbite.com. Todos los derechos de propiedad intelectual están
+      reservados. Puedes acceder a este material desde https://www.byteandbite.com para tu uso personal, sujeto a las
+      restricciones establecidas en estos términos y condiciones.
 
-      You must not:
-      - Republish material from https://www.byteandbite.com
-      - Sell, rent or sub-license material from https://www.byteandbite.com
-      - Reproduce, duplicate or copy material from https://www.byteandbite.com
-      - Redistribute content from Byte && Bite
+      No debes:
+
+      - Republicar material de https://www.byteandbite.com
+      - Vender, alquilar o sublicenciar material de https://www.byteandbite.com
+      - Reproducir, duplicar o copiar material de https://www.byteandbite.com
+      - Redistribuir contenido de Byte && Bite
     </p>
 
-    <h4>3. User Comments</h4>
-    <p>Parts of this website offer an opportunity for users to post and exchange opinions and information. Byte && Bite
-      does not filter, edit, publish or review Comments prior to their presence on the website. Comments do not reflect
-      the views and opinions of Byte && Bite, its agents and/or affiliates. To the extent permitted by applicable laws,
-      Byte && Bite shall not be liable for the Comments or for any liability, damages or expenses caused and/or suffered
-      as a result of any use of and/or posting of and/or appearance of the Comments on this website.
+    <h4>3. Comentarios de usuario</h4>
+    <p>Partes de este sitio web ofrecen a los usuarios la oportunidad de publicar e intercambiar opiniones e
+      información. Byte && Bite no filtra, edita, publica ni revisa los Comentarios antes de su presencia en el sitio
+      web. Los Comentarios no reflejan los puntos de vista y opiniones de Byte && Bite, sus agentes y/o afiliados. En la
+      medida en que lo permitan las leyes aplicables, Byte && Bite no será responsable de los Comentarios ni de ninguna
+      responsabilidad, daño o gasto causado y/o sufrido como resultado de cualquier uso de, publicación de y/o aparición
+      de los Comentarios en este sitio web.
     </p>
 
-    <h4>4. Governing Law</h4>
-    <p>These terms will be governed by and interpreted in accordance with the laws of the State of Argentina, CABA, and
-      you submit to the non-exclusive jurisdiction of the state and federal courts located in Argentina, CABA for the
-      resolution of any disputes.
+    <h4>4. Leyes aplicables</h4>
+    <p>Estos términos se regirán e interpretarán de acuerdo con las leyes de la República Argentina, CABA, y usted se
+      somete a la jurisdicción no exclusiva de los tribunales estatales y federales ubicados en Argentina, CABA para la
+      resolución de cualquier disputa.
     </p>
 
-    <h4>5. Contact Information</h4>
+    <h4>5. Información de contácto</h4>
     <p>
-      If you have any queries regarding any of our terms, please contact us at hr@byteandbite.com.
+      Si tiene alguna duda sobre cualquiera de nuestros términos, por favor contáctenos a través de hr@byteandbite.com
     </p>
   </div>
 </ion-content>
@@ -65,23 +70,16 @@
   <ion-toolbar>
     <div class="ion-padding">
       <ion-item lines="none">
-        <ion-checkbox 
-        slot="start" 
-        [(ngModel)]="isAccepted">
-      </ion-checkbox>
-        <ion-label 
-        class="ion-text-wrap">
-        I have read and agree to the Terms and Conditions.
-      </ion-label>
-    </ion-item>
+        <ion-checkbox slot="start" [(ngModel)]="isAccepted">
+        </ion-checkbox>
+        <ion-label class="ion-text-wrap">
+         He leído y estoy de acuerdo con los términos y condiciones presentados.
+        </ion-label>
+      </ion-item>
 
-      <ion-button 
-      expand="block" 
-      [disabled]="!isAccepted" 
-      (click)="dismiss(true)"
-      style="--padding-top: 15px; --padding-bottom: 15px";
-      >
-        Accept and Continue
+      <ion-button expand="block" [disabled]="!isAccepted" (click)="dismiss(true)"
+        style="--padding-top: 15px; --padding-bottom: 15px" ;>
+        Aceptar y continuar
       </ion-button>
     </div>
   </ion-toolbar>

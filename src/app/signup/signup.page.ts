@@ -59,7 +59,7 @@ export class SignupPage implements OnInit {
       await loading.dismiss();
 
       if (nextStep.signUpStep === 'CONFIRM_SIGN_UP') {
-        this.presentAlert('¡Casi listo!', 'Revisa tu email real. Te enviamos un código de confirmación.');
+        this.presentAlert('¡Casi listo!', 'Revisa tu email. Te enviamos un código de confirmación.');
         // acá podemos ir a una página de verificación o a la consola de aws
       }
 
