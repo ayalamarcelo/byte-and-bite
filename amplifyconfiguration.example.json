@@ -1,0 +1,14 @@
+{
+  "Auth": {
+    "Cognito": {
+      "userPoolId": "",
+      "userPoolClientId": "",
+      "identityPoolId": "",
+      "allowGuestAccess": true,
+      "signUpVerificationMethod": "code",
+      "loginWith": {
+        "email": true
+      }
+    }
+  }
+}

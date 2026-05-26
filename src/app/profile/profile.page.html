@@ -1,0 +1,171 @@
+<ion-content [fullscreen]="true" class="ion-padding background-custom">
+  
+  <!-- buttons -->
+  <div class="ion-no-border">
+    <ion-toolbar mode="md">
+      <ion-buttons slot="start">
+        <!-- retorna a la home -->
+        <ion-button fill="clear" routerLink="/tabs/home" class="home-btn">
+          <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </div>
+
+  <!-- Componente de Perfil-->
+  <div class="cointainer">
+    <div class="profile-card-container">
+      <div class="ion-margin-bottom ion-justify-content-center" style="display: flex;">
+        <ion-avatar class="avatar"
+          style="width: 120px; height: 120px; background: var(--ion-color-light); display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+          <img src="../../assets/images/avatar-user.png" />
+        </ion-avatar>
+      </div>
+
+      <ion-card class="main-card">
+        <ion-card-content class="ion-text-center">
+          <h2 class="user-name">Alberto Acosta</h2>
+          <ion-button
+          (click)="handleLogout()" 
+          fill="clear" 
+          color="success" 
+          size="small" 
+          class="logout-btn">
+            Cerrar sesión
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+
+  <!-- Bloque: Datos Personales -->
+  <ion-card class="data-card">
+    <ion-card-header>
+      <ion-card-title>DATOS PERSONALES</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <!-- Campo Edad -->
+      <ion-item lines="full">
+        <ion-label>
+          <p>Edad</p>
+          <h3>{{edad}} años</h3>
+        </ion-label>
+       <ion-button slot="end" fill="clear" color="medium" (click)="openEditModal('edad')">
+          <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+
+      <!-- Campo Peso -->
+ <ion-item lines="full">
+        <ion-label>
+          <p>Peso</p>
+          <h3>{{peso}} kg</h3>
+        </ion-label>
+        <ion-button slot="end" fill="clear" color="medium" (click)="openEditModal('peso')">
+          <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+
+      <!-- Campo Altura -->
+      <ion-item lines="none">
+        <ion-label>
+          <p>Altura</p>
+          <h3>{{altura}} m</h3>
+        </ion-label>
+         <ion-button slot="end" fill="clear" color="medium" (click)="openEditModal('altura')">
+          <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Bloque: Cuenta -->
+  <ion-card class="data-card">
+    <ion-card-header>
+      <ion-card-title>CUENTA</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item lines="full">
+        <ion-label>
+          <p>Email</p>
+          <h3>usuario@ejemplo.com</h3>
+        </ion-label>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>
+          <p>Contraseña</p>
+          <h3>{{contrasena}}</h3>
+        </ion-label>
+        <ion-button slot="end" fill="clear" color="medium" (click)="openEditModal('contrasena')">
+          <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Bloque: Notificaciones -->
+  <ion-card class="data-card">
+    <ion-card-header>
+      <ion-card-title>NOTIFICACIONES</ion-card-title>
+    </ion-card-header>
+
+     <ion-card class="info-card">
+      <div class="datos">
+        <h3 class="card-title">NOTIFICACIONES</h3>
+
+        <div class="info-row">
+          <div class="label-with-icon">
+            <ion-icon [name]="recordatoriosActivos ? 'notifications' : 'notifications-off'" size="large"></ion-icon>
+            <span>Recordatorios de comida</span>
+          </div>
+          <ion-toggle [(ngModel)]="recordatoriosActivos" (ionChange)="onToggleChange('recordatorios')"></ion-toggle>
+        </div> 
+
+        <div class="info-row">
+          <div class="label-with-icon">
+            <ion-icon [name]="alertasActivas ? 'notifications' : 'notifications-off'" size="large"></ion-icon>
+            <span>Alertas</span>
+          </div>
+          <ion-toggle [(ngModel)]="alertasActivas" (ionChange)="onToggleChange('alertas')"></ion-toggle>
+        </div>
+
+      </div>
+    </ion-card>
+
+  <!-- Bloque: Dispositivos -->
+  <ion-card class="data-card">
+    <ion-card-header>
+      <ion-card-title>DISPOSITIVOS CONECTADOS</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item lines="full">
+        <ion-label>Reloj inteligente</ion-label>
+        <ion-text slot="end" color="primary"><b>Vincular</b></ion-text>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>Smartphone</ion-label>
+        <ion-text slot="end" color="primary"><b>Vincular</b></ion-text>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Modal para editar los campos -->
+  <ion-modal [isOpen]="isModalOpen" (didDismiss)="isModalOpen = false" [initialBreakpoint]="0.4" [breakpoints]="[0, 0.4]">
+  <ng-template>
+    <ion-content class="ion-padding">
+      <div style="margin-top: 20px;">
+        <h2 style="text-transform: capitalize;">Tu {{ campoEditando }}</h2>
+        
+        <ion-item lines="outline" style="--border-radius: 10px; margin-top: 20px;">
+          <!-- <ion-label position="stacked">Nuevo valor</ion-label> -->
+          <ion-input type="number" [(ngModel)]="valorTemporal"></ion-input>
+        </ion-item>
+
+        <ion-button expand="block" color="success" style="margin-top: 30px;" (click)="saveChanges()">
+          Confirmar
+        </ion-button>
+      </div>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
