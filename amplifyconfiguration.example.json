@@ -1,13 +1,20 @@
 {
   "Auth": {
     "Cognito": {
-      "userPoolId": "",
-      "userPoolClientId": "",
-      "identityPoolId": "",
+      "userPoolId": "tu-user-pool-id",
+      "userPoolClientId": "tu-app-client-id",
+      "identityPoolId": "tu-identity-pool-id",
       "allowGuestAccess": true,
       "signUpVerificationMethod": "code",
       "loginWith": {
-        "email": true
+        "email": true,
+        "oauth": {
+          "domain": "",
+          "scopes": "",
+          "redirectSignIn": "",
+          "redirectSignOut": "",
+          "responseType": ""
+        }
       }
     }
   }

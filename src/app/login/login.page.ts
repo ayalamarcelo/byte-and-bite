@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { signIn } from 'aws-amplify/auth';
 import { AlertController, LoadingController, ModalController } from '@ionic/angular';
 import { ConfirmSignupPage } from '../confirm-signup/confirm-signup.page';
+import { signInWithRedirect } from 'aws-amplify/auth';
 
 @Component({
   selector: 'app-login',
@@ -27,19 +28,14 @@ export class LoginPage implements OnInit {
 
   async continueWithGoogle() {
     try {
-      // acá va el await signInWithRedirect({ provider: 'Google' });
-      // por ahora, simulamos la espera y lanzamos el aviso
-      console.log('Starting with Google...');
-
-      // lanzamos mensaje informativo
-      this.presentAlert(
-        'Coming soon',
-        'Google Sign-In will be available after configuring the credentials in the Google Cloud Console.'
-      );
-
+      // Al ejecutar esta función, Amplify abrirá el navegador del sistema
+      // hacia la URL de login de Cognito 
+      await signInWithRedirect({
+        provider: 'Google'
+      });
     } catch (error: any) {
-      console.error('Google Login Error:', error);
-      this.presentAlert('Error', 'Could not connect to Google at this time.');
+      console.error('Error al iniciar sesión con Google:', error);
+      this.presentAlert('Error', 'No se pudo conectar con Google en este momento.');
     }
   }
 
