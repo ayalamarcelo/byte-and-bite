@@ -1,24 +1,116 @@
+<!-- SEARCH -->
 <ion-content class="ion-padding">
-  <ion-searchbar 
-    placeholder="Buscar alimento" 
-    [(ngModel)]="query" 
-    (ionInput)="onSearchChange($event)" 
-    debounce="800"
-    show-clear-button="focus">
+  <ion-searchbar placeholder="Buscar alimento" [(ngModel)]="query" (ionInput)="onSearchChange($event)" debounce="800"
+    show-clear-button="always" clear-icon="trash-bin" value="Custom Clear Icon">
   </ion-searchbar>
 
-  <ion-list 
-    *ngIf="resultadosBusqueda.length > 0" 
-     class="search-dropdown">
-    <ion-item 
-     *ngFor="let item of resultadosBusqueda.slice(0,5)" 
-      button (click)="seleccionarAlimento(item)">
+  <!-- DROPDOWN DEL SEARCH -->
+  <ion-list *ngIf="resultadosBusqueda.length > 0" class="search-dropdown">
+    <ion-item *ngFor="let item of resultadosBusqueda.slice(0,5)" button (click)="seleccionarAlimento(item)">
       <ion-label>
         {{ item.food.label }}
       </ion-label>
     </ion-item>
   </ion-list>
 
+  <!-- LISTA DE ITEMS -->
+  <p style="font-size: 18px;" class="ion-paddings">Recientes</p>
+  <hr style="border: 0; border-top: 0.5px solid #5c5d61; margin: 10px 0;">
+  <ion-item>
+    <ion-thumbnail slot="start">
+      <img src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+    </ion-thumbnail>
+
+    <ion-label>
+      <h2>item.food.label</h2>
+      <p> item.food.nutrients?.ENERC_KCAL | number:'1.0-0' kcal</p>
+    </ion-label>
+
+    <div slot="end" class="ion-no-margin">
+      <ion-button fill="clear" color="medium">
+        <ion-icon name="add-outline" mode="md"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" color="medium">
+        <ion-icon name="bookmark-outline" mode="md"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" color="medium">
+        <ion-icon name="trash-outline" mode="md"></ion-icon>
+      </ion-button>
+    </div>
+  </ion-item>
+
+  <!-- CARD Publicitaria -->
+
+  <ion-card class="native-promo-card">
+    <ion-card-content class="ion-no-padding">
+      <ion-grid class="ion-padding">
+        <ion-row class="ion-align-items-center">
+          <ion-col size="4">
+            <div class="image-wrapper">
+              <img src="assets/images/palta.png" alt="Palta" />
+            </div>
+          </ion-col>
+
+          <ion-col size="8">
+            <div class="text-wrapper">
+              <ion-card-title>Tip del día</ion-card-title>
+              <p>Aprovecha los beneficios de la palta. Rica en grasas saludables y deliciosa.</p>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- CONTADOR CALORIAS -->
+  <p style="font-size: 18px;">Contador</p>
+  <hr style="border: 0; border-top: 0.5px solid #5c5d61; margin: 10px 0;">
+
+  <ion-card>
+  <ion-card-content>
+    <ion-item lines="none">
+      <ion-thumbnail slot="start">
+        <img alt="Alimento" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+      </ion-thumbnail>
+      
+      <ion-label>
+        <h2>Nombre del Alimento</h2>
+        <p>Cantidad: 100g</p>
+      </ion-label>
+      
+      <ion-note slot="end" color="primary">
+        <strong style="font-size: 16px;">150 kcal</strong>
+      </ion-note>
+    </ion-item>
+
+    <hr />
+
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6">
+          <div class="label-text">GRAMOS</div>
+          <ion-input placeholder="0" type="number" class="custom-input"></ion-input>
+        </ion-col>
+        <ion-col size="6" class="ion-text-right">
+          <div class="label-text">TOTAL</div>
+          <div class="total-value">0 kcal</div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <div class="summary-footer">
+      <p>Total calorías consumidas:</p>
+      <h3>550 kcal</h3>
+    </div>
+
+    <ion-button expand="block" fill="solid" class="ion-margin-top">
+      Agregar
+    </ion-button>
+  </ion-card-content>
+</ion-card>
+
+  <!-- 
+  <h4>Resultados Busqueda</h4>
   <ion-card class="food-card-wrapper" *ngIf="alimentoSeleccionado">
     <ion-card-content>
 
@@ -107,5 +199,5 @@
         </ion-label>
       </ion-item>
     </ion-card-content>
-  </ion-card>
+  </ion-card>-->
 </ion-content>
