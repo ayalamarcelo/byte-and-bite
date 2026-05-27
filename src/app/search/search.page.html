@@ -1,177 +1,111 @@
 <ion-content class="ion-padding">
-  <ion-header class="ion-no-border">
-    <ion-toolbar class="transparent-toolbar">
+  <ion-searchbar 
+    placeholder="Buscar alimento" 
+    [(ngModel)]="query" 
+    (ionInput)="onSearchChange($event)" 
+    debounce="800"
+    show-clear-button="focus">
+  </ion-searchbar>
 
-      <ion-button slot="start" fill="clear">
-        <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+  <ion-list 
+    *ngIf="resultadosBusqueda.length > 0" 
+     class="search-dropdown">
+    <ion-item 
+     *ngFor="let item of resultadosBusqueda.slice(0,5)" 
+      button (click)="seleccionarAlimento(item)">
+      <ion-label>
+        {{ item.food.label }}
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-card class="food-card-wrapper" *ngIf="alimentoSeleccionado">
+    <ion-card-content>
+
+      <ion-item lines="none">
+        <ion-thumbnail 
+         slot="start" 
+         style="--size: 70px;">
+          <img [src]="alimentoSeleccionado.image || defaultImage" (error)="onImgError($event)" />
+        </ion-thumbnail>
+        <ion-label>
+          <h2>{{ alimentoSeleccionado.label }}</h2>
+          <p><strong>{{ alimentoSeleccionado.nutrients?.ENERC_KCAL | number:'1.0-0' }} kcal</strong></p>
+        </ion-label>
+
+        <div slot="end" class="food-action-container">
+          <ion-button fill="clear" class="add-button" (click)="agregarAlimentoManual()">
+            <ion-icon name="add"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" class="btn-fav">
+            <ion-icon name="bookmark-outline"></ion-icon>
+          </ion-button>
+        </div>
+      </ion-item>
+
+      <ion-accordion-group class="info-header">
+        <ion-accordion value="nutrients">
+          <ion-item slot="header" lines="none" class="info-header">
+            <ion-label class="ion-text-center"><small>Ver detalles nutricionales</small></ion-label>
+          </ion-item>
+          <div slot="content" class="ion-padding">
+            <ion-grid>
+              <ion-row>
+                <ion-col>Proteína</ion-col>
+                <ion-col>{{ alimentoSeleccionado.nutrients?.PROCNT | number:'1.0-1' }} g</ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>Grasa</ion-col>
+                <ion-col>{{ alimentoSeleccionado.nutrients?.FAT | number:'1.0-1' }} g</ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>Carbs</ion-col>
+                <ion-col>{{ alimentoSeleccionado.nutrients?.CHOCDF | number:'1.0-1' }} g</ion-col>
+              </ion-row>
+            </ion-grid>
+          </div>
+        </ion-accordion>
+      </ion-accordion-group>
+
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="alimentoSeleccionado">
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-thumbnail slot="start">
+          <img [src]="alimentoSeleccionado.image || defaultImage" />
+        </ion-thumbnail>
+        <ion-label>
+          <h2>{{ alimentoSeleccionado.label }}</h2>
+          <p>Configurar cantidad</p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Cantidad (gramos)</ion-label>
+        <ion-input type="number" [(ngModel)]="cantidad" placeholder="Ej: 100"></ion-input>
+      </ion-item>
+      <ion-button expand="block" (click)="agregarAlimentoManual()" [disabled]="!alimentoSeleccionado"
+        style="margin-top: 15px;">
+        Agregar
       </ion-button>
+    </ion-card-content>
+  </ion-card>
 
-      <ion-searchbar placeholder="Buscar alimento" mode="md" fill="clear">
-      </ion-searchbar>
+  <ion-segment [(ngModel)]="tipoComida">
+    <ion-segment-button value="desayuno">Desayuno</ion-segment-button>
+    <ion-segment-button value="almuerzo">Almuerzo</ion-segment-button>
+    <ion-segment-button value="cena">Cena</ion-segment-button>
+  </ion-segment>
 
-    </ion-toolbar>
-  </ion-header>
-
-  <div class="main-container">
-
-    <h3 class="section-title">Recientes</h3>
-
-    <div class="food-card">
-      <div class="food-info">
-        <ion-thumbnail>
-          <img src="https://ionicframework.com/docs/img/demos/thumbnail.svg" alt="Aguacate" class="food-image">
-        </ion-thumbnail>
-
-        <div class="food-text">
-          <span class="food-name">Aguacate</span>
-          <span class="food-portion">Porcion: 1 und</span>
-        </div>
-      </div>
-      <div class="food-action">
-        <span class="food-calories">120 Kcal</span>
-        <ion-button class="add-button">
-          <ion-icon name="add"></ion-icon>
-        </ion-button>
-        <ion-button class="circle-btn btn-fav">
-          <ion-icon name="bookmark-outline"></ion-icon>
-        </ion-button>
-      </div>
-    </div>
-
-    <div class="food-card">
-      <div class="food-info">
-        <ion-thumbnail>
-          <img src="https://ionicframework.com/docs/img/demos/thumbnail.svg" alt="Manzana" class="food-image">
-        </ion-thumbnail>
-
-        <div class="food-text">
-          <span class="food-name">Manzana</span>
-          <span class="food-portion">Porcion: 1 und</span>
-        </div>
-      </div>
-      <div class="food-action">
-        <span class="food-calories">120 Kcal</span>
-        <ion-button class="add-button">
-          <ion-icon name="add"></ion-icon>
-        </ion-button>
-        <ion-button class="circle-btn btn-fav">
-          <ion-icon name="bookmark-outline"></ion-icon>
-        </ion-button>
-      </div>
-    </div>
-
-    <h3 class="section-title">Resultado De Búsqueda</h3>
-
-    <div class="search-result-card">
-      <span class="food-name">Tomate</span>
-      <div class="search-action">
-        <ion-button class="add-text-button">Agregar</ion-button>
-        <ion-button class="circle-btn btn-fav">
-          <ion-icon name="bookmark-outline"></ion-icon>
-        </ion-button>
-      </div>
-    </div>
-
-    <div class="search-result-card">
-      <span class="food-name">Pechuga de pollo</span>
-      <div class="search-action">
-        <ion-button class="add-text-button">Agregar</ion-button>
-        <ion-button class="circle-btn btn-fav">
-          <ion-icon name="bookmark-outline"></ion-icon>
-        </ion-button>
-      </div>
-    </div>
-  </div>
+  <ion-card *ngIf="comidas[tipoComida]?.length > 0">
+    <ion-card-content>
+      <ion-item *ngFor="let item of comidas[tipoComida]">
+        <ion-label>
+          <h3>{{ item.nombre }}</h3>
+          <p>{{ item.cantidad }}g · {{ item.calorias | number:'1.0-0' }} kcal</p>
+        </ion-label>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
-
-<ion-footer class="ion-no-border">
-  <ion-button id="open-cart" expand="block">Ver Carrito (3)</ion-button>
-
-<ion-modal trigger="open-cart" [initialBreakpoint]="0.5" [breakpoints]="[0, 0.5]">
-    <ng-template>
-      <div class="floating-cart-card">
-        <div class="cart-header">
-          <h3>Alimentos a añadir (3)</h3>
-        </div>
-
-        <div class="cart-items-container">
-
-          <div class="cart-item">
-            <div class="item-details">
-              <ion-thumbnail class="item-img">
-                <img src="https://ionicframework.com/docs/img/demos/thumbnail.svg" alt="Pollo">
-              </ion-thumbnail>
-              <div class="item-texts">
-                <span class="item-name">Pechuga de pollo</span>
-                <span class="item-kcal">120 kcal</span>
-              </div>
-            </div>
-
-            <div class="item-actions">
-              <div class="gram-input-box">
-                <input type="number" placeholder="100" class="input-raw">
-                <span class="gram-label">g</span>
-              </div>
-              <ion-button class="btn-delete">
-                <ion-icon name="trash-outline"></ion-icon>
-              </ion-button>
-            </div>
-          </div>
-
-          <div class="cart-item">
-            <div class="item-details">
-              <ion-thumbnail class="item-img">
-                <img src="https://ionicframework.com/docs/img/demos/thumbnail.svg" alt="Aguacate">
-              </ion-thumbnail>
-              <div class="item-texts">
-                <span class="item-name">Aguacate</span>
-                <span class="item-kcal">160 kcal</span>
-              </div>
-            </div>
-
-            <div class="item-actions">
-              <div class="gram-input-box">
-                <input type="number" placeholder="50" class="input-raw">
-                <span class="gram-label">g</span>
-              </div>
-              <ion-button class="btn-delete">
-                <ion-icon name="trash-outline"></ion-icon>
-              </ion-button>
-            </div>
-          </div>
-
-          <div class="cart-item">
-            <div class="item-details">
-              <ion-thumbnail class="item-img">
-                <img src="https://ionicframework.com/docs/img/demos/thumbnail.svg" alt="Aguacate">
-              </ion-thumbnail>
-              <div class="item-texts">
-                <span class="item-name">Aguacate</span>
-                <span class="item-kcal">160 kcal</span>
-              </div>
-            </div>
-
-            <div class="item-actions">
-              <div class="gram-input-box">
-                <input type="number" placeholder="50" class="input-raw">
-                <span class="gram-label">g</span>
-              </div>
-              <ion-button class="btn-delete">
-                <ion-icon name="trash-outline"></ion-icon>
-              </ion-button>
-            </div>
-          </div>
-        </div>
-
-        <div class="cart-total-container">
-          <span class="total-label">Total:</span>
-          <span class="total-value">400 kcal</span>
-        </div>
-
-        <ion-button class="btn-submit-cart">
-          Añadir Alimentos
-        </ion-button>
-      </div>
-    </ng-template>
-  </ion-modal>
-</ion-footer>
