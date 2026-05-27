@@ -10,7 +10,7 @@ import { TermsPage } from '../terms/terms.page';
 })
 export class WelcomePage implements OnInit {
   
-  // podemos guardar en localstorage después
+  // podemos guardar en localstorage después hay que guardarlo en cognito
   userHasAgreed: boolean = false;
 
   constructor(
@@ -20,6 +20,7 @@ export class WelcomePage implements OnInit {
 
   ngOnInit() {}
 
+  // Abre el modal de terminos y condiciones
   async presentTermsModal() {
   const modal = await this.modalCtrl.create({
     component: TermsPage,
@@ -38,6 +39,7 @@ export class WelcomePage implements OnInit {
     }
 }
 
+// valida y pasa a login
   validateAndGo() {
     if (this.userHasAgreed) {
       this.navCtrl.navigateForward('/login');

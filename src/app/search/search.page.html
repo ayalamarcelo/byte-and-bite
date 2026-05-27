@@ -67,137 +67,45 @@
   <hr style="border: 0; border-top: 0.5px solid #5c5d61; margin: 10px 0;">
 
   <ion-card>
-  <ion-card-content>
-    <ion-item lines="none">
-      <ion-thumbnail slot="start">
-        <img alt="Alimento" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
-      </ion-thumbnail>
-      
-      <ion-label>
-        <h2>Nombre del Alimento</h2>
-        <p>Cantidad: 100g</p>
-      </ion-label>
-      
-      <ion-note slot="end" color="primary">
-        <strong style="font-size: 16px;">150 kcal</strong>
-      </ion-note>
-    </ion-item>
-
-    <hr />
-
-    <ion-grid>
-      <ion-row>
-        <ion-col size="6">
-          <div class="label-text">GRAMOS</div>
-          <ion-input placeholder="0" type="number" class="custom-input"></ion-input>
-        </ion-col>
-        <ion-col size="6" class="ion-text-right">
-          <div class="label-text">TOTAL</div>
-          <div class="total-value">0 kcal</div>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-
-    <div class="summary-footer">
-      <p>Total calorías consumidas:</p>
-      <h3>550 kcal</h3>
-    </div>
-
-    <ion-button expand="block" fill="solid" class="ion-margin-top">
-      Agregar
-    </ion-button>
-  </ion-card-content>
-</ion-card>
-
-  <!-- 
-  <h4>Resultados Busqueda</h4>
-  <ion-card class="food-card-wrapper" *ngIf="alimentoSeleccionado">
-    <ion-card-content>
-
-      <ion-item lines="none">
-        <ion-thumbnail 
-         slot="start" 
-         style="--size: 70px;">
-          <img [src]="alimentoSeleccionado.image || defaultImage" (error)="onImgError($event)" />
-        </ion-thumbnail>
-        <ion-label>
-          <h2>{{ alimentoSeleccionado.label }}</h2>
-          <p><strong>{{ alimentoSeleccionado.nutrients?.ENERC_KCAL | number:'1.0-0' }} kcal</strong></p>
-        </ion-label>
-
-        <div slot="end" class="food-action-container">
-          <ion-button fill="clear" class="add-button" (click)="agregarAlimentoManual()">
-            <ion-icon name="add"></ion-icon>
-          </ion-button>
-          <ion-button fill="clear" class="btn-fav">
-            <ion-icon name="bookmark-outline"></ion-icon>
-          </ion-button>
-        </div>
-      </ion-item>
-
-      <ion-accordion-group class="info-header">
-        <ion-accordion value="nutrients">
-          <ion-item slot="header" lines="none" class="info-header">
-            <ion-label class="ion-text-center"><small>Ver detalles nutricionales</small></ion-label>
-          </ion-item>
-          <div slot="content" class="ion-padding">
-            <ion-grid>
-              <ion-row>
-                <ion-col>Proteína</ion-col>
-                <ion-col>{{ alimentoSeleccionado.nutrients?.PROCNT | number:'1.0-1' }} g</ion-col>
-              </ion-row>
-              <ion-row>
-                <ion-col>Grasa</ion-col>
-                <ion-col>{{ alimentoSeleccionado.nutrients?.FAT | number:'1.0-1' }} g</ion-col>
-              </ion-row>
-              <ion-row>
-                <ion-col>Carbs</ion-col>
-                <ion-col>{{ alimentoSeleccionado.nutrients?.CHOCDF | number:'1.0-1' }} g</ion-col>
-              </ion-row>
-            </ion-grid>
-          </div>
-        </ion-accordion>
-      </ion-accordion-group>
-
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card *ngIf="alimentoSeleccionado">
     <ion-card-content>
       <ion-item lines="none">
         <ion-thumbnail slot="start">
-          <img [src]="alimentoSeleccionado.image || defaultImage" />
+          <img alt="Alimento" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
         </ion-thumbnail>
+
         <ion-label>
-          <h2>{{ alimentoSeleccionado.label }}</h2>
-          <p>Configurar cantidad</p>
+          <h2>Nombre del Alimento</h2>
+          <p>Cantidad: 100g</p>
         </ion-label>
+
+        <ion-note slot="end" color="primary">
+          <strong style="font-size: 16px;">150 kcal</strong>
+        </ion-note>
       </ion-item>
-      <ion-item>
-        <ion-label position="stacked">Cantidad (gramos)</ion-label>
-        <ion-input type="number" [(ngModel)]="cantidad" placeholder="Ej: 100"></ion-input>
-      </ion-item>
-      <ion-button expand="block" (click)="agregarAlimentoManual()" [disabled]="!alimentoSeleccionado"
-        style="margin-top: 15px;">
+
+      <hr />
+
+      <ion-grid>
+        <ion-row>
+          <ion-col size="6">
+            <div class="label-text">GRAMOS</div>
+            <ion-input placeholder="0" type="number" class="custom-input"></ion-input>
+          </ion-col>
+          <ion-col size="6" class="ion-text-right">
+            <div class="label-text">TOTAL</div>
+            <div class="total-value">0 kcal</div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <div class="summary-footer">
+        <p>Total calorías consumidas:</p>
+        <h3>550 kcal</h3>
+      </div>
+
+      <ion-button expand="block" fill="solid" class="ion-margin-top">
         Agregar
       </ion-button>
     </ion-card-content>
   </ion-card>
-
-  <ion-segment [(ngModel)]="tipoComida">
-    <ion-segment-button value="desayuno">Desayuno</ion-segment-button>
-    <ion-segment-button value="almuerzo">Almuerzo</ion-segment-button>
-    <ion-segment-button value="cena">Cena</ion-segment-button>
-  </ion-segment>
-
-  <ion-card *ngIf="comidas[tipoComida]?.length > 0">
-    <ion-card-content>
-      <ion-item *ngFor="let item of comidas[tipoComida]">
-        <ion-label>
-          <h3>{{ item.nombre }}</h3>
-          <p>{{ item.cantidad }}g · {{ item.calorias | number:'1.0-0' }} kcal</p>
-        </ion-label>
-      </ion-item>
-    </ion-card-content>
-  </ion-card>-->
 </ion-content>
