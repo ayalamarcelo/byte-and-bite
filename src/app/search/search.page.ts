@@ -60,6 +60,12 @@ export class SearchPage implements OnInit {
 
   // eliminar de la lista de recientes
   eliminarReciente(item: any) {
-    this.listaRecientes = this.listaRecientes.filter(i => i !== item);
+    // 1. Filtramos el array para quitar el elemento seleccionado
+    this.listaRecientes = this.listaRecientes.filter(
+      i => i.food.foodId !== item.food.foodId
+    );
+
+    // 2. Sincronizamos el localStorage con el nuevo array
+    localStorage.setItem('recientes', JSON.stringify(this.listaRecientes));
   }
 }
