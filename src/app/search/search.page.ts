@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
 import { EdamamService } from '../services/edamam.service';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-search',
@@ -13,59 +14,106 @@ export class SearchPage implements OnInit {
   resultadosBusqueda: any[] = [];
   alimentoSeleccionado: any = null;
   listaRecientes: any[] = [];
-  historial: { nombre: string, favorito: boolean }[] = [];
+  listaConsumo: any[] = [];
+  alimentoParaEditar: any = null;
+  isModalOpen = false;
+  isInfoModalOpen: boolean = false;
+  cache: { [key: string]: any } = {};
+  itemExpandido: any = null;
 
-  cantidad: number = 100;
-  private lastQuery = '';
-  defaultImage: string = 'https://ionicframework.com/docs/img/demos/card-media.png';
+  private searchSubject = new Subject<string>();
 
-  constructor(private edamamService: EdamamService) { }
+  constructor(private edamamService: EdamamService) {
+    this.searchSubject.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap(query => this.edamamService.buscarAlimento(query))
+    ).subscribe({
+      next: (respuesta: any) => this.resultadosBusqueda = respuesta?.hints || [],
+      error: (err) => console.error("Error en búsqueda:", err)
+    });
+  }
 
   ngOnInit() {
     const guardado = localStorage.getItem('ultimoAlimento');
-    if (guardado) {
-      this.alimentoSeleccionado = JSON.parse(guardado);
+    if (guardado) this.alimentoSeleccionado = JSON.parse(guardado);
+  }
+
+  onSearchChange(event: any) {
+    const valor = event.detail.value;
+    if (valor && valor.length >= 3) {
+      this.searchSubject.next(valor);
+    } else {
+      this.resultadosBusqueda = [];
     }
   }
 
-  async onSearchChange(event: any) {
-    const valor = event.detail.value;
-    if (!valor || valor.length < 3) {
-      this.resultadosBusqueda = [];
+  mostrarInfo(item: any) {
+
+    if (this.itemExpandido === item) {
+      this.itemExpandido = null;
       return;
     }
-    if (valor === this.lastQuery) return;
-    this.lastQuery = valor;
 
-    try {
-      const respuesta: any = await firstValueFrom(this.edamamService.buscarAlimento(valor));
-      this.resultadosBusqueda = respuesta?.hints || [];
-    } catch (error) {
-      console.error(error);
+    this.itemExpandido = item;
+
+    const cacheKey = item.food.label.toLowerCase();
+    if (this.cache[cacheKey]) {
+      this.alimentoSeleccionado = this.cache[cacheKey];
+      return;
     }
+
+    this.edamamService.getFoodDetails(item.food.label).subscribe({
+      next: (data: any) => {
+        if (data.hints && data.hints.length > 0) {
+          this.cache[cacheKey] = data.hints[0];
+          this.alimentoSeleccionado = data.hints[0];
+        }
+      }
+    });
+  }
+
+  // getter para mostrar en pantalla automáticamente
+  get totalCalorias(): number {
+    return this.calcularTotalCalorias();
+  }
+
+  // manual
+  calcularTotalCalorias(): number {
+    return this.listaConsumo.reduce((total, item) => {
+      const kcalBase = item.food.nutrients?.ENERC_KCAL || 0;
+      const porcion = item.cantidad || 100;
+      return total + (kcalBase * (porcion / 100));
+    }, 0);
   }
 
   seleccionarAlimento(item: any) {
-    // Agregar a la lista de recientes si no existe
     if (!this.listaRecientes.find(i => i.food.foodId === item.food.foodId)) {
-      this.listaRecientes.unshift(item); // Lo añade al principio
+      this.listaRecientes.unshift(item);
       localStorage.setItem('recientes', JSON.stringify(this.listaRecientes));
     }
-
-    // Limpiar el buscador, el dropdown y la query
     this.query = '';
     this.resultadosBusqueda = [];
-    this.lastQuery = '';
   }
 
-  // eliminar de la lista de recientes
-  eliminarReciente(item: any) {
-    // 1. Filtramos el array para quitar el elemento seleccionado
-    this.listaRecientes = this.listaRecientes.filter(
-      i => i.food.foodId !== item.food.foodId
-    );
+  agregarAContador(item: any) {
+    this.alimentoParaEditar = { ...item, cantidad: 100 };
+    this.isModalOpen = true;
+  }
 
-    // 2. Sincronizamos el localStorage con el nuevo array
+  confirmarSeleccion() {
+    this.listaConsumo.push(this.alimentoParaEditar);
+    this.isModalOpen = false;
+    this.alimentoParaEditar = null;
+  }
+
+  eliminarReciente(item: any) {
+    this.listaRecientes = this.listaRecientes.filter(i => i.food.foodId !== item.food.foodId);
     localStorage.setItem('recientes', JSON.stringify(this.listaRecientes));
+  }
+
+  // implementación de trackBy para evitar que Angular re-renderice toda la lista
+  trackByFn(index: number, item: any) {
+    return item.id || index;
   }
 }
