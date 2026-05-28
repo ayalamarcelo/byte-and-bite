@@ -3,6 +3,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { NutritionService } from '../services/nutrition';
 
 @Component({
   selector: 'app-home',
@@ -68,9 +69,15 @@ export class HomePage implements OnInit {
   this.router.navigate(['/tabs/profile']); 
 }
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private nutritionService: NutritionService) { }
 
   ngOnInit() {
-    this.generarCalendario();
+  this.generarCalendario();
+  this.nutritionService.alimentos$.subscribe(() => {
+    const p = this.nutritionService.getPorcentajes();
+    this.percentageFats = p.grasas;
+    this.proteinPercentage = p.proteinas;
+    this.percentageCarbo = p.carbohidratos;
+  });
   }
 }

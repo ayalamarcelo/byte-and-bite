@@ -2,17 +2,28 @@ import { Component, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
+import { NutritionService } from '../services/nutrition';
+  
 
 @Component({
   selector: 'app-bookmarks',
   templateUrl: './bookmarks.page.html',
   styleUrls: ['./bookmarks.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, RouterLink]
+  imports: [IonicModule, CommonModule, RouterLink, FormsModule]
 })
 export class BookmarksPage implements OnInit {
 
   filtroActivo: string = 'Todos';
+  busqueda: string = '';
+  resultadosBusqueda: any[] = [];
+  buscando: boolean = false;
+  private searchSubject = new Subject<string>();
 
   alimentos: any[] = [
     {
@@ -44,9 +55,60 @@ export class BookmarksPage implements OnInit {
     }
   ];
 
-  get alimentosFiltrados() {
+  constructor(private http: HttpClient, private nutritionService: NutritionService) {
+    this.searchSubject.pipe(
+      debounceTime(800),
+      distinctUntilChanged()
+    ).subscribe(query => {
+      this.hacerBusqueda(query);
+    });
+  }
+
+  ngOnInit() { }
+
+  buscar(evento: any) {
+    const query = evento.target.value;
+    this.busqueda = query;
+
+    if (!query || query.trim() === '') {
+      this.resultadosBusqueda = [];
+      return;
+    }
+
+    this.buscando = true;
+    this.searchSubject.next(query);
+  }
+
+  hacerBusqueda(query: string) {
+    const url = `${environment.edamam.baseUrl}?app_id=${environment.edamam.appId}&app_key=${environment.edamam.appKey}&ingr=${query}`;
+
+    this.http.get<any>(url).subscribe({
+      next: (data) => {
+        this.resultadosBusqueda = data.hints
+          .filter((item: any) =>
+            item.food.label.toLowerCase().includes(query.toLowerCase())
+          )
+          .map((item: any) => ({
+            nombre: item.food.label,
+            categoria: item.food.category || 'General',
+            kcal: Math.round(item.food.nutrients?.ENERC_KCAL || 0),
+            gramos: 100,
+            img: item.food.image || 'https://via.placeholder.com/400x200',
+            menuAbierto: false,
+            gramosSeleccionados: 0
+          }));
+        this.buscando = false;
+      },
+      error: () => {
+        this.buscando = false;
+      }
+    });
+  }
+
+  get alimentosMostrados() {
+    if (this.busqueda.trim() !== '') return this.resultadosBusqueda;
     if (this.filtroActivo === 'Todos') return this.alimentos;
-    return this.alimentos.filter(a => a.categoria === this.filtroActivo);
+    return this.alimentos.filter((a: any) => a.categoria === this.filtroActivo);
   }
 
   setFiltro(filtro: string) {
@@ -60,9 +122,9 @@ export class BookmarksPage implements OnInit {
   seleccionarGramos(alimento: any, gramos: number) {
     alimento.gramosSeleccionados = gramos;
   }
-
-  constructor() { }
-
-  ngOnInit() { }
-
+  agregarAlHome(alimento: any) {
+  if (!alimento.gramosSeleccionados || alimento.gramosSeleccionados <= 0) return;
+  this.nutritionService.agregarAlimento(alimento, alimento.gramosSeleccionados);
+  alimento.menuAbierto = false;
+}
 }
