@@ -6,7 +6,7 @@
 
   <!-- DROPDOWN DEL SEARCH -->
   <ion-list *ngIf="resultadosBusqueda.length > 0" class="search-dropdown">
-    <ion-item *ngFor="let item of resultadosBusqueda.slice(0,5)" button (click)="seleccionarAlimento(item)">
+    <ion-item *ngFor="let item of resultadosBusqueda.slice(0,3)" button (click)="seleccionarAlimento(item)">
       <ion-label>
         {{ item.food.label }}
       </ion-label>
@@ -16,28 +16,39 @@
   <!-- LISTA DE ITEMS -->
   <p style="font-size: 18px;" class="ion-paddings">Recientes</p>
   <hr style="border: 0; border-top: 0.5px solid #5c5d61; margin: 10px 0;">
-  <ion-item>
-    <ion-thumbnail slot="start">
-      <img src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
-    </ion-thumbnail>
+  <div *ngIf="listaRecientes.length > 0; else noHayRecientes">
+    <ion-item *ngFor="let item of listaRecientes">
+      <ion-thumbnail slot="start">
+        <img [src]="item.food.image || 'https://ionicframework.com/docs/img/demos/thumbnail.svg'" />
+      </ion-thumbnail>
 
-    <ion-label>
-      <h2>item.food.label</h2>
-      <p> item.food.nutrients?.ENERC_KCAL | number:'1.0-0' kcal</p>
-    </ion-label>
+      <ion-label>
+        <h2>{{ item.food.label }}</h2>
+        <p>{{ item.food.nutrients?.ENERC_KCAL | number:'1.0-0' }}
+          kcal</p>
+      </ion-label>
 
-    <div slot="end" class="ion-no-margin">
-      <ion-button fill="clear" color="medium">
-        <ion-icon name="add-outline" mode="md"></ion-icon>
-      </ion-button>
-      <ion-button fill="clear" color="medium">
-        <ion-icon name="bookmark-outline" mode="md"></ion-icon>
-      </ion-button>
-      <ion-button fill="clear" color="medium">
-        <ion-icon name="trash-outline" mode="md"></ion-icon>
-      </ion-button>
+      <div slot="end" class="ion-no-margin">
+        <ion-button fill="clear" color="medium">
+          <ion-icon name="add-outline" mode="md"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" color="medium">
+          <ion-icon name="bookmark-outline" mode="md"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" color="medium">
+          <ion-icon name="trash-outline" mode="md"></ion-icon>
+        </ion-button>
+      </div>
+    </ion-item>
+  </div>
+
+  <ng-template #noHayRecientes>
+    <div class="ion-padding ion-text-center">
+      <ion-icon name="time-outline" style="font-size: 40px; color: #ccc;"></ion-icon>
+      <p style="color: #888;">No hay entradas recientes</p>
     </div>
-  </ion-item>
+  </ng-template>
+
 
   <!-- CARD Publicitaria -->
 

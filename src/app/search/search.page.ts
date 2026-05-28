@@ -12,15 +12,9 @@ export class SearchPage implements OnInit {
   query: string = '';
   resultadosBusqueda: any[] = [];
   alimentoSeleccionado: any = null;
+  listaRecientes: any[] = [];
   historial: { nombre: string, favorito: boolean }[] = [];
 
-  comidas: any = {
-    desayuno: [],
-    almuerzo: [],
-    cena: []
-  };
-
-  tipoComida: 'desayuno' | 'almuerzo' | 'cena' = 'desayuno';
   cantidad: number = 100;
   private lastQuery = '';
   defaultImage: string = 'https://ionicframework.com/docs/img/demos/card-media.png';
@@ -52,48 +46,20 @@ export class SearchPage implements OnInit {
   }
 
   seleccionarAlimento(item: any) {
-    const food = item.food;
-    this.query = food.label;
-    this.alimentoSeleccionado = {
-      ...food,
-      image: food.image || this.defaultImage
-    };
-    
-    localStorage.setItem('ultimoAlimento', JSON.stringify(this.alimentoSeleccionado));
-    this.resultadosBusqueda = [];
-
-    if (!this.historial.find(h => h.nombre === food.label)) {
-      this.historial.unshift({ nombre: food.label, favorito: false });
-      this.historial = this.historial.slice(0, 5);
+    // Agregar a la lista de recientes si no existe
+    if (!this.listaRecientes.find(i => i.food.foodId === item.food.foodId)) {
+      this.listaRecientes.unshift(item); // Lo añade al principio
+      localStorage.setItem('recientes', JSON.stringify(this.listaRecientes));
     }
+
+    // Limpiar el buscador, el dropdown y la query
+    this.query = '';
+    this.resultadosBusqueda = [];
+    this.lastQuery = '';
   }
 
-  agregarAlimentoManual() {
-    if (!this.alimentoSeleccionado) return;
-    const food = this.alimentoSeleccionado;
-    const factor = this.cantidad / 100;
-
-    const item = {
-      nombre: food.label,
-      cantidad: this.cantidad,
-      calorias: (food.nutrients?.ENERC_KCAL || 0) * factor,
-      proteina: (food.nutrients?.PROCNT || 0) * factor,
-      grasa: (food.nutrients?.FAT || 0) * factor,
-      carbs: (food.nutrients?.CHOCDF || 0) * factor
-    };
-
-    this.comidas[this.tipoComida].push(item);
-    this.cantidad = 100;
-    // this.alimentoSeleccionado = null; // Descomenta si quieres que se borre al agregar
+  // eliminar de la lista de recientes
+  eliminarReciente(item: any) {
+    this.listaRecientes = this.listaRecientes.filter(i => i !== item);
   }
-
-  // Getters y otros métodos...
-  get totalCalorias() { return this.getTotal('calorias'); }
-  private getTotal(prop: string) {
-    return (this.comidas.desayuno || []).reduce((a: number, b: any) => a + (b[prop] || 0), 0) +
-           (this.comidas.almuerzo || []).reduce((a: number, b: any) => a + (b[prop] || 0), 0) +
-           (this.comidas.cena || []).reduce((a: number, b: any) => a + (b[prop] || 0), 0);
-  }
-
-  onImgError(event: any) { event.target.src = this.defaultImage; }
 }
