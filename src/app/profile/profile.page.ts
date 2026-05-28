@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common'; 
 import { FormsModule } from '@angular/forms'; 
-import { IonicModule } from '@ionic/angular'; 
+import { IonicModule, AlertController } from '@ionic/angular'; 
 import { AuthService } from '../services/auth';
 import { addIcons } from 'ionicons';
-import { createOutline } from 'ionicons/icons';
+import { createOutline, globeOutline } from 'ionicons/icons';
+
+// Importaciones de AWS Amplify
+import { fetchUserAttributes, updatePassword } from 'aws-amplify/auth';
 
 @Component({
   selector: 'app-profile',
@@ -13,48 +16,136 @@ import { createOutline } from 'ionicons/icons';
   standalone: false
 })
 export class ProfilePage implements OnInit {
+  // Datos Físicos
   edad: number = 25;
-  peso : number = 68;
-  altura : number = 1.78
-  contrasena: number = 12345;
-  isModalOpen: boolean = false; // Controla el pop-up
-  campoEditando: string = '';   // Guarda qué estamos editando
-  valorTemporal: number = 0;    // Valor que se escribe en el input
+  peso: number = 68;
+  altura: number = 1.78;
+
+  // Datos de Cuenta (AWS Amplify)
+  userEmail: string = 'Cargando...';
+  oldPasswordInput: string = '';
+  newPasswordInput: string = '';
+
+  // Control del Modal
+  isModalOpen: boolean = false; 
+  campoEditando: string = '';   
+  valorTemporal: any = 0; // Cambiado a 'any' para soportar tanto números (edad) como texto   
+
+  // Preferencias
+  idiomaSeleccionado: string = 'es';
+  alertasActivas: boolean = false;
+  recordatoriosActivos: boolean = true;
+
+  constructor(
+    private authService: AuthService,
+    private alertController: AlertController // Agregado para los mensajes de éxito/error
+  ) { 
+    // Aseguramos que los iconos estén registrados
+    addIcons({ createOutline, globeOutline });
+  }
+
+  async ngOnInit() { 
+    // Al cargar la vista, traemos el email real del usuario
+    await this.cargarEmailUsuario();
+  }
+
+  // ==========================================
+  // LÓGICA DE SEGURIDAD (AWS COGNITO)
+  // ==========================================
+  
+  async cargarEmailUsuario() {
+    try {
+      const attributes = await fetchUserAttributes();
+      this.userEmail = attributes.email || 'Email no disponible';
+    } catch (error) {
+      console.error('Error al obtener atributos de AWS:', error);
+      this.userEmail = 'Error de conexión';
+    }
+  }
+
+  async actualizarPasswordCognito() {
+    if (!this.oldPasswordInput || !this.newPasswordInput) {
+      this.presentAlert('Aviso', 'Debes ingresar tu contraseña actual y la nueva.');
+      return;
+    }
+
+    try {
+      // Impacta directamente en el backend de AWS
+      await updatePassword({
+        oldPassword: this.oldPasswordInput,
+        newPassword: this.newPasswordInput
+      });
+
+      this.presentAlert('Éxito', 'Tu contraseña ha sido actualizada correctamente.');
+      
+      // Cerramos modal y limpiamos campos por seguridad
+      this.isModalOpen = false;
+      this.oldPasswordInput = '';
+      this.newPasswordInput = '';
+
+    } catch (error: any) {
+      console.error('Error actualizando contraseña:', error);
+      this.presentAlert('Error', error.message || 'No se pudo actualizar la contraseña.');
+    }
+  }
+
+  // ==========================================
+  // LÓGICA DE LA INTERFAZ Y MODAL
+  // ==========================================
 
   openEditModal(campo: string) {
-  this.campoEditando = campo;
-  this.isModalOpen = true;
-  
-  // Aquí es donde luego abriremos el modal
-  if (campo === 'edad') this.valorTemporal = this.edad; 
-  if (campo === 'peso') this.valorTemporal = this.peso; 
-  if (campo === 'altura') this.valorTemporal = this.altura; 
-  if (campo === 'contrasena') this.valorTemporal = this.contrasena; 
-}
-  // se guardan los cambios en el modal
-  saveChanges(){
-  if (this.campoEditando === 'edad') this.edad = this.valorTemporal;
-  if (this.campoEditando === 'peso') this.peso = this.valorTemporal;
-  if (this.campoEditando === 'altura') this.altura = this.valorTemporal;
-  if (this.campoEditando === 'contrasena') this.contrasena = this.valorTemporal;
+    this.campoEditando = campo;
+    this.isModalOpen = true;
+    
+    if (campo === 'edad') this.valorTemporal = this.edad; 
+    if (campo === 'peso') this.valorTemporal = this.peso; 
+    if (campo === 'altura') this.valorTemporal = this.altura; 
+    if (campo === 'contrasena') {
+      // Limpiamos los inputs temporales antes de abrir el modal
+      this.oldPasswordInput = '';
+      this.newPasswordInput = '';
+    }
+  }
+
+  saveChanges() {
+    // Si estamos editando la contraseña, delegamos la acción a AWS y salimos de la función
+    if (this.campoEditando === 'contrasena') {
+      this.actualizarPasswordCognito();
+      return; 
+    }
+
+    // Si son datos físicos, se actualizan las variables locales
+    if (this.campoEditando === 'edad') this.edad = this.valorTemporal;
+    if (this.campoEditando === 'peso') this.peso = this.valorTemporal;
+    if (this.campoEditando === 'altura') this.altura = this.valorTemporal;
+    
     this.isModalOpen = false;
   }
    
-  alertasActivas: boolean = false;
-  recordatoriosActivos: boolean = true;
-  constructor(private authService: AuthService) { 
-    addIcons({ createOutline });
-  }
-  ngOnInit() { }
-    // Activa y desactiva loas notificaciones
-    onToggleChange(tipo: string) {
+  onToggleChange(tipo: string) {
     const estado = tipo === 'recordatorios' ? this.recordatoriosActivos : this.alertasActivas;
     console.log(`Estado de ${tipo}:`, estado);
+  }
+
+  cambiarIdioma(event: any) {
+    this.idiomaSeleccionado = event.detail.value;
+    console.log('Idioma cambiado a:', this.idiomaSeleccionado);
   }
 
   async handleLogout() {
     await this.authService.logout();
   }
 
-  
+  // ==========================================
+  // UTILIDADES
+  // ==========================================
+
+  async presentAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
 }
