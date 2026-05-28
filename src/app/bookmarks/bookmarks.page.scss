@@ -136,16 +136,14 @@
     margin: 0 0 8px;
   }
 
-  .gramos-options {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
+  .gramos-input {
+  padding: 0 0 8px;
+}
+}
 
   .gramos-selected {
     margin-top: 8px;
     color: var(--ion-color-primary);
     font-weight: 600;
   }
-}
 }
