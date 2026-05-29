@@ -15,6 +15,9 @@ import { fetchUserAttributes } from 'aws-amplify/auth';
 })
 export class HomePage implements OnInit {
 
+  fotoPerfil: string = '';
+  currentDate: Date = new Date();
+
   percentageFats: number = 30;
   proteinPercentage: number = 60;
   percentageCarbo: number = 10;
@@ -23,50 +26,8 @@ export class HomePage implements OnInit {
   fibraG: number = 25;
   potasioMg: number = 3500;
 
-  nameMonth: string = '';
-  daysOfTheMonth: any[] = [];
-  emptySpaces: number[] = [];
-  rightNow: number = new Date().getDate();
-  currentDate: Date = new Date();
   nombreUsuario: string = '';
   apellidoUsuario: string = '';
-
-  generarCalendario() {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = now.getFullYear() === 2026 && now.getMonth() === 4 ? 4 : now.getMonth();
-
-    const options: Intl.DateTimeFormatOptions = { month: 'long', year: 'numeric' };
-    this.nameMonth = now.toLocaleDateString('es-ES', options);
-
-    const numberOfDays = new Date(year, month + 1, 0).getDate();
-
-    const firstDayOfTheWeek = new Date(year, month, 1).getDay();
-    this.emptySpaces = Array(firstDayOfTheWeek).fill(0);
-
-    this.daysOfTheMonth = [];
-    for (let i = 1; i <= numberOfDays; i++) {
-      let consumptionExample = 0;
-
-      if (i === 1) consumptionExample = 2100;
-      if (i === 2) consumptionExample = 1500;
-      if (i === 3) consumptionExample = 1500;
-      if (i === 4) consumptionExample = 1500;
-      if (i === 5) consumptionExample = 2300;
-      if (i === 6) consumptionExample = 2300;
-      if (i === 7) consumptionExample = 2400;
-      if (i === 8) consumptionExample = 3400;
-      if (i === 9) consumptionExample = 1200;
-      if (i === 10) consumptionExample = 2100;
-      if (i === 11) consumptionExample = 2550;
-      if (i === 12) consumptionExample = 2670;
-      this.daysOfTheMonth.push({
-        numero: i,
-        consumido: consumptionExample,
-        meta: 2000
-      });
-    }
-  }
 
   goToProfile() {
     this.router.navigate(['/tabs/profile']);
@@ -75,7 +36,6 @@ export class HomePage implements OnInit {
   constructor(private router: Router, private nutritionService: NutritionService) { }
 
   async ngOnInit() {
-    await this.generarCalendario();
     await this.getUserInfo();
     this.nutritionService.alimentos$.subscribe(() => {
       const p = this.nutritionService.getPorcentajes();
@@ -94,6 +54,14 @@ export class HomePage implements OnInit {
       
     } catch (error) {
       console.error('Error al obtener atributos:', error);
+    }
+  }
+
+  async cambiarFoto() {
+    try {
+      console.log('Abriendo la galería o cámara del dispositivo...');
+    } catch (error) {
+      console.error('Error al seleccionar la foto:', error);
     }
   }
 }
