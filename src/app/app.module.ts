@@ -4,26 +4,21 @@ import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpBackend } from '@angular/common/http';
-import { provideHttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
 // Importaciones para el sistema de traducción
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { of } from 'rxjs';
+import { TRANSLATIONS } from './i18n.data'; // Tu archivo externo
 
 import { registerLocaleData } from '@angular/common';
 import localeEsAr from '@angular/common/locales/es-AR';
 registerLocaleData(localeEsAr);
 
-// Cargador estático: Sin archivos externos, sin errores de red
+// Cargador que utiliza los datos de tu archivo i18n.data.ts
 export class FakeLoader implements TranslateLoader {
   getTranslation(lang: string) {
-    const translations: any = {
-      es: { WELCOME: "Bienvenido", HOME: "Inicio" },
-      en: { WELCOME: "Welcome", HOME: "Home" }
-    };
-    return of(translations[lang] || translations['es']);
+    return of(TRANSLATIONS[lang] || TRANSLATIONS['es']);
   }
 }
 
@@ -45,8 +40,7 @@ export class FakeLoader implements TranslateLoader {
   exports: [TranslateModule],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    { provide: LOCALE_ID, useValue: 'es-AR' },
-    provideHttpClient()
+    { provide: LOCALE_ID, useValue: 'es-AR' }
   ],
   bootstrap: [AppComponent],
 })

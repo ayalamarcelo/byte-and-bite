@@ -6,6 +6,10 @@ import { AuthService } from '../services/auth';
 import { addIcons } from 'ionicons';
 import { createOutline, globeOutline } from 'ionicons/icons';
 import { UserService } from '../services/user.service';
+import { LanguageService } from '../services/language.service';
+
+import { TranslateService } from '@ngx-translate/core';
+
 
 // Importaciones de AWS Amplify
 import { fetchUserAttributes, updatePassword } from 'aws-amplify/auth';
@@ -33,14 +37,14 @@ export class ProfilePage implements OnInit {
   valorTemporal: any = 0; // Cambiado a 'any' para soportar tanto números (edad) como texto   
 
   // Preferencias
-  idiomaSeleccionado: string = 'es';
   alertasActivas: boolean = false;
   recordatoriosActivos: boolean = true;
 
   constructor(
     private authService: AuthService,
     private alertController: AlertController, // Agregado para los mensajes de éxito/error
-    public userService: UserService
+    public userService: UserService,
+    public languageService: LanguageService
   ) {
     // Aseguramos que los iconos estén registrados
     addIcons({ createOutline, globeOutline });
@@ -49,7 +53,7 @@ export class ProfilePage implements OnInit {
   async ngOnInit() {
     await Promise.all([
       this.cargarEmailUsuario(),
-      this.userService.loadUserData()
+      this.userService.loadUserData(),
     ]);
 
     console.log("Datos cargados correctamente");
@@ -133,11 +137,6 @@ export class ProfilePage implements OnInit {
     console.log(`Estado de ${tipo}:`, estado);
   }
 
-  cambiarIdioma(event: any) {
-    this.idiomaSeleccionado = event.detail.value;
-    console.log('Idioma cambiado a:', this.idiomaSeleccionado);
-  }
-
   async handleLogout() {
     await this.authService.logout();
   }
@@ -153,5 +152,13 @@ export class ProfilePage implements OnInit {
       buttons: ['OK']
     });
     await alert.present();
+  }
+
+  get idiomaSeleccionado() {
+    return this.languageService.getCurrentLang();
+  }
+
+  cambiarIdioma(event: any) {
+    this.languageService.setLanguage(event.detail.value);
   }
 }

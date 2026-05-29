@@ -90,23 +90,20 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card class="data-card">   
+  <!-- IDIOMA -->
+  <ion-card class="data-card">
     <ion-card-header>
       <ion-card-title>PREFERENCIAS</ion-card-title>
     </ion-card-header>
-    
+
     <ion-card-content>
       <div class="info-row" style="display: flex; justify-content: space-between; align-items: center;">
         <div class="label-with-icon" style="display: flex; align-items: center; gap: 10px;">
           <ion-icon name="earth-outline" size="large"></ion-icon>
           <span style="font-size: 1rem;">Idioma</span>
         </div>
-        
-        <ion-segment 
-          [(ngModel)]="idiomaSeleccionado" 
-          (ionChange)="cambiarIdioma($event)" 
-          mode="ios" 
-          style="width: 120px; min-width: 120px;">
+
+        <ion-segment [value]="idiomaSeleccionado" (ionChange)="cambiarIdioma($event)" mode="ios">
           <ion-segment-button value="es">
             <ion-label>ES</ion-label>
           </ion-segment-button>
@@ -124,7 +121,8 @@
     </ion-card-header>
 
     <ion-card-content>
-      <div class="info-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--ion-color-light);">
+      <div class="info-row"
+        style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--ion-color-light);">
         <div class="label-with-icon" style="display: flex; align-items: center; gap: 10px;">
           <ion-icon [name]="recordatoriosActivos ? 'notifications' : 'notifications-off'" size="large"></ion-icon>
           <span style="font-size: 1rem;">Recordatorios de comida</span>
@@ -132,7 +130,8 @@
         <ion-toggle [(ngModel)]="recordatoriosActivos" (ionChange)="onToggleChange('recordatorios')"></ion-toggle>
       </div>
 
-      <div class="info-row" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0;">
+      <div class="info-row"
+        style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0;">
         <div class="label-with-icon" style="display: flex; align-items: center; gap: 10px;">
           <ion-icon [name]="alertasActivas ? 'notifications' : 'notifications-off'" size="large"></ion-icon>
           <span style="font-size: 1rem;">Alertas</span>
@@ -142,11 +141,12 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-modal [isOpen]="isModalOpen" (didDismiss)="isModalOpen = false" [initialBreakpoint]="0.5" [breakpoints]="[0, 0.5, 0.8]">
+  <ion-modal [isOpen]="isModalOpen" (didDismiss)="isModalOpen = false" [initialBreakpoint]="0.5"
+    [breakpoints]="[0, 0.5, 0.8]">
     <ng-template>
       <ion-content class="ion-padding">
         <div style="margin-top: 20px;">
-          
+
           <h2 style="text-transform: capitalize;" *ngIf="campoEditando !== 'contrasena'">Tu {{ campoEditando }}</h2>
           <h2 *ngIf="campoEditando === 'contrasena'">Cambiar Contraseña</h2>
 
@@ -171,7 +171,7 @@
           <ion-button expand="block" color="success" style="margin-top: 30px;" (click)="saveChanges()">
             {{ campoEditando === 'contrasena' ? 'Actualizar Contraseña' : 'Confirmar' }}
           </ion-button>
-          
+
         </div>
       </ion-content>
     </ng-template>

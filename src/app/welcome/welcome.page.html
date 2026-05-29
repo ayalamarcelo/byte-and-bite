@@ -2,7 +2,7 @@
   <div class="welcome-container">
 
     <div class="top-content">
-      <h1 class="welcome-title">Welcome to</h1>
+      <h1 class="welcome-title">{{ 'WELCOME_TITLE' | translate }}</h1>
 
       <div class="logo-container">
         <div class="top-row"> 
@@ -18,13 +18,13 @@
 
     <div class="bottom-content">
       <p class="terms-text">
-        By clicking on next, you agree to Byte && Bite's
-        <a (click)="presentTermsModal()">Terms and Condition of Use</a>
+        {{ 'TERMS_PART_1' | translate }}
+        <a (click)="presentTermsModal()">{{ 'TERMS_LINK' | translate }}</a>
+        {{ 'TERMS_PART_2' | translate }}
       </p>
 
-      <!--al parecer routerLink es más rápido-->
       <ion-button (click)="validateAndGo()" expand="block" class="next-btn">
-        Start 
+        {{ 'START_BTN' | translate }}
       </ion-button>
     </div>
 
