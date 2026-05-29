@@ -103,7 +103,9 @@
           <span style="font-size: 1rem;">Idioma</span>
         </div>
 
-        <ion-segment [value]="idiomaSeleccionado" (ionChange)="cambiarIdioma($event)" mode="ios">
+        <ion-segment [value]="idiomaSeleccionado" (ionChange)="cambiarIdioma($event)" mode="ios"
+          style="width: 120px; min-width: 120px;">
+
           <ion-segment-button value="es">
             <ion-label>ES</ion-label>
           </ion-segment-button>
