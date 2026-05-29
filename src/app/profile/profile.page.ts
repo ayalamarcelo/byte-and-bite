@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common'; 
-import { FormsModule } from '@angular/forms'; 
-import { IonicModule, AlertController } from '@ionic/angular'; 
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { IonicModule, AlertController } from '@ionic/angular';
 import { AuthService } from '../services/auth';
 import { addIcons } from 'ionicons';
 import { createOutline, globeOutline } from 'ionicons/icons';
+import { UserService } from '../services/user.service';
 
 // Importaciones de AWS Amplify
 import { fetchUserAttributes, updatePassword } from 'aws-amplify/auth';
@@ -27,8 +28,8 @@ export class ProfilePage implements OnInit {
   newPasswordInput: string = '';
 
   // Control del Modal
-  isModalOpen: boolean = false; 
-  campoEditando: string = '';   
+  isModalOpen: boolean = false;
+  campoEditando: string = '';
   valorTemporal: any = 0; // Cambiado a 'any' para soportar tanto números (edad) como texto   
 
   // Preferencias
@@ -38,21 +39,26 @@ export class ProfilePage implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private alertController: AlertController // Agregado para los mensajes de éxito/error
-  ) { 
+    private alertController: AlertController, // Agregado para los mensajes de éxito/error
+    public userService: UserService
+  ) {
     // Aseguramos que los iconos estén registrados
     addIcons({ createOutline, globeOutline });
   }
 
-  async ngOnInit() { 
-    // Al cargar la vista, traemos el email real del usuario
-    await this.cargarEmailUsuario();
+  async ngOnInit() {
+    await Promise.all([
+      this.cargarEmailUsuario(),
+      this.userService.loadUserData()
+    ]);
+
+    console.log("Datos cargados correctamente");
   }
 
   // ==========================================
   // LÓGICA DE SEGURIDAD (AWS COGNITO)
   // ==========================================
-  
+
   async cargarEmailUsuario() {
     try {
       const attributes = await fetchUserAttributes();
@@ -77,7 +83,7 @@ export class ProfilePage implements OnInit {
       });
 
       this.presentAlert('Éxito', 'Tu contraseña ha sido actualizada correctamente.');
-      
+
       // Cerramos modal y limpiamos campos por seguridad
       this.isModalOpen = false;
       this.oldPasswordInput = '';
@@ -96,10 +102,10 @@ export class ProfilePage implements OnInit {
   openEditModal(campo: string) {
     this.campoEditando = campo;
     this.isModalOpen = true;
-    
-    if (campo === 'edad') this.valorTemporal = this.edad; 
-    if (campo === 'peso') this.valorTemporal = this.peso; 
-    if (campo === 'altura') this.valorTemporal = this.altura; 
+
+    if (campo === 'edad') this.valorTemporal = this.edad;
+    if (campo === 'peso') this.valorTemporal = this.peso;
+    if (campo === 'altura') this.valorTemporal = this.altura;
     if (campo === 'contrasena') {
       // Limpiamos los inputs temporales antes de abrir el modal
       this.oldPasswordInput = '';
@@ -111,17 +117,17 @@ export class ProfilePage implements OnInit {
     // Si estamos editando la contraseña, delegamos la acción a AWS y salimos de la función
     if (this.campoEditando === 'contrasena') {
       this.actualizarPasswordCognito();
-      return; 
+      return;
     }
 
     // Si son datos físicos, se actualizan las variables locales
     if (this.campoEditando === 'edad') this.edad = this.valorTemporal;
     if (this.campoEditando === 'peso') this.peso = this.valorTemporal;
     if (this.campoEditando === 'altura') this.altura = this.valorTemporal;
-    
+
     this.isModalOpen = false;
   }
-   
+
   onToggleChange(tipo: string) {
     const estado = tipo === 'recordatorios' ? this.recordatoriosActivos : this.alertasActivas;
     console.log(`Estado de ${tipo}:`, estado);
