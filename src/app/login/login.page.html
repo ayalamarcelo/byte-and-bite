@@ -9,11 +9,11 @@
 
       <ion-button fill="clear" size="medium" (click)="goToSignUp()"
         style="font-weight: 300; text-transform: capitalize;">
-        Sign Up
+        {{ 'SIGN_UP' | translate }}
       </ion-button>
     </div>
 
-    <h1 class="ion-padding-bottom ion-text-center">Welcome</h1>
+    <h1 class="ion-padding-bottom ion-text-center">{{ 'LOGIN_TITLE' | translate }}</h1>
 
     <div class="ion-margin-bottom ion-justify-content-center" style="display: flex;">
       <ion-avatar class="avatar"
@@ -25,21 +25,21 @@
     <div class="ion-margin-vertical">
       <ion-button expand="block" fill="outline" color="primary" (click)="continueWithGoogle()">
         <ion-icon slot="start" name="logo-google"></ion-icon>
-        Continue with Google
+        {{ 'CONTINUE_GOOGLE' | translate }}
       </ion-button>
     </div>
 
     <div class="ion-text-center ion-margin-vertical">
-      <p style="color: var(--ion-color-medium); margin: 0;">— O —</p>
+      <p style="color: var(--ion-color-medium); margin: 0;">{{ 'OR' | translate }}</p>
     </div>
 
-    <ion-input label="Email" label-placement="floating" fill="outline" type="email" class="ion-margin-bottom"
-      [(ngModel)]="email"> <!-- capturamos lo que el usuario escribe en el campo email -->
+    <ion-input label="{{ 'EMAIL_LABEL' | translate }}" label-placement="floating" fill="outline" type="email" class="ion-margin-bottom"
+      [(ngModel)]="email">
       <ion-icon slot="start" name="mail-outline" aria-hidden="true"></ion-icon>
     </ion-input>
 
-    <ion-input label="Password" label-placement="floating" fill="outline" type="password" class="ion-margin-bottom"
-      [(ngModel)]="password"> <!-- capturamos el password -->
+    <ion-input label="{{ 'PASSWORD_LABEL' | translate }}" label-placement="floating" fill="outline" type="password" class="ion-margin-bottom"
+      [(ngModel)]="password">
       <ion-icon slot="start" name="lock-closed-outline" aria-hidden="true"></ion-icon>
     </ion-input>
 
@@ -51,17 +51,17 @@
           --border-color-checked: var(--ion-color-primary);
         ">
         <p style="font-size: 0.85rem; white-space: normal; margin: 0; color: var(--ion-color-step-600);">
-          I would like to receive your newsletter and other promotional information.
+          {{ 'NEWSLETTER' | translate }}
         </p>
       </ion-checkbox>
     </ion-item>
 
-    <ion-button expand="block" (click)="handleLogin()"> <!-- Cambié la función a handleLogin -->
-      Login
+    <ion-button expand="block" (click)="handleLogin()">
+      {{ 'LOGIN_BTN' | translate }}
     </ion-button>
 
     <div class="ion-text-center ion-margin-top">
-      <p>Don't you have an account? <a (click)="goToSignUp()" style="cursor: pointer;"> Register</a></p>
+      <p>{{ 'NO_ACCOUNT' | translate }} <a (click)="goToSignUp()" style="cursor: pointer;"> {{ 'REGISTER' | translate }}</a></p>
     </div>
 
   </div>

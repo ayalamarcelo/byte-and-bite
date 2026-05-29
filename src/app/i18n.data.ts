@@ -1,24 +1,164 @@
-export const TRANSLATIONS: { [key: string]: any }  = {
+export const TRANSLATIONS: { [key: string]: any } = {
   es: {
-    // Página 1 (Bienvenida/Términos)
+    // Página 1
     WELCOME_TITLE: "Bienvenido a",
     TERMS_PART_1: "Al hacer clic en siguiente, aceptas los",
     TERMS_LINK: "Términos y Condiciones de Uso",
     TERMS_PART_2: "de Byte && Bite",
     START_BTN: "Empezar",
-    
-    // Ejemplo de página de Perfil
-    PREFERENCIAS: "Preferencias",
-    IDIOMA: "Idioma"
+
+    // Perfil
+    LOGOUT: "Cerrar sesión",
+    PERSONAL_DATA: "DATOS PERSONALES",
+    AGE: "Edad",
+    YEARS: "años",
+    WEIGHT: "Peso",
+    HEIGHT: "Altura",
+    ACCOUNT: "CUENTA",
+    PASSWORD: "Contraseña",
+    PREFERENCES: "PREFERENCIAS",
+    LANGUAGE: "Idioma",
+    NOTIFICATIONS: "NOTIFICACIONES",
+    FOOD_REMINDERS: "Recordatorios de comida",
+    ALERTS: "Alertas",
+    YOUR_FIELD: "Tu {{field}}",
+    CHANGE_PASSWORD: "Cambiar Contraseña",
+    CURRENT_PASSWORD: "Contraseña Actual",
+    NEW_PASSWORD: "Nueva Contraseña",
+    UPDATE_PASSWORD: "Actualizar Contraseña",
+    CONFIRM: "Confirmar",
+
+    // Login
+    LOGIN_TITLE: "Bienvenido",
+    SIGN_UP: "Registrarse",
+    CONTINUE_GOOGLE: "Continuar con Google",
+    OR: "— O —",
+    EMAIL_LABEL: "Correo electrónico",
+    PASSWORD_LABEL: "Contraseña",
+    NEWSLETTER: "Me gustaría recibir su boletín informativo y otra información promocional.",
+    LOGIN_BTN: "Iniciar sesión",
+    NO_ACCOUNT: "¿No tienes una cuenta?",
+    REGISTER: "Regístrate",
+
+    // Signup (Ahora dentro de 'es')
+    SIGN_UP_PAGE: {
+      CLOSE: "Cerrar",
+      TITLE: "Registrarse",
+      NAME: "Nombre",
+      NAME_PLACEHOLDER: "Tu nombre",
+      LASTNAME: "Apellido",
+      LASTNAME_PLACEHOLDER: "Tu apellido",
+      EMAIL: "Correo electrónico",
+      EMAIL_PLACEHOLDER: "usuario@mail.com",
+      PASSWORD: "Contraseña",
+      PASSWORD_PLACEHOLDER: "Introduce tu contraseña",
+      REPEAT_PASSWORD: "Repetir contraseña",
+      REPEAT_PASSWORD_PLACEHOLDER: "Repite la contraseña",
+      TERMS_AGREE: "Estoy de acuerdo con los ",
+      TERMS_LINK: "Términos y Condiciones",
+      CREATE_ACCOUNT: "Crear cuenta",
+      ALREADY_HAVE_ACCOUNT: "¿Ya tienes una cuenta?",
+      LOG_IN: "Inicia sesión"
+    },
+    // Terms
+    TERMS_PAGE: {
+      TITLE: "Términos y Condiciones de Byte && Bite",
+      UPDATED: "Última actualización: 11 de mayo de 2026",
+      WELCOME: "Bienvenido a https://www.byteandbite.com",
+      BODY: "Estos términos y condiciones describen las reglas y regulaciones para el uso del sitio web de Byte && Bite, ubicado en https://www.byteandbite.com. Al acceder a este sitio web, asumimos que aceptas estos términos y condiciones.",
+      INTRO_TITLE: "1. Introducción",
+      INTRO_TEXT: "La siguiente terminología se aplica a estos Términos y Condiciones: 'Cliente', 'Tú' y 'Tu' se refiere a ti. 'Byte && Bite', 'Nosotros', 'Nuestro' se refiere a nuestra Empresa.",
+      LICENSE_TITLE: "2. Licencia",
+      LICENSE_TEXT: "A menos que se indique lo contrario, Byte && Bite posee los derechos de propiedad intelectual de todo el material en https://www.byteandbite.com. No debes republicar, vender, alquilar o reproducir material del sitio.",
+      COMMENTS_TITLE: "3. Comentarios de los usuarios",
+      COMMENTS_TEXT: "Byte && Bite no filtra, edita ni revisa los comentarios antes de su publicación. Estos no reflejan las opiniones de Byte && Bite.",
+      LAW_TITLE: "4. Ley aplicable",
+      LAW_TEXT: "Estos términos se regirán e interpretarán de acuerdo con las leyes del Estado de Argentina, CABA.",
+      CONTACT_TITLE: "5. Información de contacto",
+      CONTACT_TEXT: "Si tienes alguna duda sobre nuestros términos, contáctanos en hr@byteandbite.com.",
+      ACCEPT_LABEL: "He leído y acepto los Términos y Condiciones.",
+      ACCEPT_BTN: "Aceptar y continuar"
+    }
   },
   en: {
+    // Página 1
     WELCOME_TITLE: "Welcome to",
     TERMS_PART_1: "By clicking on next, you agree to",
     TERMS_LINK: "Terms and Conditions of Use",
     TERMS_PART_2: "of Byte && Bite",
     START_BTN: "Start",
-    
-    PREFERENCIAS: "Preferences",
-    IDIOMA: "Language"
+
+    // Profile
+    LOGOUT: "Logout",
+    PERSONAL_DATA: "PERSONAL DATA",
+    AGE: "Age",
+    YEARS: "years",
+    WEIGHT: "Weight",
+    HEIGHT: "Height",
+    ACCOUNT: "ACCOUNT",
+    PASSWORD: "Password",
+    PREFERENCES: "PREFERENCES",
+    LANGUAGE: "Language",
+    NOTIFICATIONS: "NOTIFICATIONS",
+    FOOD_REMINDERS: "Food reminders",
+    ALERTS: "Alerts",
+    YOUR_FIELD: "Your {{field}}",
+    CHANGE_PASSWORD: "Change Password",
+    CURRENT_PASSWORD: "Current Password",
+    NEW_PASSWORD: "New Password",
+    UPDATE_PASSWORD: "Update Password",
+    CONFIRM: "Confirm",
+
+    // Login
+    LOGIN_TITLE: "Welcome",
+    SIGN_UP: "Sign Up",
+    CONTINUE_GOOGLE: "Continue with Google",
+    OR: "— O —",
+    EMAIL_LABEL: "Email",
+    PASSWORD_LABEL: "Password",
+    NEWSLETTER: "I would like to receive your newsletter and other promotional information.",
+    LOGIN_BTN: "Login",
+    NO_ACCOUNT: "Don't you have an account?",
+    REGISTER: "Register",
+
+    // Signup (Ahora dentro de 'en')
+    SIGN_UP_PAGE: {
+      CLOSE: "Close",
+      TITLE: "Sign Up",
+      NAME: "Name",
+      NAME_PLACEHOLDER: "Your name",
+      LASTNAME: "Lastname",
+      LASTNAME_PLACEHOLDER: "Your lastname",
+      EMAIL: "Email",
+      EMAIL_PLACEHOLDER: "user@mail.com",
+      PASSWORD: "Password",
+      PASSWORD_PLACEHOLDER: "Enter your password",
+      REPEAT_PASSWORD: "Repeat Password",
+      REPEAT_PASSWORD_PLACEHOLDER: "Repeat password",
+      TERMS_AGREE: "I agree with the ",
+      TERMS_LINK: "Terms and Conditions",
+      CREATE_ACCOUNT: "Create Account",
+      ALREADY_HAVE_ACCOUNT: "Already have an account?",
+      LOG_IN: "Log In"
+    },
+    // Terms
+    TERMS_PAGE: {
+      TITLE: "Terms and Conditions for Byte && Bite",
+      UPDATED: "Last Updated: May 11, 2026",
+      WELCOME: "Welcome to https://www.byteandbite.com",
+      BODY: "These terms and conditions outline the rules and regulations for the use of Byte && Bite's Website, located at https://www.byteandbite.com. By accessing this website we assume you accept these terms and conditions.",
+      INTRO_TITLE: "1. Introduction",
+      INTRO_TEXT: "The following terminology applies to these Terms and Conditions: 'Client', 'You' and 'Your' refers to you. 'Byte && Bite', 'We', 'Our' and 'Us', refers to our Company.",
+      LICENSE_TITLE: "2. License",
+      LICENSE_TEXT: "Unless otherwise stated, Byte && Bite and/or its licensors own the intellectual property rights for all material on https://www.byteandbite.com. You must not republish, sell, rent or reproduce material from the site.",
+      COMMENTS_TITLE: "3. User Comments",
+      COMMENTS_TEXT: "Byte && Bite does not filter, edit, publish or review Comments prior to their presence on the website. Comments do not reflect the views and opinions of Byte && Bite.",
+      LAW_TITLE: "4. Governing Law",
+      LAW_TEXT: "These terms will be governed by and interpreted in accordance with the laws of the State of Argentina, CABA.",
+      CONTACT_TITLE: "5. Contact Information",
+      CONTACT_TEXT: "If you have any queries regarding any of our terms, please contact us at hr@byteandbite.com.",
+      ACCEPT_LABEL: "I have read and agree to the Terms and Conditions.",
+      ACCEPT_BTN: "Accept and Continue"
+    }
   }
 };

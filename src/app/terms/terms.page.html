@@ -1,63 +1,34 @@
 <ion-header class="ion-no-border ion-padding">
   <ion-toolbar color="transparent">
-    <ion-title class="ion-text-center">Terms and Conditions for Byte && Bite</ion-title>
+    <ion-title class="ion-text-center">{{ 'TERMS_PAGE.TITLE' | translate }}</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="dismiss(false)">
-        <ion-icon name="close">
-        </ion-icon>
+        <ion-icon name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content class="ion-padding">
   <div class="terms-text">
-    <p>Last Updated: May 11, 2026</p>
+    <p>{{ 'TERMS_PAGE.UPDATED' | translate }}</p>
+    <p>{{ 'TERMS_PAGE.WELCOME' | translate }}</p>
+    <p>{{ 'TERMS_PAGE.BODY' | translate }}</p>
 
-    <p>Welcome to https://www.byteandbite.com</p>
+    <h4>{{ 'TERMS_PAGE.INTRO_TITLE' | translate }}</h4>
+    <p>{{ 'TERMS_PAGE.INTRO_TEXT' | translate }}</p>
 
-    <p>These terms and conditions outline the rules and regulations for the use of Byte && Bite's Website, located at
-      https://www.byteandbite.com.
+    <h4>{{ 'TERMS_PAGE.LICENSE_TITLE' | translate }}</h4>
+    <p>{{ 'TERMS_PAGE.LICENSE_TEXT' | translate }}</p>
 
-      By accessing this website we assume you accept these terms and conditions. Do not continue to use
-      https://www.byteandbite.com if you do not agree to take all of the terms and conditions stated on this page.</p>
+    <h4>{{ 'TERMS_PAGE.COMMENTS_TITLE' | translate }}</h4>
+    <p>{{ 'TERMS_PAGE.COMMENTS_TEXT' | translate }}</p>
 
-    <h4>1. Introduction</h4>
-    <p>The following terminology applies to these Terms and Conditions, Privacy Statement and Disclaimer Notice and all
-      Agreements: "Client", "You" and "Your" refers to you, the person log on this website and compliant to the
-      Company's terms and conditions. "Byte && Bite", "Ourselves", "We", "Our" and "Us", refers to our Company.</p>
+    <h4>{{ 'TERMS_PAGE.LAW_TITLE' | translate }}</h4>
+    <p>{{ 'TERMS_PAGE.LAW_TEXT' | translate }}</p>
 
-    <h4>2. License</h4>
-    <p>Unless otherwise stated, Byte && Bite and/or its licensors own the intellectual property rights for all material
-      on https://www.byteandbite.com. All intellectual property rights are reserved. You may access this from
-      https://www.byteandbite.com for your own personal use subjected to restrictions set in these terms and conditions.
-
-      You must not:
-      - Republish material from https://www.byteandbite.com
-      - Sell, rent or sub-license material from https://www.byteandbite.com
-      - Reproduce, duplicate or copy material from https://www.byteandbite.com
-      - Redistribute content from Byte && Bite
-    </p>
-
-    <h4>3. User Comments</h4>
-    <p>Parts of this website offer an opportunity for users to post and exchange opinions and information. Byte && Bite
-      does not filter, edit, publish or review Comments prior to their presence on the website. Comments do not reflect
-      the views and opinions of Byte && Bite, its agents and/or affiliates. To the extent permitted by applicable laws,
-      Byte && Bite shall not be liable for the Comments or for any liability, damages or expenses caused and/or suffered
-      as a result of any use of and/or posting of and/or appearance of the Comments on this website.
-    </p>
-
-    <h4>4. Governing Law</h4>
-    <p>These terms will be governed by and interpreted in accordance with the laws of the State of Argentina, CABA, and
-      you submit to the non-exclusive jurisdiction of the state and federal courts located in Argentina, CABA for the
-      resolution of any disputes.
-    </p>
-
-    <h4>5. Contact Information</h4>
-    <p>
-      If you have any queries regarding any of our terms, please contact us at hr@byteandbite.com.
-    </p>
+    <h4>{{ 'TERMS_PAGE.CONTACT_TITLE' | translate }}</h4>
+    <p>{{ 'TERMS_PAGE.CONTACT_TEXT' | translate }}</p>
   </div>
 </ion-content>
 
@@ -65,23 +36,11 @@
   <ion-toolbar>
     <div class="ion-padding">
       <ion-item lines="none">
-        <ion-checkbox 
-        slot="start" 
-        [(ngModel)]="isAccepted">
-      </ion-checkbox>
-        <ion-label 
-        class="ion-text-wrap">
-        I have read and agree to the Terms and Conditions.
-      </ion-label>
-    </ion-item>
-
-      <ion-button 
-      expand="block" 
-      [disabled]="!isAccepted" 
-      (click)="dismiss(true)"
-      style="--padding-top: 15px; --padding-bottom: 15px";
-      >
-        Accept and Continue
+        <ion-checkbox slot="start" [(ngModel)]="isAccepted"></ion-checkbox>
+        <ion-label class="ion-text-wrap">{{ 'TERMS_PAGE.ACCEPT_LABEL' | translate }}</ion-label>
+      </ion-item>
+      <ion-button expand="block" [disabled]="!isAccepted" (click)="dismiss(true)" style="--padding-top: 15px; --padding-bottom: 15px;">
+        {{ 'TERMS_PAGE.ACCEPT_BTN' | translate }}
       </ion-button>
     </div>
   </ion-toolbar>
