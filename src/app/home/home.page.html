@@ -3,7 +3,7 @@
   <div class="welcome-header">
     <div class="text-container">
       <p class="welcome-text">Bienvenido</p>
-      <h1 class="username">Alberto Acosta</h1>
+      <h1 class="username"> {{ nombreUsuario }} {{ apellidoUsuario}} </h1>
       <p class="text-date">{{ currentDate | date:"EEEE, d 'de' MMMM 'de' yyyy":"":"es-AR" }}</p>
     </div>
     <div class="profile-button" (click)="goToProfile()">

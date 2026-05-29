@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { NutritionService } from '../services/nutrition';
+import { fetchUserAttributes } from 'aws-amplify/auth';
 
 @Component({
   selector: 'app-home',
@@ -27,6 +28,8 @@ export class HomePage implements OnInit {
   emptySpaces: number[] = [];
   rightNow: number = new Date().getDate();
   currentDate: Date = new Date();
+  nombreUsuario: string = '';
+  apellidoUsuario: string = '';
 
   generarCalendario() {
     const now = new Date();
@@ -44,19 +47,19 @@ export class HomePage implements OnInit {
     this.daysOfTheMonth = [];
     for (let i = 1; i <= numberOfDays; i++) {
       let consumptionExample = 0;
-      
-      if (i === 1) consumptionExample = 2100; 
-      if (i === 2) consumptionExample = 1500; 
-      if (i === 3) consumptionExample = 1500; 
-      if (i === 4) consumptionExample = 1500; 
-      if (i === 5) consumptionExample = 2300; 
-      if (i === 6) consumptionExample = 2300; 
-      if (i === 7) consumptionExample = 2400; 
-      if (i === 8) consumptionExample = 3400; 
-      if (i === 9) consumptionExample = 1200; 
-      if (i === 10) consumptionExample = 2100; 
-      if (i === 11) consumptionExample = 2550; 
-      if (i === 12) consumptionExample = 2670; 
+
+      if (i === 1) consumptionExample = 2100;
+      if (i === 2) consumptionExample = 1500;
+      if (i === 3) consumptionExample = 1500;
+      if (i === 4) consumptionExample = 1500;
+      if (i === 5) consumptionExample = 2300;
+      if (i === 6) consumptionExample = 2300;
+      if (i === 7) consumptionExample = 2400;
+      if (i === 8) consumptionExample = 3400;
+      if (i === 9) consumptionExample = 1200;
+      if (i === 10) consumptionExample = 2100;
+      if (i === 11) consumptionExample = 2550;
+      if (i === 12) consumptionExample = 2670;
       this.daysOfTheMonth.push({
         numero: i,
         consumido: consumptionExample,
@@ -65,19 +68,32 @@ export class HomePage implements OnInit {
     }
   }
 
- goToProfile() {
-  this.router.navigate(['/tabs/profile']); 
-}
+  goToProfile() {
+    this.router.navigate(['/tabs/profile']);
+  }
 
   constructor(private router: Router, private nutritionService: NutritionService) { }
 
-  ngOnInit() {
-  this.generarCalendario();
-  this.nutritionService.alimentos$.subscribe(() => {
-    const p = this.nutritionService.getPorcentajes();
-    this.percentageFats = p.grasas;
-    this.proteinPercentage = p.proteinas;
-    this.percentageCarbo = p.carbohidratos;
-  });
+  async ngOnInit() {
+    await this.generarCalendario();
+    await this.getUserInfo();
+    this.nutritionService.alimentos$.subscribe(() => {
+      const p = this.nutritionService.getPorcentajes();
+      this.percentageFats = p.grasas;
+      this.proteinPercentage = p.proteinas;
+      this.percentageCarbo = p.carbohidratos;
+    });
+  }
+
+  async getUserInfo() {
+    try {
+      const attributes = await fetchUserAttributes();
+      
+      this.nombreUsuario = attributes.given_name || '';
+      this.apellidoUsuario = attributes.family_name || '';
+      
+    } catch (error) {
+      console.error('Error al obtener atributos:', error);
+    }
   }
 }
