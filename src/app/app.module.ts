@@ -5,6 +5,7 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
+import { provideHttpClient } from '@angular/common/http';
 
 // Importaciones para el sistema de traducción
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
@@ -40,7 +41,8 @@ export class FakeLoader implements TranslateLoader {
   exports: [TranslateModule],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    { provide: LOCALE_ID, useValue: 'es-AR' }
+    { provide: LOCALE_ID, useValue: 'es-AR' },
+    provideHttpClient()
   ],
   bootstrap: [AppComponent],
 })

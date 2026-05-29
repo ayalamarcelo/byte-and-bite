@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, forwardRef } from '@angular/core';
 import { EdamamService } from '../services/edamam.service';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
@@ -23,7 +23,13 @@ export class SearchPage implements OnInit {
 
   private searchSubject = new Subject<string>();
 
-  constructor(private edamamService: EdamamService) {
+  // Inyectamos el servicio usando forwardRef para evitar dependencias circulares
+  constructor(
+    @Inject(forwardRef(() => EdamamService)) private edamamService: EdamamService
+  ) {}
+
+  ngOnInit() {
+    // La suscripción se mueve aquí para asegurar la inicialización correcta
     this.searchSubject.pipe(
       debounceTime(500),
       distinctUntilChanged(),
@@ -32,9 +38,7 @@ export class SearchPage implements OnInit {
       next: (respuesta: any) => this.resultadosBusqueda = respuesta?.hints || [],
       error: (err) => console.error("Error en búsqueda:", err)
     });
-  }
 
-  ngOnInit() {
     const guardado = localStorage.getItem('ultimoAlimento');
     if (guardado) this.alimentoSeleccionado = JSON.parse(guardado);
   }
@@ -49,12 +53,10 @@ export class SearchPage implements OnInit {
   }
 
   mostrarInfo(item: any) {
-
     if (this.itemExpandido === item) {
       this.itemExpandido = null;
       return;
     }
-
     this.itemExpandido = item;
 
     const cacheKey = item.food.label.toLowerCase();
@@ -73,12 +75,10 @@ export class SearchPage implements OnInit {
     });
   }
 
-  // getter para mostrar en pantalla automáticamente
   get totalCalorias(): number {
     return this.calcularTotalCalorias();
   }
 
-  // manual
   calcularTotalCalorias(): number {
     return this.listaConsumo.reduce((total, item) => {
       const kcalBase = item.food.nutrients?.ENERC_KCAL || 0;
@@ -112,7 +112,6 @@ export class SearchPage implements OnInit {
     localStorage.setItem('recientes', JSON.stringify(this.listaRecientes));
   }
 
-  // implementación de trackBy para evitar que Angular re-renderice toda la lista
   trackByFn(index: number, item: any) {
     return item.id || index;
   }
