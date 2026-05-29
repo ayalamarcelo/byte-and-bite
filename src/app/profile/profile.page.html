@@ -13,10 +13,19 @@
   <div class="cointainer">
     <div class="profile-card-container">
       <div class="ion-margin-bottom ion-justify-content-center" style="display: flex;">
-        <ion-avatar class="avatar"
-          style="width: 120px; height: 120px; background: var(--ion-color-light); display: flex; align-items: center; justify-content: center; border-radius: 50%;">
-          <img src="../../assets/images/avatar-user.png" />
+
+        <ion-avatar class="avatar" (click)="cambiarAvatar()"
+          style="width: 130px; height: 130px; background: var(--ion-color-light); display: flex; align-items: center; justify-content: center; border-radius: 50%; cursor: pointer;">
+
+          <img *ngIf="avatarService.avatar$ | async as avatar; else placeholder" [src]="avatar"
+            alt="Avatar del usuario" />
+
+          <ng-template #placeholder>
+            <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+          </ng-template>
+
         </ion-avatar>
+
       </div>
 
       <ion-card class="main-card">

@@ -95,3 +95,11 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
+
+# Plataformas nativas
+/android
+/ios
+
+# Otros archivos generados por Capacitor
+/www
+/dist
