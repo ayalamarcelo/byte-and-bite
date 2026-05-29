@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
-import { NutritionService } from '../services/nutrition';
+import { NutritionService } from '../services/nutrition.service';
   
 
 @Component({

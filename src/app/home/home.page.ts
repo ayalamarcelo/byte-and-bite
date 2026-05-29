@@ -3,7 +3,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { NutritionService } from '../services/nutrition';
+import { NutritionService } from '../services/nutrition.service';
 import { fetchUserAttributes } from 'aws-amplify/auth';
 
 @Component({

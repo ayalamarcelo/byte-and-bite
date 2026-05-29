@@ -9,6 +9,8 @@ import { UserService } from '../services/user.service';
 import { LanguageService } from '../services/language.service';
 
 import { TranslateService } from '@ngx-translate/core';
+import { AvatarService } from '../services/avatar.service';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 
 // Importaciones de AWS Amplify
@@ -44,7 +46,8 @@ export class ProfilePage implements OnInit {
     private authService: AuthService,
     private alertController: AlertController, // Agregado para los mensajes de éxito/error
     public userService: UserService,
-    public languageService: LanguageService
+    public languageService: LanguageService,
+    public avatarService: AvatarService
   ) {
     // Aseguramos que los iconos estén registrados
     addIcons({ createOutline, globeOutline });
@@ -160,5 +163,20 @@ export class ProfilePage implements OnInit {
 
   cambiarIdioma(event: any) {
     this.languageService.setLanguage(event.detail.value);
+  }
+
+  // LOGICA PARA CAMBIAR IMAGEN DE PERFIL
+
+  async cambiarAvatar() {
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: true,
+      resultType: CameraResultType.DataUrl,
+      source: CameraSource.Prompt
+    });
+
+    if (image.dataUrl) {
+      this.avatarService.updateAvatar(image.dataUrl);
+    }
   }
 }
