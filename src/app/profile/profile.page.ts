@@ -11,7 +11,7 @@ import { LanguageService } from '../services/language.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AvatarService } from '../services/avatar.service';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-
+import { ActionSheetController } from '@ionic/angular';
 
 // Importaciones de AWS Amplify
 import { fetchUserAttributes, updatePassword } from 'aws-amplify/auth';
@@ -42,12 +42,16 @@ export class ProfilePage implements OnInit {
   alertasActivas: boolean = false;
   recordatoriosActivos: boolean = true;
 
+  // menu
+  isMenuOpen = false;
+
   constructor(
     private authService: AuthService,
     private alertController: AlertController, // Agregado para los mensajes de éxito/error
     public userService: UserService,
     public languageService: LanguageService,
-    public avatarService: AvatarService
+    public avatarService: AvatarService,
+    private actionSheetCtrl: ActionSheetController
   ) {
     // Aseguramos que los iconos estén registrados
     addIcons({ createOutline, globeOutline });
@@ -167,16 +171,70 @@ export class ProfilePage implements OnInit {
 
   // LOGICA PARA CAMBIAR IMAGEN DE PERFIL
 
-  async cambiarAvatar() {
-    const image = await Camera.getPhoto({
-      quality: 90,
-      allowEditing: true,
-      resultType: CameraResultType.DataUrl,
-      source: CameraSource.Prompt
-    });
+  abrirMenu() {
+    this.isMenuOpen = true;
+  }
 
-    if (image.dataUrl) {
-      this.avatarService.updateAvatar(image.dataUrl);
+  async ejecutarCamara(usarCamara: boolean) {
+    this.isMenuOpen = false; // Cerramos nuestro menú
+
+    try {
+      const image = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: true,
+        resultType: CameraResultType.DataUrl,
+        // Aquí forzamos una opción u otra, ya no usamos Prompt
+        source: usarCamara ? CameraSource.Camera : CameraSource.Photos
+      });
+
+      if (image.dataUrl) {
+        this.avatarService.updateAvatar(image.dataUrl);
+      }
+    } catch (e) {
+      // Si el usuario cancela en el menú NATIVO, cae aquí.
+      console.log("Cancelado");
     }
+  }
+
+  async ejecutarSeleccion(usarCamara: boolean) {
+    this.isMenuOpen = false;
+
+    try {
+      const image = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: true,
+        resultType: CameraResultType.DataUrl,
+        source: usarCamara ? CameraSource.Camera : CameraSource.Photos
+      });
+
+      if (image.dataUrl) {
+        this.avatarService.updateAvatar(image.dataUrl);
+      }
+    } catch (e) {
+      console.log("Acción cancelada");
+    }
+  }
+
+  async abrirMenuOpciones() {
+    const actionSheet = await this.actionSheetCtrl.create({
+      header: 'Seleccionar imagen',
+      buttons: [
+        {
+          text: 'Cámara',
+          icon: 'camera',
+          handler: () => this.ejecutarSeleccion(true) // Aquí SÍ pasas el argumento
+        },
+        {
+          text: 'Galería',
+          icon: 'image',
+          handler: () => this.ejecutarSeleccion(false) // Aquí SÍ pasas el argumento
+        },
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        }
+      ]
+    });
+    await actionSheet.present();
   }
 }

@@ -1,4 +1,4 @@
-<ion-content [fullscreen]="true" class="ion-padding background-custom">
+<ion-content [fullscreen]="true" class="ion-padding">
 
   <div class="ion-no-border">
     <ion-toolbar mode="md">
@@ -10,11 +10,13 @@
     </ion-toolbar>
   </div>
 
+  <!-- AVATAR -->
   <div class="cointainer">
     <div class="profile-card-container">
-      <div class="ion-margin-bottom ion-justify-content-center" style="display: flex;">
+      <div class="ion-margin-bottom ion-justify-content-center"
+        style="position: relative; display: flex; width: 130px; margin: 0 auto;">
 
-        <ion-avatar class="avatar" (click)="cambiarAvatar()"
+        <ion-avatar class="avatar" (click)="abrirMenuOpciones()"
           style="width: 130px; height: 130px; background: var(--ion-color-light); display: flex; align-items: center; justify-content: center; border-radius: 50%; cursor: pointer;">
 
           <img *ngIf="avatarService.avatar$ | async as avatar; else placeholder" [src]="avatar"
@@ -23,10 +25,28 @@
           <ng-template #placeholder>
             <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
           </ng-template>
-
         </ion-avatar>
 
+        <div (click)="abrirMenuOpciones()"
+          style="position: relative; 
+          z-index: 2;  
+          bottom: 30px;
+          left: 50px; 
+          right: 0; 
+          background: var(--ion-color-primary); 
+          color: white; 
+          width: 35px; 
+          height: 35px; 
+          border-radius: 50%; 
+          display: flex; 
+          align-items: center; 
+          justify-content: center;  
+          cursor: pointer; 
+          box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+          <ion-icon name="camera-outline" style="font-size: 20px;"></ion-icon>
+        </div>
       </div>
+
 
       <ion-card class="main-card">
         <ion-card-content class="ion-text-center">

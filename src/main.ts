@@ -5,6 +5,7 @@ import  amplifyconfig  from '../amplifyconfiguration.json';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
+import { defineCustomElements } from '@ionic/pwa-elements/loader'; // pwa imágenes
 
 // config cognito
 
@@ -24,3 +25,5 @@ Amplify.configure({
 // arranca la app después
 platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.log(err));
+
+defineCustomElements(window);
