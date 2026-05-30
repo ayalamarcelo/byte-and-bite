@@ -190,12 +190,32 @@
           <ng-container *ngIf="campoEditando === 'contrasena'">
             <ion-item lines="outline" style="--border-radius: 10px; margin-top: 20px;">
               <ion-label position="floating">Contraseña Actual</ion-label>
-              <ion-input type="password" [(ngModel)]="oldPasswordInput"></ion-input>
+              <ion-input
+                [type]="showOldPassword ? 'text' : 'password'"
+                [(ngModel)]="oldPasswordInput">
+              </ion-input>
+              <ion-button slot="end" fill="clear" color="medium"
+                (click)="togglePasswordVisibility('old')"
+                style="margin-top: 10px;">
+                <ion-icon slot="icon-only"
+                  [name]="showOldPassword ? 'eye-off-outline' : 'eye-outline'">
+                </ion-icon>
+              </ion-button>
             </ion-item>
 
             <ion-item lines="outline" style="--border-radius: 10px; margin-top: 20px;">
               <ion-label position="floating">Nueva Contraseña</ion-label>
-              <ion-input type="password" [(ngModel)]="newPasswordInput"></ion-input>
+              <ion-input
+                [type]="showNewPassword ? 'text' : 'password'"
+                [(ngModel)]="newPasswordInput">
+              </ion-input>
+              <ion-button slot="end" fill="clear" color="medium"
+                (click)="togglePasswordVisibility('new')"
+                style="margin-top: 10px;">
+                <ion-icon slot="icon-only"
+                  [name]="showNewPassword ? 'eye-off-outline' : 'eye-outline'">
+                </ion-icon>
+              </ion-button>
             </ion-item>
           </ng-container>
 

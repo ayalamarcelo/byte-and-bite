@@ -45,6 +45,9 @@ export class ProfilePage implements OnInit {
   // menu
   isMenuOpen = false;
 
+  showOldPassword: boolean = false;
+  showNewPassword: boolean = false;
+
   constructor(
     private authService: AuthService,
     private alertController: AlertController, // Agregado para los mensajes de éxito/error
@@ -121,6 +124,16 @@ export class ProfilePage implements OnInit {
       // Limpiamos los inputs temporales antes de abrir el modal
       this.oldPasswordInput = '';
       this.newPasswordInput = '';
+      this.showOldPassword = false;
+      this.showNewPassword = false;
+    }
+  }
+
+    togglePasswordVisibility(campo: 'old' | 'new') {
+    if (campo === 'old') {
+      this.showOldPassword = !this.showOldPassword;
+    } else {
+      this.showNewPassword = !this.showNewPassword;
     }
   }
 
@@ -138,6 +151,8 @@ export class ProfilePage implements OnInit {
 
     this.isModalOpen = false;
   }
+
+
 
   onToggleChange(tipo: string) {
     const estado = tipo === 'recordatorios' ? this.recordatoriosActivos : this.alertasActivas;

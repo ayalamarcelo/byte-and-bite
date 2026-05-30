@@ -4,7 +4,7 @@
   "compilerOptions": {
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
+    /* "baseUrl": ".", */
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,

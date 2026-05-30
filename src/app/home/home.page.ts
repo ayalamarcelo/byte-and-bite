@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { IonicModule , NavController} from '@ionic/angular';
+/* import { Router } from '@angular/router'; */
 import { NutritionService } from '../services/nutrition.service';
 import { fetchUserAttributes } from 'aws-amplify/auth';
 import { AvatarService } from '../services/avatar.service';
@@ -35,11 +35,11 @@ export class HomePage implements OnInit {
 
 
   goToProfile() {
-    this.router.navigate(['/tabs/profile']);
+    this.navCtrl.navigateForward(['/tabs/profile']);
   }
 
   constructor(
-    private router: Router,
+    private navCtrl: NavController,
     private nutritionService: NutritionService,
     private avatarService: AvatarService) { }
 

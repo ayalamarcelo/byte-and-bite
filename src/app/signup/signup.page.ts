@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+/* import { Router } from '@angular/router'; */
 import { signUp } from 'aws-amplify/auth';
-import { AlertController, LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-signup',
@@ -20,7 +20,7 @@ export class SignupPage implements OnInit {
   termsAccepted = false;
 
   constructor(
-    private router: Router,
+    private navCtrl: NavController,
     private alertController: AlertController,
     private loadingController: LoadingController
   ) { }
@@ -68,6 +68,11 @@ export class SignupPage implements OnInit {
       console.error('Error en SignUp:', error);
       this.presentAlert('Error', error.message || 'Ocurrió un error en el registro');
     }
+  }
+  
+  //Navega de vuelta al login con animación de retroceso
+  goToLogin() {
+    this.navCtrl.navigateBack('/login');
   }
 
   async presentAlert(header: string, message: string) {
