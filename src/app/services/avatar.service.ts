@@ -2,20 +2,17 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root' // Esto garantiza que es un Singleton
 })
 export class AvatarService {
-  // url por defecto o null
-  private avatarSource = new BehaviorSubject<string | null>(null);
-  
+  // Inicializamos directamente desde el localStorage para que al cargar la app esté disponible
+  private avatarSource = new BehaviorSubject<string | null>(localStorage.getItem('user-avatar'));
+
+  // Exponemos el observable
   avatar$ = this.avatarSource.asObservable();
 
-  constructor() {}
-
-  // para actualizar la imagen desde cualquier página
   updateAvatar(newUrl: string) {
-    this.avatarSource.next(newUrl);
-    // persistencia
     localStorage.setItem('user-avatar', newUrl);
+    this.avatarSource.next(newUrl); // Esto notifica automáticamente a cualquier componente suscrito
   }
 }

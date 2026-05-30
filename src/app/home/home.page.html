@@ -1,28 +1,30 @@
 <ion-content [fullscreen]="true">
-  
-<div class="welcome-header">
-  <div class="text-container">
-    <p class="welcome-text">Bienvenido</p>
-    <h1 class="username"> {{ nombreUsuario }} {{ apellidoUsuario }} </h1>
-    <p class="text-date">{{ currentDate | date:"EEEE, d 'de' MMMM 'de' yyyy":"":"es-AR" }}</p>
+
+  <div class="welcome-header">
+    <div class="text-container">
+      <p class="welcome-text">Bienvenido</p>
+      <h1 class="username"> {{ nombreUsuario }} {{ apellidoUsuario }} </h1>
+      <p class="text-date">{{ currentDate | date:"EEEE, d 'de' MMMM 'de' yyyy":"":"es-AR" }}</p>
+    </div>
+    <div class="profile-button" (click)="goToProfile()">
+      <ion-avatar class="avatar-animated">
+        <img [src]="userAvatar || 'https://ionicframework.com/docs/img/demos/avatar.svg'" />
+
+        <img [src]="userAvatar || 'assets/default-avatar.png'" />
+        <ng-template #iconoGenerico>
+          <div class="generic-avatar-placeholder">
+            <ion-icon name="person-outline"></ion-icon>
+          </div>
+        </ng-template>
+      </ion-avatar>
+    </div>
   </div>
-  <div class="profile-button" (click)="goToProfile()">
-    <ion-avatar class="avatar-animated">
-      <img *ngIf="fotoPerfil; else iconoGenerico" [src]="fotoPerfil" alt="Foto de perfil" />
-      <ng-template #iconoGenerico>
-        <div class="generic-avatar-placeholder">
-          <ion-icon name="person-outline"></ion-icon>
-        </div>
-      </ng-template>
-    </ion-avatar>
-  </div>
-</div>
 
   <div class="circular-container">
     <svg viewBox="0 0 100 100" class="pie-chart">
       <circle class="circle-background" cx="50" cy="50" r="40" />
       <circle class="progress-circle" cx="50" cy="50" r="40" />
-      
+
       <text x="50" y="38" class="text-ratio">PROGRESO</text>
       <text x="50" y="58" class="text-number">1410</text>
       <text x="50" y="72" class="subtitle-text">Kcal Consumidas</text>
@@ -34,13 +36,10 @@
       <ion-label>Fecha de registro:</ion-label>
       <ion-datetime-button datetime="datetime"></ion-datetime-button>
     </ion-item>
-    
+
     <ion-modal [keepContentsMounted]="true">
       <ng-template>
-        <ion-datetime 
-          id="datetime" 
-          presentation="date" 
-          locale="es-AR">
+        <ion-datetime id="datetime" presentation="date" locale="es-AR">
         </ion-datetime>
       </ng-template>
     </ion-modal>
@@ -48,13 +47,14 @@
 
   <ion-card class="nutrition-card">
     <ion-card-content>
-      
+
       <div class="nutrient-row">
         <div class="nutrient-info">
           <ion-label>Grasas</ion-label>
           <span class="percentage-text">{{ percentageFats }}%</span>
         </div>
-        <ion-progress-bar style="--progress-background: #e0e0e0; --background: #f5f5f5;" [value]="percentageFats / 100"></ion-progress-bar>
+        <ion-progress-bar style="--progress-background: #e0e0e0; --background: #f5f5f5;"
+          [value]="percentageFats / 100"></ion-progress-bar>
       </div>
 
       <div class="nutrient-row">
@@ -62,7 +62,8 @@
           <ion-label>Proteínas</ion-label>
           <span class="percentage-text">{{ proteinPercentage }}%</span>
         </div>
-        <ion-progress-bar style="--progress-background: #e0e0e0; --background: #f5f5f5;" [value]="proteinPercentage / 100"></ion-progress-bar>
+        <ion-progress-bar style="--progress-background: #e0e0e0; --background: #f5f5f5;"
+          [value]="proteinPercentage / 100"></ion-progress-bar>
       </div>
 
       <div class="nutrient-row">
@@ -70,7 +71,8 @@
           <ion-label>Carbohidratos</ion-label>
           <span class="percentage-text">{{ percentageCarbo }}%</span>
         </div>
-        <ion-progress-bar style="--progress-background: #e0e0e0; --background: #f5f5f5;" [value]="percentageCarbo / 100"></ion-progress-bar>
+        <ion-progress-bar style="--progress-background: #e0e0e0; --background: #f5f5f5;"
+          [value]="percentageCarbo / 100"></ion-progress-bar>
       </div>
 
       <div class="divider"></div>
@@ -80,10 +82,11 @@
           <ion-label>Agua</ion-label>
           <span class="percentage-text">1500 / 2000 ml</span>
         </div>
-        
+
         <div class="progress-water">
           <ion-progress-bar class="water-bar" [value]="0.75"></ion-progress-bar>
-          <div class="text-over-bar">75%</div> </div>
+          <div class="text-over-bar">75%</div>
+        </div>
 
         <div class="measure-selector">
           <div class="custom-option">
@@ -91,7 +94,7 @@
             <span>150 ml</span>
             <ion-button size="small" fill="clear">Agregar</ion-button>
           </div>
-          
+
           <div class="custom-option">
             <ion-icon name="cafe-outline"></ion-icon>
             <span>250 ml</span>
@@ -109,10 +112,10 @@
     </ion-card-content>
   </ion-card>
 
-    <ion-card class="nutrition-card">
+  <ion-card class="nutrition-card">
     <ion-card-content>
       <ion-label class="micronutrient-title">Detalles adicionales</ion-label>
-      
+
       <div class="row-micronutrient">
         <span>Sodio</span>
         <strong>{{ sodioMg }} mg</strong>

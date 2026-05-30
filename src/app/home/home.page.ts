@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { NutritionService } from '../services/nutrition.service';
 import { fetchUserAttributes } from 'aws-amplify/auth';
+import { AvatarService } from '../services/avatar.service';
 
 @Component({
   selector: 'app-home',
@@ -13,6 +14,7 @@ import { fetchUserAttributes } from 'aws-amplify/auth';
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, DatePipe]
 })
+
 export class HomePage implements OnInit {
 
   fotoPerfil: string = '';
@@ -29,29 +31,44 @@ export class HomePage implements OnInit {
   nombreUsuario: string = '';
   apellidoUsuario: string = '';
 
+  userAvatar: string | null = null;
+
+
   goToProfile() {
     this.router.navigate(['/tabs/profile']);
   }
 
-  constructor(private router: Router, private nutritionService: NutritionService) { }
+  constructor(
+    private router: Router,
+    private nutritionService: NutritionService,
+    private avatarService: AvatarService) { }
 
   async ngOnInit() {
     await this.getUserInfo();
+
+    // 1. Suscripción a la nutrición (Independiente)
     this.nutritionService.alimentos$.subscribe(() => {
       const p = this.nutritionService.getPorcentajes();
       this.percentageFats = p.grasas;
       this.proteinPercentage = p.proteinas;
       this.percentageCarbo = p.carbohidratos;
     });
+
+    // 2. Suscripción al avatar (Independiente)
+    // Al estar fuera de la otra, siempre estará escuchando
+    this.avatarService.avatar$.subscribe(url => {
+      console.log('Avatar actualizado en Home:', url);
+      this.userAvatar = url;
+    });
   }
 
   async getUserInfo() {
     try {
       const attributes = await fetchUserAttributes();
-      
+
       this.nombreUsuario = attributes.given_name || '';
       this.apellidoUsuario = attributes.family_name || '';
-      
+
     } catch (error) {
       console.error('Error al obtener atributos:', error);
     }
