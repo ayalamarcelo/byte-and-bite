@@ -8,17 +8,26 @@ export class NutritionService {
 
   private alimentosAgregados: any[] = [];
   private alimentosSubject = new BehaviorSubject<any[]>([]);
-  alimentos$ = this.alimentosSubject.asObservable();
+  private aguaSubject = new BehaviorSubject<number>(0);
 
-  agregarAlimento(alimento: any, gramos: number) {
+  alimentos$ = this.alimentosSubject.asObservable();
+  agua$ = this.aguaSubject.asObservable();
+
+  agregarAlimento(alimentoEdamam: any, gramos: number) {
     const factor = gramos / 100;
+    const nutrients = alimentoEdamam.food.nutrients || {};
+
     const nuevo = {
-      nombre: alimento.nombre,
-      categoria: alimento.categoria,
-      kcal: Math.round(alimento.kcal * factor),
+      id: alimentoEdamam.food.foodId,
+      nombre: alimentoEdamam.food.label,
       gramos: gramos,
-      img: alimento.img
+      kcal: Math.round((nutrients.ENERC_KCAL || 0) * factor),
+      grasasG: (nutrients.FAT || 0) * factor,
+      proteinasG: (nutrients.PROCNT || 0) * factor,
+      carbohidratosG: (nutrients.CHOCDF || 0) * factor,
+      fibraG: (nutrients.FIBTG || 0) * factor
     };
+
     this.alimentosAgregados.push(nuevo);
     this.alimentosSubject.next([...this.alimentosAgregados]);
   }
@@ -28,19 +37,38 @@ export class NutritionService {
   }
 
   getPorcentajes() {
-    const porCategoria: any = { Grasas: 0, Proteínas: 0, Carbohidratos: 0 };
-    const total = this.getTotalKcal();
+    const gramosTotales = this.alimentosAgregados.reduce((totales, a) => {
+      totales.grasas += a.grasasG;
+      totales.proteinas += a.proteinasG;
+      totales.carbohidratos += a.carbohidratosG;
+      return totales;
+    }, { grasas: 0, proteinas: 0, carbohidratos: 0 });
 
-    this.alimentosAgregados.forEach(a => {
-      if (porCategoria[a.categoria] !== undefined) {
-        porCategoria[a.categoria] += a.kcal;
-      }
-    });
+    const sumaGramos = gramosTotales.grasas + gramosTotales.proteinas + gramosTotales.carbohidratos;
 
     return {
-      grasas: total > 0 ? Math.round((porCategoria['Grasas'] / total) * 100) : 0,
-      proteinas: total > 0 ? Math.round((porCategoria['Proteínas'] / total) * 100) : 0,
-      carbohidratos: total > 0 ? Math.round((porCategoria['Carbohidratos'] / total) * 100) : 0
+      grasas: sumaGramos > 0 ? Math.round((gramosTotales.grasas / sumaGramos) * 100) : 0,
+      proteinas: sumaGramos > 0 ? Math.round((gramosTotales.proteinas / sumaGramos) * 100) : 0,
+      carbohidratos: sumaGramos > 0 ? Math.round((gramosTotales.carbohidratos / sumaGramos) * 100) : 0
     };
+  }
+
+  getMicronutrientesTotales() {
+    const fibraTotal = this.alimentosAgregados.reduce((sum, a) => sum + a.fibraG, 0);
+    return {
+      sodio: 0,
+      fibra: Math.round(fibraTotal),
+      potasio: 0
+    };
+  }
+
+  sumarAgua(ml: number) {
+    const actual = this.aguaSubject.value;
+    this.aguaSubject.next(actual + ml);
+  }
+
+  vaciarContador() {
+    this.alimentosAgregados = [];
+    this.alimentosSubject.next([]);
   }
 }

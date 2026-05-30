@@ -18,15 +18,27 @@
   </div>
 </div>
 
-  <div class="circular-container">
+<div class="circular-container">
     <svg viewBox="0 0 100 100" class="pie-chart">
       <circle class="circle-background" cx="50" cy="50" r="40" />
-      <circle class="progress-circle" cx="50" cy="50" r="40" />
       
-      <text x="50" y="38" class="text-ratio">PROGRESO</text>
-      <text x="50" y="58" class="text-number">1410</text>
-      <text x="50" y="72" class="subtitle-text">Kcal Consumidas</text>
+      <circle class="progress-circle" 
+              cx="50" cy="50" r="40" 
+              stroke-dasharray="251.32" 
+              [attr.stroke-dashoffset]="strokeDashoffset" />
+      <text x="50" y="35" class="text-ratio">PROGRESO</text>
+      <text x="50" y="55" class="text-number">{{ totalKcal }}</text>
+      <text x="50" y="68" class="subtitle-text">Kcal Consumidas</text>
     </svg>
+
+    <div class="meta-input-container">
+      <span class="meta-label">Meta:</span>
+      <input type="number" 
+             [(ngModel)]="metaKcal" 
+             (input)="onMetaChange()" 
+             class="meta-editable-input" />
+      <span class="meta-unit">kcal</span>
+    </div>
   </div>
 
   <div class="date-selector-container ion-padding-horizontal ion-margin-bottom">
@@ -78,30 +90,31 @@
       <div class="water-section-unified">
         <div class="nutrient-info">
           <ion-label>Agua</ion-label>
-          <span class="percentage-text">1500 / 2000 ml</span>
+          <span class="percentage-text">{{ aguaConsumida }} / {{ aguaMeta }} ml</span>
         </div>
-        
+
         <div class="progress-water">
-          <ion-progress-bar class="water-bar" [value]="0.75"></ion-progress-bar>
-          <div class="text-over-bar">75%</div> </div>
+          <ion-progress-bar class="water-bar" [value]="porcentajeAgua"></ion-progress-bar>
+          <div class="text-over-bar">{{ porcentajeAguaEntero }}%</div> 
+        </div>
 
         <div class="measure-selector">
           <div class="custom-option">
             <ion-icon name="water-outline"></ion-icon>
             <span>150 ml</span>
-            <ion-button size="small" fill="clear">Agregar</ion-button>
+            <ion-button size="small" fill="clear" (click)="agregarAgua(150)">Agregar</ion-button>
           </div>
-          
+
           <div class="custom-option">
             <ion-icon name="cafe-outline"></ion-icon>
             <span>250 ml</span>
-            <ion-button size="small" fill="clear">Agregar</ion-button>
+            <ion-button size="small" fill="clear" (click)="agregarAgua(250)">Agregar</ion-button>
           </div>
 
           <div class="custom-option">
             <ion-icon name="beaker-outline"></ion-icon>
             <span>500 ml</span>
-            <ion-button size="small" fill="clear">Agregar</ion-button>
+            <ion-button size="small" fill="clear" (click)="agregarAgua(500)">Agregar</ion-button>
           </div>
         </div>
       </div>
