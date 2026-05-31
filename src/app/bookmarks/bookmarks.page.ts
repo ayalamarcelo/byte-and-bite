@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ToastController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 // import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -30,7 +30,8 @@ export class BookmarksPage implements OnInit {
   // Inyección de dependencias en el constructor
   constructor(
     private nutritionService: NutritionService, // Servicio para manejar la lógica nutricional (agregar al contador)
-    private firebaseService: FirebaseService // Servicio para interactuar con la base de datos de Firebase
+    private firebaseService: FirebaseService, // Servicio para interactuar con la base de datos de Firebase
+    private toastController: ToastController
   ) {}
 
   // Método del ciclo de vida de Angular que se ejecuta al inicializar el componente
@@ -123,14 +124,21 @@ export class BookmarksPage implements OnInit {
   }
 
   // Método para agregar el alimento con los gramos indicados al contador general (Home)
-  agregarAlHome(alimento: any) {
-    // Si no ingresó gramos o si los gramos son cero o menos, cancelamos la acción
+  async agregarAlHome(alimento: any) {
     if (!alimento.gramosSeleccionados || alimento.gramosSeleccionados <= 0) return;
     
-    // Llamamos al servicio de nutrición para añadir este alimento a los cálculos diarios
     this.nutritionService.agregarAlimento(alimento, alimento.gramosSeleccionados);
     
-    // Cerramos el menú del alimento para mejorar la experiencia de usuario
+    const gramosCargados = alimento.gramosSeleccionados;
     alimento.menuAbierto = false;
+    alimento.gramosSeleccionados = null;
+
+    const toast = await this.toastController.create({
+      message: `¡Alimentos añadidos con éxito al contador diario!`,
+      duration: 2000,
+      position: 'bottom',
+      color: 'success'
+    });
+    await toast.present();
   }
 }

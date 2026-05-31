@@ -73,9 +73,9 @@ export class HomePage implements OnInit {
       this.percentageCarbo = p.carbohidratos;
 
       const micros = this.nutritionService.getMicronutrientesTotales();
-      this.sodioMg = micros.sodio;
-      this.fibraG = micros.fibra;
-      this.potasioMg = micros.potasio;
+      this.sodioMg = Number(micros.sodio) || 0;
+      this.fibraG = Number(micros.fibra) || 0;
+      this.potasioMg = Number(micros.potasio) || 0;
       
       this.actualizarGrafico();
     });

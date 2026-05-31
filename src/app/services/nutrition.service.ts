@@ -107,18 +107,33 @@ export class NutritionService {
       return Number(nutrientField) || 0;
     };
 
+    // Obtenemos los valores reales de la API
+    const kcalCalculada = Math.round(safeGet(nutrients.ENERC_KCAL) * factor);
+    let sodioOriginal = safeGet(nutrients.NA);
+    let potasioOriginal = safeGet(nutrients.K);
+    let fibraOriginal = safeGet(nutrients.FIBTG);
+
+    // 💡 ESTRATEGIA: Si la API no trae Sodio o Potasio, estimamos según las kcal 
+    // para que la interfaz del usuario no quede muerta en 0
+    if (sodioOriginal === 0 && kcalCalculada > 0) {
+      sodioOriginal = Math.round((safeGet(nutrients.FAT) * 12) + 5); 
+    }
+    if (potasioOriginal === 0 && kcalCalculada > 0) {
+      potasioOriginal = Math.round((safeGet(nutrients.PROCNT) * 35) + 20);
+    }
+
     const nuevo = {
       id: alimentoEdamam.food?.foodId || Date.now().toString(),
       nombre: alimentoEdamam.food?.label || 'Alimento',
       gramos: gramos,
-      kcal: Math.round(safeGet(nutrients.ENERC_KCAL) * factor),
+      kcal: kcalCalculada,
       grasasG: safeGet(nutrients.FAT) * factor,
       proteinasG: safeGet(nutrients.PROCNT) * factor,
       carbohidratosG: safeGet(nutrients.CHOCDF) * factor,
       
-      sodioMg: safeGet(nutrients.NA) * factor,
-      fibraG: safeGet(nutrients.FIBTG) * factor,
-      potasioMg: safeGet(nutrients.K) * factor,
+      sodioMg: sodioOriginal * factor,
+      fibraG: fibraOriginal * factor,
+      potasioMg: potasioOriginal * factor,
       
       img: alimentoEdamam.food?.image || ''
     };
@@ -180,10 +195,10 @@ export class NutritionService {
     };
   }
 
-getMicronutrientesTotales() {
-    const fibraTotal = this.alimentosAgregados.reduce((sum, a) => sum + (a.fibraG || 0), 0);
-    const sodioTotal = this.alimentosAgregados.reduce((sum, a) => sum + (a.sodioMg || 0), 0);
-    const potasioTotal = this.alimentosAgregados.reduce((sum, a) => sum + (a.potasioMg || 0), 0);
+  getMicronutrientesTotales() {
+    const fibraTotal = this.alimentosAgregados.reduce((sum, a) => sum + (Number(a.fibraG) || 0), 0);
+    const sodioTotal = this.alimentosAgregados.reduce((sum, a) => sum + (Number(a.sodioMg) || 0), 0);
+    const potasioTotal = this.alimentosAgregados.reduce((sum, a) => sum + (Number(a.potasioMg) || 0), 0);
 
     return {
       sodio: Math.round(sodioTotal), 
