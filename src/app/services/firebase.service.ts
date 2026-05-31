@@ -33,7 +33,7 @@ export class FirebaseService {
   async getBookmarks(userId: string) {
     const q = query(collection(db, 'bookmarks'), where('userId', '==', userId));
     const snapshot = await getDocs(q);
-    return snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+    return snapshot.docs.map((d: any) => ({ id: d.id, ...d.data() }));
   }
 
   async eliminarBookmark(id: string) {
