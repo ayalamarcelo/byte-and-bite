@@ -17,6 +17,7 @@ export class HomePage implements OnInit {
   percentageFats: number = 30;
   proteinPercentage: number = 60;
   percentageCarbo: number = 10;
+  totalKcal: number = 0;
 
   sodioMg: number = 1500;
   fibraG: number = 25;
@@ -78,6 +79,7 @@ export class HomePage implements OnInit {
     this.percentageFats = p.grasas;
     this.proteinPercentage = p.proteinas;
     this.percentageCarbo = p.carbohidratos;
+    this.totalKcal = this.nutritionService.getTotalKcal();
   });
   }
 }
