@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule , NavController} from '@ionic/angular';
-/* import { Router } from '@angular/router'; */
+// import { Router } from '@angular/router';
 import { NutritionService } from '../services/nutrition.service';
 import { fetchUserAttributes } from 'aws-amplify/auth';
 import { AvatarService } from '../services/avatar.service';

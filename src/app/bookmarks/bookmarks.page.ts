@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+// import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
@@ -16,7 +16,7 @@ import { getCurrentUser } from 'aws-amplify/auth';
   templateUrl: './bookmarks.page.html',
   styleUrls: ['./bookmarks.page.scss'],
   standalone: true, // Indica que este componente es independiente y no requiere estar declarado en un ngModule
-  imports: [IonicModule, CommonModule, RouterLink, FormsModule] // Módulos necesarios para la vista (UI, directivas de Angular, enrutamiento, formularios)
+  imports: [IonicModule, CommonModule, FormsModule] // Módulos necesarios para la vista (UI, directivas de Angular, enrutamiento, formularios)
 })
 export class BookmarksPage implements OnInit {
 
