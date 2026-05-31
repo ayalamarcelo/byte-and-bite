@@ -3,7 +3,11 @@ import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { NutritionService } from '../services/nutrition';
+import { HttpClient } from '@angular/common/http';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
+import { NutritionService } from '../services/nutrition.service';
 import { FirebaseService } from '../services/firebase.service';
 import { getCurrentUser } from 'aws-amplify/auth';
 

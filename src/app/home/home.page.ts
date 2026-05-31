@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
-import { Router } from '@angular/router';
-import { NutritionService } from '../services/nutrition';
+import { IonicModule , NavController} from '@ionic/angular';
+/* import { Router } from '@angular/router'; */
+import { NutritionService } from '../services/nutrition.service';
+import { fetchUserAttributes } from 'aws-amplify/auth';
+import { AvatarService } from '../services/avatar.service';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +14,11 @@ import { NutritionService } from '../services/nutrition';
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, DatePipe]
 })
+
 export class HomePage implements OnInit {
+
+  fotoPerfil: string = '';
+  currentDate: Date = new Date();
 
   percentageFats: number = 30;
   proteinPercentage: number = 60;
@@ -23,63 +29,58 @@ export class HomePage implements OnInit {
   fibraG: number = 25;
   potasioMg: number = 3500;
 
-  nameMonth: string = '';
-  daysOfTheMonth: any[] = [];
-  emptySpaces: number[] = [];
-  rightNow: number = new Date().getDate();
-  currentDate: Date = new Date();
+  nombreUsuario: string = '';
+  apellidoUsuario: string = '';
 
-  generarCalendario() {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = now.getFullYear() === 2026 && now.getMonth() === 4 ? 4 : now.getMonth();
+  userAvatar: string | null = null;
 
-    const options: Intl.DateTimeFormatOptions = { month: 'long', year: 'numeric' };
-    this.nameMonth = now.toLocaleDateString('es-ES', options);
 
-    const numberOfDays = new Date(year, month + 1, 0).getDate();
+  goToProfile() {
+    this.navCtrl.navigateForward(['/tabs/profile']);
+  }
 
-    const firstDayOfTheWeek = new Date(year, month, 1).getDay();
-    this.emptySpaces = Array(firstDayOfTheWeek).fill(0);
+  constructor(
+    private navCtrl: NavController,
+    private nutritionService: NutritionService,
+    private avatarService: AvatarService) { }
 
-    this.daysOfTheMonth = [];
-    for (let i = 1; i <= numberOfDays; i++) {
-      let consumptionExample = 0;
-      
-      if (i === 1) consumptionExample = 2100; 
-      if (i === 2) consumptionExample = 1500; 
-      if (i === 3) consumptionExample = 1500; 
-      if (i === 4) consumptionExample = 1500; 
-      if (i === 5) consumptionExample = 2300; 
-      if (i === 6) consumptionExample = 2300; 
-      if (i === 7) consumptionExample = 2400; 
-      if (i === 8) consumptionExample = 3400; 
-      if (i === 9) consumptionExample = 1200; 
-      if (i === 10) consumptionExample = 2100; 
-      if (i === 11) consumptionExample = 2550; 
-      if (i === 12) consumptionExample = 2670; 
-      this.daysOfTheMonth.push({
-        numero: i,
-        consumido: consumptionExample,
-        meta: 2000
-      });
+  async ngOnInit() {
+    await this.getUserInfo();
+
+    // 1. Suscripción a la nutrición (Independiente)
+    this.nutritionService.alimentos$.subscribe(() => {
+      const p = this.nutritionService.getPorcentajes();
+      this.percentageFats = p.grasas;
+      this.proteinPercentage = p.proteinas;
+      this.percentageCarbo = p.carbohidratos;
+      this.totalKcal = this.nutritionService.getTotalKcal();
+    });
+
+    // 2. Suscripción al avatar (Independiente)
+    // Al estar fuera de la otra, siempre estará escuchando
+    this.avatarService.avatar$.subscribe(url => {
+      console.log('Avatar actualizado en Home:', url);
+      this.userAvatar = url;
+    });
+  }
+
+  async getUserInfo() {
+    try {
+      const attributes = await fetchUserAttributes();
+
+      this.nombreUsuario = attributes.given_name || '';
+      this.apellidoUsuario = attributes.family_name || '';
+
+    } catch (error) {
+      console.error('Error al obtener atributos:', error);
     }
   }
 
- goToProfile() {
-  this.router.navigate(['/tabs/profile']); 
-}
-
-  constructor(private router: Router, private nutritionService: NutritionService) { }
-
-  ngOnInit() {
-  this.generarCalendario();
-  this.nutritionService.alimentos$.subscribe(() => {
-    const p = this.nutritionService.getPorcentajes();
-    this.percentageFats = p.grasas;
-    this.proteinPercentage = p.proteinas;
-    this.percentageCarbo = p.carbohidratos;
-    this.totalKcal = this.nutritionService.getTotalKcal();
-  });
+  async cambiarFoto() {
+    try {
+      console.log('Abriendo la galería o cámara del dispositivo...');
+    } catch (error) {
+      console.error('Error al seleccionar la foto:', error);
+    }
   }
 }

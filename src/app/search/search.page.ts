@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { Component, OnInit, Inject, forwardRef } from '@angular/core';
 import { EdamamService } from '../services/edamam.service';
 import { FirebaseService } from '../services/firebase.service';
 import { getCurrentUser } from 'aws-amplify/auth';
-import { NutritionService } from '../services/nutrition';
+import { NutritionService } from '../services/nutrition.service';
 import { ToastController } from '@ionic/angular';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-search',
@@ -13,13 +14,23 @@ import { ToastController } from '@ionic/angular';
   standalone: false, // Este componente pertenece a un módulo (SearchPageModule)
 })
 export class SearchPage implements OnInit {
-  
   // Variables de estado del buscador y de la UI
   query: string = ''; // Lo que el usuario escribe en la barra de búsqueda
   resultadosBusqueda: any[] = []; // Resultados que devuelve la API de Edamam
   alimentoSeleccionado: any = null; // El alimento que el usuario eligió de la lista
-  historial: any[] = []; // Últimas 5 búsquedas que hizo el usuario
+  historial: any[] = []; // Últimas 5 búsquedas que hizo el usuario (Mantenido para compatibilidad)
   userId: string = ''; // ID del usuario logueado en Amplify
+
+  // Variables agregadas por el equipo para el nuevo diseño
+  listaRecientes: any[] = [];
+  listaConsumo: any[] = [];
+  alimentoParaEditar: any = null;
+  isModalOpen = false;
+  isInfoModalOpen: boolean = false;
+  cache: { [key: string]: any } = {};
+  itemExpandido: any = null;
+
+  private searchSubject = new Subject<string>();
 
   // Objeto para organizar las comidas ingresadas manualmente (no lo usamos en el home actualmente)
   comidas: any = {
@@ -30,23 +41,39 @@ export class SearchPage implements OnInit {
 
   tipoComida: 'desayuno' | 'almuerzo' | 'cena' = 'desayuno'; // Por defecto agrega al desayuno
   cantidad: number = 100; // Gramos por defecto que se muestran en el contador
-  private lastQuery = ''; // Guarda la última búsqueda para no repetir peticiones a la API
   defaultImage: string = 'https://ionicframework.com/docs/img/demos/card-media.png'; // Imagen de relleno por si falla la original
 
-  // Inyección de servicios (API externa, Base de Datos, Nutrición local y Notificaciones)
+  // Inyectamos el servicio usando forwardRef para evitar dependencias circulares y añadimos nuestros servicios
   constructor(
-    private edamamService: EdamamService,
+    @Inject(forwardRef(() => EdamamService)) private edamamService: EdamamService,
     private firebaseService: FirebaseService,
     private nutritionService: NutritionService,
     private toastController: ToastController
-  ) { }
+  ) {}
 
   // Se ejecuta cuando la página de búsqueda se inicia
   async ngOnInit() {
+    // La suscripción se mueve aquí para asegurar la inicialización correcta del buscador con RxJS
+    this.searchSubject.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap(query => this.edamamService.buscarAlimento(query))
+    ).subscribe({
+      next: (respuesta: any) => this.resultadosBusqueda = respuesta?.hints || [],
+      error: (err) => console.error("Error en búsqueda:", err)
+    });
+
     // 1. Recupera si había un alimento seleccionado anteriormente de la memoria local
     const guardado = localStorage.getItem('ultimoAlimento');
-    if (guardado) {
-      this.alimentoSeleccionado = JSON.parse(guardado);
+    if (guardado) this.alimentoSeleccionado = JSON.parse(guardado);
+  }
+
+  async onSearchChange(event: any) {
+    const valor = event.detail.value;
+    if (valor && valor.length >= 3) {
+      this.searchSubject.next(valor);
+    } else {
+      this.resultadosBusqueda = [];
     }
     // 2. Intenta obtener el ID del usuario de AWS Amplify para usarlo en Firebase luego
     try {
@@ -81,27 +108,39 @@ export class SearchPage implements OnInit {
     await toast.present();
   }
 
-  // Se dispara cada vez que el usuario teclea en el buscador
-  async onSearchChange(event: any) {
-    const valor = event.detail.value;
-    
-    // Si borró todo o escribió menos de 3 letras, limpiamos la lista
-    if (!valor || valor.length < 3) {
-      this.resultadosBusqueda = [];
+  mostrarInfo(item: any) {
+    if (this.itemExpandido === item) {
+      this.itemExpandido = null;
       return;
     }
-    
-    // Evita volver a buscar exactamente lo mismo que ya se buscó hace 1 segundo
-    if (valor === this.lastQuery) return;
-    this.lastQuery = valor;
+    this.itemExpandido = item;
 
-    try {
-      // Hace la petición POST/GET a la API de Edamam y espera la respuesta
-      const respuesta: any = await firstValueFrom(this.edamamService.buscarAlimento(valor));
-      this.resultadosBusqueda = respuesta?.hints || []; // Guarda los resultados para mostrarlos
-    } catch (error) {
-      console.error(error);
+    const cacheKey = item.food.label.toLowerCase();
+    if (this.cache[cacheKey]) {
+      this.alimentoSeleccionado = this.cache[cacheKey];
+      return;
     }
+
+    this.edamamService.getFoodDetails(item.food.label).subscribe({
+      next: (data: any) => {
+        if (data.hints && data.hints.length > 0) {
+          this.cache[cacheKey] = data.hints[0];
+          this.alimentoSeleccionado = data.hints[0];
+        }
+      }
+    });
+  }
+
+  get totalCalorias(): number {
+    return this.calcularTotalCalorias();
+  }
+
+  calcularTotalCalorias(): number {
+    return this.listaConsumo.reduce((total, item) => {
+      const kcalBase = item.food.nutrients?.ENERC_KCAL || 0;
+      const porcion = item.cantidad || 100;
+      return total + (kcalBase * (porcion / 100));
+    }, 0);
   }
 
   // Cuando el usuario elige un ítem de la lista desplegable de resultados
@@ -118,11 +157,18 @@ export class SearchPage implements OnInit {
     localStorage.setItem('ultimoAlimento', JSON.stringify(this.alimentoSeleccionado));
     this.resultadosBusqueda = []; // Esconde la lista desplegable
 
-    // Agrega el alimento al historial (las últimas 5 búsquedas) sin repetir
+    // Lógica combinada de historial reciente
+    if (!this.listaRecientes.find(i => i.food.foodId === item.food.foodId)) {
+      this.listaRecientes.unshift(item);
+      localStorage.setItem('recientes', JSON.stringify(this.listaRecientes));
+    }
+    
     if (!this.historial.find(h => h.food.label === food.label)) {
       this.historial.unshift(item);
       this.historial = this.historial.slice(0, 5); // Corta el array para que solo queden 5
     }
+    this.query = '';
+    this.resultadosBusqueda = [];
   }
 
   // Borra un ítem del historial reciente de búsquedas
@@ -191,11 +237,24 @@ export class SearchPage implements OnInit {
     return 'General'; // Por las dudas
   }
 
-  // Obtiene el total de calorías consumidas hoy desde el servicio de nutrición
-  get totalCalorias() {
-    return this.nutritionService.getTotalKcal();
+  // Funciones agregadas por el equipo para el nuevo diseño modal y tracking
+  agregarAContador(item: any) {
+    this.alimentoParaEditar = { ...item, cantidad: 100 };
+    this.isModalOpen = true;
   }
 
-  // Si la imagen original se rompe o no carga, le enchufa una por defecto para no romper el diseño
-  onImgError(event: any) { event.target.src = this.defaultImage; }
+  confirmarSeleccion() {
+    this.listaConsumo.push(this.alimentoParaEditar);
+    this.isModalOpen = false;
+    this.alimentoParaEditar = null;
+  }
+
+  eliminarReciente(item: any) {
+    this.listaRecientes = this.listaRecientes.filter(i => i.food.foodId !== item.food.foodId);
+    localStorage.setItem('recientes', JSON.stringify(this.listaRecientes));
+  }
+
+  trackByFn(index: number, item: any) {
+    return item.id || index;
+  }
 }

@@ -35,9 +35,15 @@ importers:
       '@aws-amplify/ui-angular':
         specifier: ^5.3.3
         version: 5.3.3(@angular/common@20.3.18(@angular/core@20.3.18(@angular/compiler@20.3.18)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.3.18(@angular/compiler@20.3.18)(rxjs@7.8.2)(zone.js@0.15.1))(@aws-amplify/core@6.16.2)(aws-amplify@6.16.4)(rxjs@7.8.2)
+      '@capacitor/android':
+        specifier: ^8.3.4
+        version: 8.3.4(@capacitor/core@8.3.0)
       '@capacitor/app':
         specifier: 8.1.0
         version: 8.1.0(@capacitor/core@8.3.0)
+      '@capacitor/camera':
+        specifier: ^8.2.0
+        version: 8.2.0(@capacitor/core@8.3.0)
       '@capacitor/core':
         specifier: 8.3.0
         version: 8.3.0
@@ -53,6 +59,9 @@ importers:
       '@ionic/angular':
         specifier: ^8.0.0
         version: 8.8.4(ea2d63b421c41b5e4537ce9b00d63dfd)
+      '@ionic/pwa-elements':
+        specifier: ^3.4.0
+        version: 3.4.0
       '@ngx-translate/core':
         specifier: ^17.0.0
         version: 17.0.0(@angular/common@20.3.18(@angular/core@20.3.18(@angular/compiler@20.3.18)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.3.18(@angular/compiler@20.3.18)(rxjs@7.8.2)(zone.js@0.15.1))
@@ -1186,8 +1195,18 @@ packages:
     resolution: {integrity: sha512-LwdZHpScM4Qz8Xw2iKSzS+cfglZzJGvofQICy7W7v4caru4EaAmyUuO6BGrbyQ2mYV11W0U8j5mBhd14dd3B0A==}
     engines: {node: '>=6.9.0'}
 
+  '@capacitor/android@8.3.4':
+    resolution: {integrity: sha512-7gJjrG3X32Am1QMLqgMztWTYMLMVNE+VZwhekNxhvYizH4mOV05vH+rC9B+f17bCkYZfyu/qXQX6hoY7kLeVZw==}
+    peerDependencies:
+      '@capacitor/core': ^8.3.0
+
   '@capacitor/app@8.1.0':
     resolution: {integrity: sha512-MlmttTOWHDedr/G4SrhNRxsXMqY+R75S4MM4eIgzsgCzOYhb/MpCkA5Q3nuOCfL1oHm26xjUzqZ5aupbOwdfYg==}
+    peerDependencies:
+      '@capacitor/core': '>=8.0.0'
+
+  '@capacitor/camera@8.2.0':
+    resolution: {integrity: sha512-hYfrT6xpL936qoEkIpJzSnb0fQCaTkOux1cXzGBfH8QLOGqr6gSLiWZlZz/fqMPmMKJMNRBqlTQkj5fuMhVZog==}
     peerDependencies:
       '@capacitor/core': '>=8.0.0'
 
@@ -1764,6 +1783,10 @@ packages:
   '@ionic/core@8.8.4':
     resolution: {integrity: sha512-RWts/72xtNNJDZQtntMRxB68KDctq76INV5OmLWWc0rlgcxOlNQDNH+lTBH7kV9vQ78JDVGSgi10ax3oQ3dIIQ==}
     engines: {node: '>= 16'}
+
+  '@ionic/pwa-elements@3.4.0':
+    resolution: {integrity: sha512-WmL7An4NOsvJvct4V/A8hudr+yXgLBHYmxzqWGsetZmzN7C6suLRS/KIh2P1t8cSYCYL7HRrbv8NrIChPkh6Ow==}
+    engines: {node: '>=16.0.0', npm: '>=8.0.0'}
 
   '@ionic/utils-array@2.1.6':
     resolution: {integrity: sha512-0JZ1Zkp3wURnv8oq6Qt7fMPo5MpjbLoUoa9Bu2Q4PJuSDWM8H8gwF3dQO7VTeUj3/0o1IB1wGkFWZZYgUXZMUg==}
@@ -8045,7 +8068,15 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.28.5
 
+  '@capacitor/android@8.3.4(@capacitor/core@8.3.0)':
+    dependencies:
+      '@capacitor/core': 8.3.0
+
   '@capacitor/app@8.1.0(@capacitor/core@8.3.0)':
+    dependencies:
+      '@capacitor/core': 8.3.0
+
+  '@capacitor/camera@8.2.0(@capacitor/core@8.3.0)':
     dependencies:
       '@capacitor/core': 8.3.0
 
@@ -8481,6 +8512,8 @@ snapshots:
       '@stencil/core': 4.43.0
       ionicons: 8.0.13
       tslib: 2.8.1
+
+  '@ionic/pwa-elements@3.4.0': {}
 
   '@ionic/utils-array@2.1.6':
     dependencies:

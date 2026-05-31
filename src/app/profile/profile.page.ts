@@ -1,10 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common'; 
-import { FormsModule } from '@angular/forms'; 
-import { IonicModule } from '@ionic/angular'; 
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { IonicModule, AlertController } from '@ionic/angular';
 import { AuthService } from '../services/auth';
 import { addIcons } from 'ionicons';
-import { createOutline } from 'ionicons/icons';
+import { createOutline, globeOutline } from 'ionicons/icons';
+import { UserService } from '../services/user.service';
+import { LanguageService } from '../services/language.service';
+
+import { TranslateService } from '@ngx-translate/core';
+import { AvatarService } from '../services/avatar.service';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { ActionSheetController } from '@ionic/angular';
+
+// Importaciones de AWS Amplify
+import { fetchUserAttributes, updatePassword } from 'aws-amplify/auth';
 
 @Component({
   selector: 'app-profile',
@@ -13,41 +23,138 @@ import { createOutline } from 'ionicons/icons';
   standalone: false
 })
 export class ProfilePage implements OnInit {
+  // Datos Físicos
   edad: number = 25;
-  peso : number = 68;
-  altura : number = 1.78
-  contrasena: number = 12345;
-  isModalOpen: boolean = false; // Controla el pop-up
-  campoEditando: string = '';   // Guarda qué estamos editando
-  valorTemporal: number = 0;    // Valor que se escribe en el input
+  peso: number = 68;
+  altura: number = 1.78;
 
-  openEditModal(campo: string) {
-  this.campoEditando = campo;
-  this.isModalOpen = true;
-  
-  // Aquí es donde luego abriremos el modal
-  if (campo === 'edad') this.valorTemporal = this.edad; 
-  if (campo === 'peso') this.valorTemporal = this.peso; 
-  if (campo === 'altura') this.valorTemporal = this.altura; 
-  if (campo === 'contrasena') this.valorTemporal = this.contrasena; 
-}
-  // se guardan los cambios en el modal
-  saveChanges(){
-  if (this.campoEditando === 'edad') this.edad = this.valorTemporal;
-  if (this.campoEditando === 'peso') this.peso = this.valorTemporal;
-  if (this.campoEditando === 'altura') this.altura = this.valorTemporal;
-  if (this.campoEditando === 'contrasena') this.contrasena = this.valorTemporal;
-    this.isModalOpen = false;
-  }
-   
+  // Datos de Cuenta (AWS Amplify)
+  userEmail: string = 'Cargando...';
+  oldPasswordInput: string = '';
+  newPasswordInput: string = '';
+
+  // Control del Modal
+  isModalOpen: boolean = false;
+  campoEditando: string = '';
+  valorTemporal: any = 0; // Cambiado a 'any' para soportar tanto números (edad) como texto   
+
+  // Preferencias
   alertasActivas: boolean = false;
   recordatoriosActivos: boolean = true;
-  constructor(private authService: AuthService) { 
-    addIcons({ createOutline });
+
+  // menu
+  isMenuOpen = false;
+
+  showOldPassword: boolean = false;
+  showNewPassword: boolean = false;
+
+  constructor(
+    private authService: AuthService,
+    private alertController: AlertController, // Agregado para los mensajes de éxito/error
+    public userService: UserService,
+    public languageService: LanguageService,
+    public avatarService: AvatarService,
+    private actionSheetCtrl: ActionSheetController
+  ) {
+    // Aseguramos que los iconos estén registrados
+    addIcons({ createOutline, globeOutline });
   }
-  ngOnInit() { }
-    // Activa y desactiva loas notificaciones
-    onToggleChange(tipo: string) {
+
+  async ngOnInit() {
+    await Promise.all([
+      this.cargarEmailUsuario(),
+      this.userService.loadUserData(),
+    ]);
+
+    console.log("Datos cargados correctamente");
+  }
+
+  // ==========================================
+  // LÓGICA DE SEGURIDAD (AWS COGNITO)
+  // ==========================================
+
+  async cargarEmailUsuario() {
+    try {
+      const attributes = await fetchUserAttributes();
+      this.userEmail = attributes.email || 'Email no disponible';
+    } catch (error) {
+      console.error('Error al obtener atributos de AWS:', error);
+      this.userEmail = 'Error de conexión';
+    }
+  }
+
+  async actualizarPasswordCognito() {
+    if (!this.oldPasswordInput || !this.newPasswordInput) {
+      this.presentAlert('Aviso', 'Debes ingresar tu contraseña actual y la nueva.');
+      return;
+    }
+
+    try {
+      // Impacta directamente en el backend de AWS
+      await updatePassword({
+        oldPassword: this.oldPasswordInput,
+        newPassword: this.newPasswordInput
+      });
+
+      this.presentAlert('Éxito', 'Tu contraseña ha sido actualizada correctamente.');
+
+      // Cerramos modal y limpiamos campos por seguridad
+      this.isModalOpen = false;
+      this.oldPasswordInput = '';
+      this.newPasswordInput = '';
+
+    } catch (error: any) {
+      console.error('Error actualizando contraseña:', error);
+      this.presentAlert('Error', error.message || 'No se pudo actualizar la contraseña.');
+    }
+  }
+
+  // ==========================================
+  // LÓGICA DE LA INTERFAZ Y MODAL
+  // ==========================================
+
+  openEditModal(campo: string) {
+    this.campoEditando = campo;
+    this.isModalOpen = true;
+
+    if (campo === 'edad') this.valorTemporal = this.edad;
+    if (campo === 'peso') this.valorTemporal = this.peso;
+    if (campo === 'altura') this.valorTemporal = this.altura;
+    if (campo === 'contrasena') {
+      // Limpiamos los inputs temporales antes de abrir el modal
+      this.oldPasswordInput = '';
+      this.newPasswordInput = '';
+      this.showOldPassword = false;
+      this.showNewPassword = false;
+    }
+  }
+
+    togglePasswordVisibility(campo: 'old' | 'new') {
+    if (campo === 'old') {
+      this.showOldPassword = !this.showOldPassword;
+    } else {
+      this.showNewPassword = !this.showNewPassword;
+    }
+  }
+
+  saveChanges() {
+    // Si estamos editando la contraseña, delegamos la acción a AWS y salimos de la función
+    if (this.campoEditando === 'contrasena') {
+      this.actualizarPasswordCognito();
+      return;
+    }
+
+    // Si son datos físicos, se actualizan las variables locales
+    if (this.campoEditando === 'edad') this.edad = this.valorTemporal;
+    if (this.campoEditando === 'peso') this.peso = this.valorTemporal;
+    if (this.campoEditando === 'altura') this.altura = this.valorTemporal;
+
+    this.isModalOpen = false;
+  }
+
+
+
+  onToggleChange(tipo: string) {
     const estado = tipo === 'recordatorios' ? this.recordatoriosActivos : this.alertasActivas;
     console.log(`Estado de ${tipo}:`, estado);
   }
@@ -56,5 +163,93 @@ export class ProfilePage implements OnInit {
     await this.authService.logout();
   }
 
-  
+  // ==========================================
+  // UTILIDADES
+  // ==========================================
+
+  async presentAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+
+  get idiomaSeleccionado() {
+    return this.languageService.getCurrentLang();
+  }
+
+  cambiarIdioma(event: any) {
+    this.languageService.setLanguage(event.detail.value);
+  }
+
+  // LOGICA PARA CAMBIAR IMAGEN DE PERFIL
+
+  abrirMenu() {
+    this.isMenuOpen = true;
+  }
+
+  async ejecutarCamara(usarCamara: boolean) {
+    this.isMenuOpen = false; // Cerramos nuestro menú
+
+    try {
+      const image = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: true,
+        resultType: CameraResultType.DataUrl,
+        // Aquí forzamos una opción u otra, ya no usamos Prompt
+        source: usarCamara ? CameraSource.Camera : CameraSource.Photos
+      });
+
+      if (image.dataUrl) {
+        this.avatarService.updateAvatar(image.dataUrl);
+      }
+    } catch (e) {
+      // Si el usuario cancela en el menú NATIVO, cae aquí.
+      console.log("Cancelado");
+    }
+  }
+
+  async ejecutarSeleccion(usarCamara: boolean) {
+    this.isMenuOpen = false;
+
+    try {
+      const image = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: true,
+        resultType: CameraResultType.DataUrl,
+        source: usarCamara ? CameraSource.Camera : CameraSource.Photos
+      });
+
+      if (image.dataUrl) {
+        this.avatarService.updateAvatar(image.dataUrl);
+      }
+    } catch (e) {
+      console.log("Acción cancelada");
+    }
+  }
+
+  async abrirMenuOpciones() {
+    const actionSheet = await this.actionSheetCtrl.create({
+      header: 'Seleccionar imagen',
+      buttons: [
+        {
+          text: 'Cámara',
+          icon: 'camera',
+          handler: () => this.ejecutarSeleccion(true) // Aquí SÍ pasas el argumento
+        },
+        {
+          text: 'Galería',
+          icon: 'image',
+          handler: () => this.ejecutarSeleccion(false) // Aquí SÍ pasas el argumento
+        },
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        }
+      ]
+    });
+    await actionSheet.present();
+  }
 }

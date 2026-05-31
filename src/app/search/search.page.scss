@@ -1,3 +1,17 @@
+/* --- Estilos Generales --- */
+.total-value {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--ion-color-primary);
+}
+
+.label-text {
+  font-size: 0.75rem;
+  color: var(--ion-color-medium);
+  font-weight: bold;
+}
+
+/* --- Card: Promo / Tip --- */
 .native-promo-card {
   border-radius: 10px;
   background-color: #91ff6f;
@@ -11,9 +25,8 @@
 
   .image-wrapper {
     height: 100px;
-    display: block;
-    align-items: stretch;
-
+    display: flex;
+    align-items: center;
 
     img {
       width: 100%;
@@ -42,20 +55,72 @@
   }
 }
 
-.label-text {
-  font-size: 0.75rem;
-  color: var(--ion-color-medium);
-  font-weight: bold;
+/* --- Modales --- */
+ion-modal {
+  --backdrop-opacity: 0.6;
 }
 
-.total-value {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: var(--ion-color-secondary);
+.custom-floating-modal {
+  --width: 500px;
+  --height: auto;
+  --max-width: 90vw;
+}
+
+.modal-wrapper {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Contador / Lista de Consumo --- */
+.custom-divider {
+  --background: transparent;
+  min-height: 0.5px;
+  height: 0.5px;
+  background-color: #333;
+  opacity: 0.3;
+  margin: 0 16px;
+}
+
+.summary-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+
+  h3 {
+    margin: 0;
+    color: var(--ion-color-primary);
+    font-size: 1.5em;
+  }
 }
 
 .summary-footer {
   margin-top: 15px;
   padding-top: 10px;
   border-top: 1px solid #eee;
+}
+
+.contador-footer {
+  margin-top: 20px;
+  padding: 20px;
+  background: #1e1e1e;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
+
+ion-footer {
+  background: white;
+  padding: 16px;
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.05);
+
+  .footer-container {
+    max-width: 500px;
+    margin: 0 auto;
+  }
 }

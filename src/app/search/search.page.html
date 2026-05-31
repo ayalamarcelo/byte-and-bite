@@ -4,10 +4,10 @@
     show-clear-button="always" clear-icon="trash-bin" value="Custom Clear Icon">
   </ion-searchbar>
 
-  <!-- DROPDOWN DEL SEARCH -->
   <ion-list *ngIf="resultadosBusqueda.length > 0" class="search-dropdown">
-    <ion-item *ngFor="let item of resultadosBusqueda.slice(0,5)">
-      <ion-label (click)="seleccionarAlimento(item)">
+    <ion-item *ngFor="let item of resultadosBusqueda.slice(0,3); trackBy: trackByFn" button
+      (click)="seleccionarAlimento(item)">
+      <ion-label>
         {{ item.food.label }}
       </ion-label>
       <div slot="end">
@@ -21,38 +21,85 @@
     </ion-item>
   </ion-list>
 
-  <!-- LISTA DE ITEMS -->
-  <p style="font-size: 18px;" class="ion-paddings">Recientes</p>
+  <!--RECIENTES-->
+  <p style="font-size: 18px;">Recientes</p>
   <hr style="border: 0; border-top: 0.5px solid #5c5d61; margin: 10px 0;">
-  
-  <div *ngIf="historial.length === 0" style="padding: 10px; color: #888;" class="ion-text-center">
-    No hay búsquedas recientes
+
+  <div *ngIf="listaRecientes.length > 0; else noHayRecientes">
+
+    <ng-container *ngFor="let item of listaRecientes; trackBy: trackByFn">
+
+      <ion-item>
+        <ion-thumbnail slot="start">
+          <img [src]="item.food.image || 'https://ionicframework.com/docs/img/demos/thumbnail.svg'" />
+        </ion-thumbnail>
+
+        <ion-label>
+          <h2>{{ item.food.label }}</h2>
+          <p>{{ item.food.nutrients?.ENERC_KCAL | number:'1.0-0' }} kcal</p>
+        </ion-label>
+
+        <div slot="end" class="ion-no-margin">
+          <ion-button fill="clear" color="medium" (click)="mostrarInfo(item)">
+            <ion-icon name="chevron-down-outline" mode="md"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" color="medium" (click)="agregarAContador(item)">
+            <ion-icon name="add-outline" mode="md"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" color="medium" (click)="guardarBookmark(item)">
+            <ion-icon name="bookmark-outline" mode="md"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" color="medium" (click)="eliminarReciente(item)">
+            <ion-icon name="trash-outline" mode="md"></ion-icon>
+          </ion-button>
+        </div>
+      </ion-item>
+
+      <!-- DESPLEGABLE -->
+      <div *ngIf="itemExpandido === item" class="info-desplegable">
+        <ion-list>
+          <ion-item>
+            <ion-label>Carbohidratos</ion-label>
+            <ion-note slot="end">{{ item.food.nutrients.CHOCDF | number:'1.1-1' }} g</ion-note>
+          </ion-item>
+          <ion-item>
+            <ion-label>Grasas</ion-label>
+            <ion-note slot="end">{{ item.food.nutrients.FAT | number:'1.1-1' }} g</ion-note>
+          </ion-item>
+        </ion-list>
+      </div>
+
+    </ng-container>
   </div>
 
-  <ion-item *ngFor="let item of historial">
-    <ion-thumbnail slot="start">
-      <img [src]="item.food.image || defaultImage" (error)="onImgError($event)" />
-    </ion-thumbnail>
-
-    <ion-label (click)="seleccionarAlimento(item)">
-      <h2>{{ item.food.label }}</h2>
-      <p>{{ item.food.nutrients?.ENERC_KCAL | number:'1.0-0' }} kcal</p>
-    </ion-label>
-
-    <div slot="end" class="ion-no-margin">
-      <ion-button fill="clear" color="medium" (click)="seleccionarAlimento(item)">
-        <ion-icon name="add-outline" mode="md"></ion-icon>
-      </ion-button>
-      <ion-button fill="clear" color="medium" (click)="guardarBookmark(item)">
-        <ion-icon name="bookmark-outline" mode="md"></ion-icon>
-      </ion-button>
-      <ion-button fill="clear" color="medium" (click)="eliminarDeHistorial(item)">
-        <ion-icon name="trash-outline" mode="md"></ion-icon>
-      </ion-button>
+  <!-- MUESTRA -->
+  <ng-template #noHayRecientes>
+    <div class="ion-text-center ion-padding" style="color: #999;">
+      <ion-icon name="basket-outline" style="font-size: 35px; display: block; margin: 0 auto 10px;"></ion-icon>
+      <p>No tienes elementos recientes.</p>
     </div>
-  </ion-item>
+  </ng-template>
 
-  <!-- CARD Publicitaria -->
+  <!-- MODAL CALCULO GRAMOS -->
+  <ion-modal [isOpen]="isModalOpen" (didDismiss)="isModalOpen = false" class="custom-floating-modal">
+    <ng-template>
+      <div class="modal-wrapper" *ngIf="alimentoParaEditar">
+        <h3 class="ion-padding-bottom">Configurar cantidad</h3>
+
+        <ion-item lines="none">
+          <ion-label position="stacked">Gramos</ion-label>
+          <ion-input type="number" [(ngModel)]="alimentoParaEditar.cantidad"></ion-input>
+        </ion-item>
+
+        <div class="ion-padding-top">
+          <ion-button expand="block" (click)="confirmarSeleccion()">Agregar</ion-button>
+          <ion-button expand="block" fill="clear" (click)="isModalOpen = false" color="medium">Cancelar</ion-button>
+        </div>
+      </div>
+    </ng-template>
+  </ion-modal>
+
+  <!-- PROMO CARD -->
   <ion-card class="native-promo-card">
     <ion-card-content class="ion-no-padding">
       <ion-grid class="ion-padding">
@@ -74,50 +121,50 @@
     </ion-card-content>
   </ion-card>
 
-  <!-- CONTADOR CALORIAS -->
+  <!-- CONTADOR -->
+
   <p style="font-size: 18px;">Contador</p>
   <hr style="border: 0; border-top: 0.5px solid #5c5d61; margin: 10px 0;">
 
-  <ion-card>
-    <ion-card-content>
-      <ion-item lines="none">
-        <ion-thumbnail slot="start">
-          <img alt="Alimento" [src]="alimentoSeleccionado?.image || defaultImage" (error)="onImgError($event)" />
-        </ion-thumbnail>
+  <ion-card class="fixed-card">
+    <ion-card-content class="ion-no-padding content-wrapper">
 
-        <ion-label>
-          <h2>{{ alimentoSeleccionado?.label || 'Selecciona un alimento' }}</h2>
-          <p>Cantidad base: 100g</p>
-        </ion-label>
+      <ion-list lines="none" class="scroll-container">
+        <ion-item *ngFor="let item of listaConsumo; let i = index; trackBy: trackByFn">
+          <ion-thumbnail slot="start">
+            <img [src]="item.food.image || 'https://ionicframework.com/docs/img/demos/thumbnail.svg'" />
+          </ion-thumbnail>
+          <ion-label>
+            <h2>{{ item.food.label }}</h2>
+            <p>{{ item.cantidad }}g</p>
+          </ion-label>
+          <ion-note slot="end" color="medium">
+            <strong>{{ (item.food.nutrients?.ENERC_KCAL * (item.cantidad / 100)) | number:'1.0-0' }} kcal</strong>
+          </ion-note>
+        </ion-item>
 
-        <ion-note slot="end" color="primary">
-          <strong style="font-size: 16px;">{{ alimentoSeleccionado ? (alimentoSeleccionado.nutrients?.ENERC_KCAL | number:'1.0-0') + ' kcal' : '' }}</strong>
-        </ion-note>
-      </ion-item>
+        <!-- MUESTRA -->
+        <div *ngIf="listaConsumo.length === 0" style="text-align: center; color: #999; padding: 20px;">
+          <ion-icon name="basket-outline" style="font-size: 35px; display: block; margin: 0 auto 10px;"></ion-icon>
+          <p>Registra tu progreso y míralo aquí.</p>
+        </div>
+      </ion-list>
 
-      <hr />
-
-      <ion-grid>
-        <ion-row>
-          <ion-col size="6">
-            <div class="label-text">GRAMOS</div>
-            <ion-input [(ngModel)]="cantidad" placeholder="100" type="number" class="custom-input"></ion-input>
-          </ion-col>
-          <ion-col size="6" class="ion-text-right">
-            <div class="label-text">TOTAL</div>
-            <div class="total-value">{{ (alimentoSeleccionado ? (alimentoSeleccionado.nutrients?.ENERC_KCAL * cantidad / 100) : 0) | number:'1.0-0' }} kcal</div>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-
-      <div class="summary-footer">
-        <p>Total calorías consumidas:</p>
-        <h3>{{ totalCalorias | number:'1.0-0' }} kcal</h3>
+      <div>
+        <ion-item-divider class="custom-divider"></ion-item-divider>
+        <div class="ion-padding">
+          <ion-item lines="none">
+            <ion-label>Total calorías:</ion-label>
+            <ion-note slot="end" color="dark">
+              <strong class="total-value">{{ totalCalorias | number:'1.0-0' }} kcal</strong>
+            </ion-note>
+          </ion-item>
+          <ion-button expand="block" class="ion-margin-top" [disabled]="listaConsumo.length === 0">
+            Agregar
+          </ion-button>
+        </div>
       </div>
-
-      <ion-button expand="block" fill="solid" class="ion-margin-top" (click)="agregarAlimentoDesdeContador()" [disabled]="!alimentoSeleccionado">
-        Agregar
-      </ion-button>
     </ion-card-content>
   </ion-card>
+
 </ion-content>

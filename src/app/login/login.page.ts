@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+/* import { Router } from '@angular/router'; */
 import { signIn } from 'aws-amplify/auth';
-import { AlertController, LoadingController, ModalController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController, NavController } from '@ionic/angular';
 import { ConfirmSignupPage } from '../confirm-signup/confirm-signup.page';
 import { signInWithRedirect } from 'aws-amplify/auth';
 
@@ -18,7 +18,7 @@ export class LoginPage implements OnInit {
   password = '';
 
   constructor(
-    private router: Router,
+    private navCtrl: NavController,
     private alertController: AlertController,
     private loadingController: LoadingController,
     private modalController: ModalController
@@ -56,7 +56,7 @@ export class LoginPage implements OnInit {
 
       if (isSignedIn) {
         // usuario autenticado completamente
-        this.router.navigate(['/tabs/home'], { replaceUrl: true });
+        this.navCtrl.navigateRoot(['/tabs/home'], { replaceUrl: true });
       } else {
         // manejo de estados intermedios de cognito
         switch (nextStep.signInStep) {
@@ -85,7 +85,7 @@ export class LoginPage implements OnInit {
             break;
 
           case 'DONE':
-            this.router.navigate(['/tabs/home'], { replaceUrl: true });
+            this.navCtrl.navigateRoot(['/tabs/home'], { replaceUrl: true });
             break;
 
           default:
@@ -112,6 +112,6 @@ export class LoginPage implements OnInit {
     await alert.present();
   }
 
-  goToWelcome() { this.router.navigate(['/welcome']); }
-  goToSignUp() { this.router.navigate(['/signup']); }
+  goToWelcome() { this.navCtrl.navigateBack(['/welcome']); }
+  goToSignUp() { this.navCtrl.navigateForward(['/signup']); }
 }
