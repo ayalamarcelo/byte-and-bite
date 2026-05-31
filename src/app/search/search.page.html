@@ -159,9 +159,12 @@
               <strong class="total-value">{{ totalCalorias | number:'1.0-0' }} kcal</strong>
             </ion-note>
           </ion-item>
-          <ion-button expand="block" class="ion-margin-top" [disabled]="listaConsumo.length === 0">
-            Agregar
-          </ion-button>
+            <ion-button 
+              expand="block" 
+              class="ion-margin-top" 
+              [disabled]="listaConsumo.length === 0"
+              (click)="transferirAlimentosAHome()"> Agregar
+            </ion-button>
         </div>
       </div>
     </ion-card-content>

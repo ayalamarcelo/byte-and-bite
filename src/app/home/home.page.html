@@ -20,15 +20,27 @@
     </div>
   </div>
 
-  <div class="circular-container">
+<div class="circular-container">
     <svg viewBox="0 0 100 100" class="pie-chart">
       <circle class="circle-background" cx="50" cy="50" r="40" />
-      <circle class="progress-circle" cx="50" cy="50" r="40" />
-
-      <text x="50" y="38" class="text-ratio">PROGRESO</text>
-      <text x="50" y="58" class="text-number">{{ totalKcal }}</text>
-      <text x="50" y="72" class="subtitle-text">Kcal Consumidas</text>
+      
+      <circle class="progress-circle" 
+              cx="50" cy="50" r="40" 
+              stroke-dasharray="251.32" 
+              [attr.stroke-dashoffset]="strokeDashoffset" />
+      <text x="50" y="35" class="text-ratio">PROGRESO</text>
+      <text x="50" y="55" class="text-number">{{ totalKcal }}</text>
+      <text x="50" y="68" class="subtitle-text">Kcal Consumidas</text>
     </svg>
+
+    <div class="meta-input-container">
+      <span class="meta-label">Meta:</span>
+      <input type="number" 
+             [(ngModel)]="metaKcal" 
+             (input)="onMetaChange()" 
+             class="meta-editable-input" />
+      <span class="meta-unit">kcal</span>
+    </div>
   </div>
 
   <div class="date-selector-container ion-padding-horizontal ion-margin-bottom">
@@ -36,10 +48,13 @@
       <ion-label>Fecha de registro:</ion-label>
       <ion-datetime-button datetime="datetime"></ion-datetime-button>
     </ion-item>
-
+    
     <ion-modal [keepContentsMounted]="true">
       <ng-template>
-        <ion-datetime id="datetime" presentation="date" locale="es-AR">
+        <ion-datetime 
+          id="datetime" 
+          presentation="date" 
+          locale="es-AR">
         </ion-datetime>
       </ng-template>
     </ion-modal>
@@ -47,14 +62,13 @@
 
   <ion-card class="nutrition-card">
     <ion-card-content>
-
+      
       <div class="nutrient-row">
         <div class="nutrient-info">
           <ion-label>Grasas</ion-label>
           <span class="percentage-text">{{ percentageFats }}%</span>
         </div>
-        <ion-progress-bar style="--progress-background: #e0e0e0; --background: #f5f5f5;"
-          [value]="percentageFats / 100"></ion-progress-bar>
+        <ion-progress-bar style="--progress-background: #e0e0e0; --background: #f5f5f5;" [value]="percentageFats / 100"></ion-progress-bar>
       </div>
 
       <div class="nutrient-row">
@@ -62,8 +76,7 @@
           <ion-label>Proteínas</ion-label>
           <span class="percentage-text">{{ proteinPercentage }}%</span>
         </div>
-        <ion-progress-bar style="--progress-background: #e0e0e0; --background: #f5f5f5;"
-          [value]="proteinPercentage / 100"></ion-progress-bar>
+        <ion-progress-bar style="--progress-background: #e0e0e0; --background: #f5f5f5;" [value]="proteinPercentage / 100"></ion-progress-bar>
       </div>
 
       <div class="nutrient-row">
@@ -71,8 +84,7 @@
           <ion-label>Carbohidratos</ion-label>
           <span class="percentage-text">{{ percentageCarbo }}%</span>
         </div>
-        <ion-progress-bar style="--progress-background: #e0e0e0; --background: #f5f5f5;"
-          [value]="percentageCarbo / 100"></ion-progress-bar>
+        <ion-progress-bar style="--progress-background: #e0e0e0; --background: #f5f5f5;" [value]="percentageCarbo / 100"></ion-progress-bar>
       </div>
 
       <div class="divider"></div>
@@ -80,31 +92,31 @@
       <div class="water-section-unified">
         <div class="nutrient-info">
           <ion-label>Agua</ion-label>
-          <span class="percentage-text">1500 / 2000 ml</span>
+          <span class="percentage-text">{{ aguaConsumida }} / {{ aguaMeta }} ml</span>
         </div>
 
         <div class="progress-water">
-          <ion-progress-bar class="water-bar" [value]="0.75"></ion-progress-bar>
-          <div class="text-over-bar">75%</div>
+          <ion-progress-bar class="water-bar" [value]="porcentajeAgua"></ion-progress-bar>
+          <div class="text-over-bar">{{ porcentajeAguaEntero }}%</div> 
         </div>
 
         <div class="measure-selector">
           <div class="custom-option">
             <ion-icon name="water-outline"></ion-icon>
             <span>150 ml</span>
-            <ion-button size="small" fill="clear">Agregar</ion-button>
+            <ion-button size="small" fill="clear" (click)="agregarAgua(150)">Agregar</ion-button>
           </div>
 
           <div class="custom-option">
             <ion-icon name="cafe-outline"></ion-icon>
             <span>250 ml</span>
-            <ion-button size="small" fill="clear">Agregar</ion-button>
+            <ion-button size="small" fill="clear" (click)="agregarAgua(250)">Agregar</ion-button>
           </div>
 
           <div class="custom-option">
             <ion-icon name="beaker-outline"></ion-icon>
             <span>500 ml</span>
-            <ion-button size="small" fill="clear">Agregar</ion-button>
+            <ion-button size="small" fill="clear" (click)="agregarAgua(500)">Agregar</ion-button>
           </div>
         </div>
       </div>
@@ -116,18 +128,21 @@
     <ion-card-content>
       <ion-label class="micronutrient-title">Detalles adicionales</ion-label>
 
-      <div class="row-micronutrient">
+      <div class="row-micronutrient" style="padding: 10px 0; border-bottom: 0.5px solid #5c5d61;">
         <span>Sodio</span>
-        <strong>{{ sodioMg }} mg</strong>
+        <strong color="dark">{{ sodioMg }} mg</strong>
       </div>
-      <div class="row-micronutrient">
+
+      <div class="row-micronutrient" style="padding: 10px 0; border-bottom: 0.5px solid #5c5d61;">
         <span>Fibra</span>
-        <strong>{{ fibraG }} g</strong>
+        <strong color="dark">{{ fibraG }} g</strong>
       </div>
-      <div class="row-micronutrient">
+
+      <div class="row-micronutrient" style="padding: 10px 0;">
         <span>Potasio</span>
-        <strong>{{ potasioMg }} mg</strong>
+        <strong color="dark">{{ potasioMg }} mg</strong>
       </div>
+
     </ion-card-content>
   </ion-card>
 

@@ -244,9 +244,29 @@ export class SearchPage implements OnInit {
   }
 
   confirmarSeleccion() {
-    this.listaConsumo.push(this.alimentoParaEditar);
+    if (this.alimentoParaEditar) {
+      this.listaConsumo.push(this.alimentoParaEditar);
+    }
     this.isModalOpen = false;
     this.alimentoParaEditar = null;
+  }
+
+  async transferirAlimentosAHome() {
+    if (this.listaConsumo.length === 0) return;
+
+    this.listaConsumo.forEach(item => {
+      this.nutritionService.agregarAlimentoEdamam(item, item.cantidad || 100);
+    });
+
+    const toast = await this.toastController.create({
+      message: `¡Alimentos añadidos con éxito al contador diario!`,
+      duration: 2000,
+      position: 'bottom',
+      color: 'success'
+    });
+    await toast.present();
+
+    this.listaConsumo = [];
   }
 
   eliminarReciente(item: any) {

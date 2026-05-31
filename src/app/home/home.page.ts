@@ -20,14 +20,31 @@ export class HomePage implements OnInit {
   fotoPerfil: string = '';
   currentDate: Date = new Date();
 
-  percentageFats: number = 30;
-  proteinPercentage: number = 60;
-  percentageCarbo: number = 10;
   totalKcal: number = 0;
 
-  sodioMg: number = 1500;
-  fibraG: number = 25;
-  potasioMg: number = 3500;
+  metaKcal: number = 2000;
+  strokeDashoffset: number = 251.32;
+
+  percentageFats: number = 0;
+  proteinPercentage: number = 0;
+  percentageCarbo: number = 0;
+
+  sodioMg: number = 0;
+  fibraG: number = 0;
+  potasioMg: number = 0;
+
+  progresoSodio: number = 0;
+  progresoFibra: number = 0;
+  progresoPotasio: number = 0;
+
+  metaSodio: number = 2300; 
+  metaFibra: number = 30;   
+  metaPotasio: number = 3500; 
+
+  aguaConsumida: number = 0;
+  aguaMeta: number = 2000;
+  porcentajeAgua: number = 0;
+  porcentajeAguaEntero: number = 0;
 
   nombreUsuario: string = '';
   apellidoUsuario: string = '';
@@ -47,30 +64,61 @@ export class HomePage implements OnInit {
   async ngOnInit() {
     await this.getUserInfo();
 
-    // 1. Suscripción a la nutrición (Independiente)
-    this.nutritionService.alimentos$.subscribe(() => {
-      const p = this.nutritionService.getPorcentajes();
+    this.nutritionService.alimentos$.subscribe(alimentos => {
+      this.totalKcal = this.nutritionService.getTotalKcal();
+
+      const p = this.nutritionService.getPorcentajesMacros();
       this.percentageFats = p.grasas;
       this.proteinPercentage = p.proteinas;
       this.percentageCarbo = p.carbohidratos;
-      this.totalKcal = this.nutritionService.getTotalKcal();
+
+      const micros = this.nutritionService.getMicronutrientesTotales();
+      this.sodioMg = micros.sodio;
+      this.fibraG = micros.fibra;
+      this.potasioMg = micros.potasio;
+      
+      this.actualizarGrafico();
     });
 
-    // 2. Suscripción al avatar (Independiente)
-    // Al estar fuera de la otra, siempre estará escuchando
+    this.nutritionService.agua$.subscribe(ml => {
+      this.aguaConsumida = ml;
+      this.porcentajeAgua = this.aguaConsumida / this.aguaMeta; 
+      this.porcentajeAguaEntero = Math.round(this.porcentajeAgua * 100);
+    });
+
     this.avatarService.avatar$.subscribe(url => {
       console.log('Avatar actualizado en Home:', url);
       this.userAvatar = url;
     });
   }
 
+  actualizarGrafico() {
+    if (this.metaKcal <= 0) this.metaKcal = 1;
+    
+    const porcentaje = this.totalKcal / this.metaKcal;
+    const circunferencia = 2 * Math.PI * 40;
+    const factorProgreso = Math.min(porcentaje, 1);
+    
+    this.strokeDashoffset = circunferencia - (factorProgreso * circunferencia);
+  }
+
+  onMetaChange() {
+    if (!this.metaKcal || this.metaKcal < 0) {
+      this.metaKcal = 0;
+    }
+    this.actualizarGrafico();
+  }
+
+  agregarAgua(cantidadMl: number) {
+    this.nutritionService.sumarAgua(cantidadMl);
+  }
+
+
   async getUserInfo() {
     try {
       const attributes = await fetchUserAttributes();
-
       this.nombreUsuario = attributes.given_name || '';
       this.apellidoUsuario = attributes.family_name || '';
-
     } catch (error) {
       console.error('Error al obtener atributos:', error);
     }
