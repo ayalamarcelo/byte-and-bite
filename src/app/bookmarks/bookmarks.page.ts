@@ -123,15 +123,41 @@ export class BookmarksPage implements OnInit {
     alimento.gramosSeleccionados = gramos;
   }
 
-  // Método para agregar el alimento con los gramos indicados al contador general (Home)
   async agregarAlHome(alimento: any) {
     if (!alimento.gramosSeleccionados || alimento.gramosSeleccionados <= 0) return;
     
-    this.nutritionService.agregarAlimento(alimento, alimento.gramosSeleccionados);
+    let grasas = Number(alimento.grasasG) || 0;
+    let proteinas = Number(alimento.proteinasG) || 0;
+    let carbs = Number(alimento.carbohidratosG) || 0;
+
+    if (grasas === 0 && proteinas === 0 && carbs === 0 && alimento.kcal > 0) {
+      carbs = Math.round((alimento.kcal * 0.5) / 4);
+      proteinas = Math.round((alimento.kcal * 0.3) / 4);
+      grasas = Math.round((alimento.kcal * 0.2) / 9);
+    }
+
+    const mapeadoParaServicio = {
+      food: {
+        label: alimento.nombre,
+        foodId: alimento.id || Date.now().toString(),
+        image: alimento.img || '',
+        nutrients: {
+          ENERC_KCAL: alimento.kcal || 0,
+          FAT: grasas,
+          PROCNT: proteinas,
+          CHOCDF: carbs,
+          NA: alimento.sodioMg || 0,
+          FIBTG: alimento.fibraG || 0,
+          K: alimento.potasioMg || 0
+        }
+      }
+    };
+
+    await this.nutritionService.agregarAlimentoEdamam(mapeadoParaServicio, alimento.gramosSeleccionados);
     
     const gramosCargados = alimento.gramosSeleccionados;
     alimento.menuAbierto = false;
-    alimento.gramosSeleccionados = null;
+    alimento.gramosSeleccionados = null; 
 
     const toast = await this.toastController.create({
       message: `¡Alimentos añadidos con éxito al contador diario!`,
