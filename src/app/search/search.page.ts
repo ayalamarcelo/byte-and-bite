@@ -84,21 +84,28 @@ export class SearchPage implements OnInit {
     }
   }
 
-  // Método que sube un alimento a la colección "bookmarks" de Firebase
   async guardarBookmark(item: any) {
-    if (!this.userId) return; // Validación de seguridad: no guardar si no hay sesión
+    if (!this.userId) return; 
     
     const food = item.food;
-    // Llama al servicio de Firebase para meter el dato en Firestore
+    const nutrients = food.nutrients || {};
+
     await this.firebaseService.agregarBookmark(this.userId, {
       nombre: food.label,
-      categoria: this.determinarCategoria(food.nutrients), // Asigna la categoría inteligentemente
-      kcal: Math.round(food.nutrients?.ENERC_KCAL || 0),
-      gramos: 100, // Siempre se guarda tomando 100g como base en favoritos
-      img: food.image || this.defaultImage
+      categoria: this.determinarCategoria(nutrients), 
+      kcal: Math.round(nutrients.ENERC_KCAL || 0),
+      gramos: 100, 
+      img: food.image || this.defaultImage,
+      
+      grasasG: nutrients.FAT || 0,
+      proteinasG: nutrients.PROCNT || 0,
+      carbohidratosG: nutrients.CHOCDF || 0,
+      
+      sodioMg: nutrients.NA || 0,
+      fibraG: nutrients.FIBTG || 0,
+      potasioMg: nutrients.K || 0
     });
 
-    // Muestra un cartelito verde abajo avisando que se agrego a bookmarks
     const toast = await this.toastController.create({
       message: `${food.label} Agregado a Bookmarks`,
       duration: 1500,
