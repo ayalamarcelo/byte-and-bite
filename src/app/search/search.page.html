@@ -1,7 +1,6 @@
-<!-- SEARCH -->
 <ion-content class="ion-padding">
-  <ion-searchbar placeholder="Buscar alimento" [(ngModel)]="query" (ionInput)="onSearchChange($event)" debounce="800"
-    show-clear-button="always" clear-icon="trash-bin" value="Custom Clear Icon">
+  <ion-searchbar [placeholder]="'SEARCH_PAGE.TITLE' | translate" [(ngModel)]="query" (ionInput)="onSearchChange($event)"
+    debounce="800" show-clear-button="always" clear-icon="trash-bin">
   </ion-searchbar>
 
   <ion-list *ngIf="resultadosBusqueda.length > 0" class="search-dropdown">
@@ -12,8 +11,8 @@
       </ion-label>
       <div slot="end">
         <ion-button fill="clear" color="medium" (click)="seleccionarAlimento(item)">
-         <ion-icon name="add-outline" mode="md"></ion-icon>
-      </ion-button>
+          <ion-icon name="add-outline" mode="md"></ion-icon>
+        </ion-button>
         <ion-button fill="clear" color="medium" (click)="guardarBookmark(item)">
           <ion-icon name="bookmark-outline" mode="md"></ion-icon>
         </ion-button>
@@ -22,7 +21,7 @@
   </ion-list>
 
   <!--RECIENTES-->
-  <p style="font-size: 18px;">Recientes</p>
+  <p style="font-size: 18px;">{{ 'SEARCH_PAGE.RECENT' | translate }}</p>
   <hr style="border: 0; border-top: 0.5px solid #5c5d61; margin: 10px 0;">
 
   <div *ngIf="listaRecientes.length > 0; else noHayRecientes">
@@ -59,11 +58,11 @@
       <div *ngIf="itemExpandido === item" class="info-desplegable">
         <ion-list>
           <ion-item>
-            <ion-label>Carbohidratos</ion-label>
+            <ion-label>{{ 'SEARCH_PAGE.CARBS' | translate }}</ion-label>
             <ion-note slot="end">{{ item.food.nutrients.CHOCDF | number:'1.1-1' }} g</ion-note>
           </ion-item>
           <ion-item>
-            <ion-label>Grasas</ion-label>
+            <ion-label>{{ 'SEARCH_PAGE.FATS' | translate }}</ion-label>
             <ion-note slot="end">{{ item.food.nutrients.FAT | number:'1.1-1' }} g</ion-note>
           </ion-item>
         </ion-list>
@@ -76,7 +75,7 @@
   <ng-template #noHayRecientes>
     <div class="ion-text-center ion-padding" style="color: #999;">
       <ion-icon name="basket-outline" style="font-size: 35px; display: block; margin: 0 auto 10px;"></ion-icon>
-      <p>No tienes elementos recientes.</p>
+      <p>{{ 'SEARCH_PAGE.NO_RECENT' | translate }}</p>
     </div>
   </ng-template>
 
@@ -84,16 +83,17 @@
   <ion-modal [isOpen]="isModalOpen" (didDismiss)="isModalOpen = false" class="custom-floating-modal">
     <ng-template>
       <div class="modal-wrapper" *ngIf="alimentoParaEditar">
-        <h3 class="ion-padding-bottom">Configurar cantidad</h3>
+        <h3 class="ion-padding-bottom">{{ 'SEARCH_PAGE.CONFIGURE_AMOUNT' | translate }}</h3>
 
         <ion-item lines="none">
-          <ion-label position="stacked">Gramos</ion-label>
+          <ion-label position="stacked">{{ 'SEARCH_PAGE.GRAMS' | translate }}</ion-label>
           <ion-input type="number" [(ngModel)]="alimentoParaEditar.cantidad"></ion-input>
         </ion-item>
 
         <div class="ion-padding-top">
-          <ion-button expand="block" (click)="confirmarSeleccion()">Agregar</ion-button>
-          <ion-button expand="block" fill="clear" (click)="isModalOpen = false" color="medium">Cancelar</ion-button>
+          <ion-button expand="block" (click)="confirmarSeleccion()">{{ 'SEARCH_PAGE.ADD' | translate }}</ion-button>
+          <ion-button expand="block" fill="clear" (click)="isModalOpen = false" color="medium">{{ 'SEARCH_PAGE.CANCEL' |
+            translate }}</ion-button>
         </div>
       </div>
     </ng-template>
@@ -112,8 +112,8 @@
 
           <ion-col size="8">
             <div class="text-wrapper">
-              <ion-card-title>Tip del día</ion-card-title>
-              <p>Aprovecha los beneficios de la palta. Rica en grasas saludables y deliciosa.</p>
+              <ion-card-title>{{ 'SEARCH_PAGE.TIP_TITLE' | translate }}</ion-card-title>
+              <p>{{ 'SEARCH_PAGE.TIP_TEXT' | translate }}</p>
             </div>
           </ion-col>
         </ion-row>
@@ -123,7 +123,7 @@
 
   <!-- CONTADOR -->
 
-  <p style="font-size: 18px;">Contador</p>
+  <p style="font-size: 18px;">{{ 'SEARCH_PAGE.COUNTER' | translate }}</p>
   <hr style="border: 0; border-top: 0.5px solid #5c5d61; margin: 10px 0;">
 
   <ion-card class="fixed-card">
@@ -146,7 +146,7 @@
         <!-- MUESTRA -->
         <div *ngIf="listaConsumo.length === 0" style="text-align: center; color: #999; padding: 20px;">
           <ion-icon name="basket-outline" style="font-size: 35px; display: block; margin: 0 auto 10px;"></ion-icon>
-          <p>Registra tu progreso y míralo aquí.</p>
+          <p>{{ 'SEARCH_PAGE.REGISTER_PROGRESS' | translate }}</p>
         </div>
       </ion-list>
 
@@ -154,17 +154,14 @@
         <ion-item-divider class="custom-divider"></ion-item-divider>
         <div class="ion-padding">
           <ion-item lines="none">
-            <ion-label>Total calorías:</ion-label>
+            <ion-label>{{ 'SEARCH_PAGE.TOTAL_CALORIES' | translate }}</ion-label>
             <ion-note slot="end" color="dark">
               <strong class="total-value">{{ totalCalorias | number:'1.0-0' }} kcal</strong>
             </ion-note>
           </ion-item>
-            <ion-button 
-              expand="block" 
-              class="ion-margin-top" 
-              [disabled]="listaConsumo.length === 0"
-              (click)="transferirAlimentosAHome()"> Agregar
-            </ion-button>
+          <ion-button expand="block" class="ion-margin-top" [disabled]="listaConsumo.length === 0"
+            (click)="transferirAlimentosAHome()"> {{ 'SEARCH_PAGE.ADD' | translate }}
+          </ion-button>
         </div>
       </div>
     </ion-card-content>

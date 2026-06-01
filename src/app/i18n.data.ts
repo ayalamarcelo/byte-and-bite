@@ -1,6 +1,6 @@
 export const TRANSLATIONS: { [key: string]: any } = {
   es: {
-    // Página WELCOME
+    // WELCOME
     WELCOME_TITLE: "Bienvenido a",
     TERMS_PART_1: "Al hacer clic en siguiente, aceptas los",
     TERMS_LINK: "Términos y Condiciones de Uso",
@@ -96,10 +96,63 @@ export const TRANSLATIONS: { [key: string]: any } = {
       SODIUM: "Sodio",
       FIBER: "Fibra",
       POTASSIUM: "Potasio"
+    },
+    // Search
+    SEARCH_PAGE: {
+      TITLE: "Buscar alimento",
+      RECENT: "Recientes",
+      NO_RECENT: "No tienes elementos recientes.",
+      CONFIGURE_AMOUNT: "Configurar cantidad",
+      GRAMS: "Gramos",
+      ADD: "Agregar",
+      CANCEL: "Cancelar",
+      TIP_TITLE: "Tip del día",
+      TIP_TEXT: "Aprovecha los beneficios de la palta. Rica en grasas saludables y deliciosa.",
+      COUNTER: "Contador",
+      CARBS: "Carbohidratos",
+      FATS: "Grasas",
+      TOTAL_CALORIES: "Total calorías:",
+      REGISTER_PROGRESS: "Registra tu progreso y míralo aquí."
+    },
+    // Bookmarks
+    FAVORITES_PAGE: {
+      SEARCH: "Buscar alimentos...",
+      ALL: "Todos",
+      CARBS: "Carbohidratos",
+      PROTEINS: "Proteínas",
+      FATS: "Grasas",
+      VITAMINS: "Vitaminas",
+      EMPTY: "No hay alimentos en esta categoría",
+      GRAMS_QUESTION: "¿Cuántos gramos querés comer?",
+      GRAMS_LABEL: "Gramos",
+      ADD_TO_LOG: "Agregar al registro",
+      SELECTED: "Seleccionaste {{grams}}g"
+    },
+    // Profile
+    PROFILE: {
+      LOGOUT: "Cerrar sesión",
+      PERSONAL_DATA: "DATOS PERSONALES",
+      AGE: "Edad",
+      YEARS: "años",
+      WEIGHT: "Peso",
+      HEIGHT: "Altura",
+      ACCOUNT: "CUENTA",
+      PASSWORD: "Contraseña",
+      PREFERENCES: "PREFERENCIAS",
+      LANGUAGE: "Idioma",
+      NOTIFICATIONS: "NOTIFICACIONES",
+      FOOD_REMINDERS: "Recordatorios de comida",
+      ALERTS: "Alertas",
+      YOUR_FIELD: "Tu {{field}}",
+      CHANGE_PASSWORD: "Cambiar Contraseña",
+      CURRENT_PASSWORD: "Contraseña Actual",
+      NEW_PASSWORD: "Nueva Contraseña",
+      UPDATE_PASSWORD: "Actualizar Contraseña",
+      CONFIRM: "Confirmar"
     }
   },
   en: {
-    // Página 1
+    // Welcome
     WELCOME_TITLE: "Welcome to",
     TERMS_PART_1: "By clicking on next, you agree to",
     TERMS_LINK: "Terms and Conditions of Use",
@@ -195,6 +248,59 @@ export const TRANSLATIONS: { [key: string]: any } = {
       SODIUM: "Sodium",
       FIBER: "Fiber",
       POTASSIUM: "Potassium"
+    },
+    // Search
+    SEARCH_PAGE: {
+      TITLE: "Search food",
+      RECENT: "Recent",
+      NO_RECENT: "You have no recent items.",
+      CONFIGURE_AMOUNT: "Configure amount",
+      GRAMS: "Grams",
+      ADD: "Add",
+      CANCEL: "Cancel",
+      TIP_TITLE: "Tip of the day",
+      TIP_TEXT: "Take advantage of the benefits of avocado. Rich in healthy fats and delicious.",
+      COUNTER: "Counter",
+      CARBS: "Carbs",
+      FATS: "Fats",
+      TOTAL_CALORIES: "Total calories:",
+      REGISTER_PROGRESS: "Register your progress and see it here."
+    },
+    // Bookmarks
+    FAVORITES_PAGE: {
+      SEARCH: "Search foods...",
+      ALL: "All",
+      CARBS: "Carbs",
+      PROTEINS: "Proteins",
+      FATS: "Fats",
+      VITAMINS: "Vitamins",
+      EMPTY: "No foods in this category",
+      GRAMS_QUESTION: "How many grams do you want to eat?",
+      GRAMS_LABEL: "Grams",
+      ADD_TO_LOG: "Add to log",
+      SELECTED: "You selected {{grams}}g"
+    },
+    // Profile
+    PROFILE: {
+      LOGOUT: "Logout",
+      PERSONAL_DATA: "PERSONAL DATA",
+      AGE: "Age",
+      YEARS: "years",
+      WEIGHT: "Weight",
+      HEIGHT: "Height",
+      ACCOUNT: "ACCOUNT",
+      PASSWORD: "Password",
+      PREFERENCES: "PREFERENCES",
+      LANGUAGE: "Language",
+      NOTIFICATIONS: "NOTIFICATIONS",
+      FOOD_REMINDERS: "Food reminders",
+      ALERTS: "Alerts",
+      YOUR_FIELD: "Your {{field}}",
+      CHANGE_PASSWORD: "Change Password",
+      CURRENT_PASSWORD: "Current Password",
+      NEW_PASSWORD: "New Password",
+      UPDATE_PASSWORD: "Update Password",
+      CONFIRM: "Confirm"
     }
   }
 };

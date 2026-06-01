@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { BookmarksPageRoutingModule } from './bookmarks-routing.module';
-import { BookmarksPage } from './bookmarks.page';
+import { TranslateModule } from '@ngx-translate/core';
+import { BookmarksPage } from './bookmarks.page'; 
 
 @NgModule({
   imports: [
@@ -11,7 +12,9 @@ import { BookmarksPage } from './bookmarks.page';
     FormsModule,
     IonicModule,
     BookmarksPageRoutingModule,
-    BookmarksPage
-  ]
+    TranslateModule
+  ],
+  
+  declarations: [BookmarksPage]
 })
 export class BookmarksPageModule {}

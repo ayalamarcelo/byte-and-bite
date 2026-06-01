@@ -15,8 +15,7 @@ import { getCurrentUser } from 'aws-amplify/auth';
   selector: 'app-bookmarks',
   templateUrl: './bookmarks.page.html',
   styleUrls: ['./bookmarks.page.scss'],
-  standalone: true, // Indica que este componente es independiente y no requiere estar declarado en un ngModule
-  imports: [IonicModule, CommonModule, FormsModule] // Módulos necesarios para la vista (UI, directivas de Angular, enrutamiento, formularios)
+  standalone: false, // Indica que este componente es independiente y no requiere estar declarado en un ngModule
 })
 export class BookmarksPage implements OnInit {
 

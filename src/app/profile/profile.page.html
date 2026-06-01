@@ -52,7 +52,7 @@
         <ion-card-content class="ion-text-center">
           <h2 class="user-name">{{ userService.userName }} {{ userService.userLastName }}</h2>
           <ion-button (click)="handleLogout()" fill="clear" color="success" size="small" class="logout-btn">
-            Cerrar sesión
+            {{ 'PROFILE.LOGOUT' | translate }}
           </ion-button>
         </ion-card-content>
       </ion-card>
@@ -61,13 +61,13 @@
 
   <ion-card class="data-card">
     <ion-card-header>
-      <ion-card-title>DATOS PERSONALES</ion-card-title>
+      <ion-card-title>{{ 'PROFILE.PERSONAL_DATA' | translate }}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <ion-item lines="full">
         <ion-label>
-          <p>Edad</p>
-          <h3>{{edad}} años</h3>
+          <p>{{ 'PROFILE.AGE' | translate }}</p>
+          <h3>{{edad}} {{ 'PROFILE.YEARS' | translate }}</h3>
         </ion-label>
         <ion-button slot="end" fill="clear" color="medium" (click)="openEditModal('edad')">
           <ion-icon slot="icon-only" name="create-outline"></ion-icon>
@@ -76,7 +76,7 @@
 
       <ion-item lines="full">
         <ion-label>
-          <p>Peso</p>
+          <p>{{ 'PROFILE.WEIGHT' | translate }}</p>
           <h3>{{peso}} kg</h3>
         </ion-label>
         <ion-button slot="end" fill="clear" color="medium" (click)="openEditModal('peso')">
@@ -86,7 +86,7 @@
 
       <ion-item lines="none">
         <ion-label>
-          <p>Altura</p>
+          <p>{{ 'PROFILE.HEIGHT' | translate }}</p>
           <h3>{{altura}} m</h3>
         </ion-label>
         <ion-button slot="end" fill="clear" color="medium" (click)="openEditModal('altura')">
@@ -98,7 +98,7 @@
 
   <ion-card class="data-card">
     <ion-card-header>
-      <ion-card-title>CUENTA</ion-card-title>
+      <ion-card-title>{{ 'PROFILE.ACCOUNT' | translate }}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <ion-item lines="full">
@@ -109,7 +109,7 @@
       </ion-item>
       <ion-item lines="none">
         <ion-label>
-          <p>Contraseña</p>
+          <p>{{ 'PROFILE.PASSWORD' | translate }}</p>
           <h3>••••••••</h3>
         </ion-label>
         <ion-button slot="end" fill="clear" color="medium" (click)="openEditModal('contrasena')">
@@ -122,14 +122,14 @@
   <!-- IDIOMA -->
   <ion-card class="data-card">
     <ion-card-header>
-      <ion-card-title>PREFERENCIAS</ion-card-title>
+      <ion-card-title>{{ 'PROFILE.PREFERENCES' | translate }}</ion-card-title>
     </ion-card-header>
 
     <ion-card-content>
       <div class="info-row" style="display: flex; justify-content: space-between; align-items: center;">
         <div class="label-with-icon" style="display: flex; align-items: center; gap: 10px;">
           <ion-icon name="earth-outline" size="large"></ion-icon>
-          <span style="font-size: 1rem;">Idioma</span>
+          <span style="font-size: 1rem;">{{ 'PROFILE.LANGUAGE' | translate }}</span>
         </div>
 
         <ion-segment [value]="idiomaSeleccionado" (ionChange)="cambiarIdioma($event)" mode="ios"
@@ -148,7 +148,7 @@
 
   <ion-card class="data-card">
     <ion-card-header>
-      <ion-card-title>NOTIFICACIONES</ion-card-title>
+      <ion-card-title>{{ 'PROFILE.NOTIFICATIONS' | translate }}</ion-card-title>
     </ion-card-header>
 
     <ion-card-content>
@@ -156,7 +156,7 @@
         style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--ion-color-light);">
         <div class="label-with-icon" style="display: flex; align-items: center; gap: 10px;">
           <ion-icon [name]="recordatoriosActivos ? 'notifications' : 'notifications-off'" size="large"></ion-icon>
-          <span style="font-size: 1rem;">Recordatorios de comida</span>
+          <span style="font-size: 1rem;">{{ 'PROFILE.FOOD_REMINDERS' | translate }}</span>
         </div>
         <ion-toggle [(ngModel)]="recordatoriosActivos" (ionChange)="onToggleChange('recordatorios')"></ion-toggle>
       </div>
@@ -165,7 +165,7 @@
         style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0;">
         <div class="label-with-icon" style="display: flex; align-items: center; gap: 10px;">
           <ion-icon [name]="alertasActivas ? 'notifications' : 'notifications-off'" size="large"></ion-icon>
-          <span style="font-size: 1rem;">Alertas</span>
+          <span style="font-size: 1rem;">{{ 'PROFILE.ALERTS' | translate }}</span>
         </div>
         <ion-toggle [(ngModel)]="alertasActivas" (ionChange)="onToggleChange('alertas')"></ion-toggle>
       </div>
@@ -178,8 +178,8 @@
       <ion-content class="ion-padding">
         <div style="margin-top: 20px;">
 
-          <h2 style="text-transform: capitalize;" *ngIf="campoEditando !== 'contrasena'">Tu {{ campoEditando }}</h2>
-          <h2 *ngIf="campoEditando === 'contrasena'">Cambiar Contraseña</h2>
+          <h2 style="text-transform: capitalize;" *ngIf="campoEditando !== 'contrasena'">{{ 'PROFILE.YOUR_FIELD' | translate:{ field: campoEditando } }}</h2>
+          <h2 *ngIf="campoEditando === 'contrasena'">{{ 'PROFILE.CHANGE_PASSWORD' | translate }}</h2>
 
           <ng-container *ngIf="campoEditando !== 'contrasena'">
             <ion-item lines="outline" style="--border-radius: 10px; margin-top: 20px;">
@@ -189,7 +189,7 @@
 
           <ng-container *ngIf="campoEditando === 'contrasena'">
             <ion-item lines="outline" style="--border-radius: 10px; margin-top: 20px;">
-              <ion-label position="floating">Contraseña Actual</ion-label>
+              <ion-label position="floating">{{ 'PROFILE.CURRENT_PASSWORD' | translate }}</ion-label>
               <ion-input
                 [type]="showOldPassword ? 'text' : 'password'"
                 [(ngModel)]="oldPasswordInput">
@@ -204,7 +204,7 @@
             </ion-item>
 
             <ion-item lines="outline" style="--border-radius: 10px; margin-top: 20px;">
-              <ion-label position="floating">Nueva Contraseña</ion-label>
+              <ion-label position="floating">{{ 'PROFILE.NEW_PASSWORD' | translate }}</ion-label>
               <ion-input
                 [type]="showNewPassword ? 'text' : 'password'"
                 [(ngModel)]="newPasswordInput">
@@ -220,7 +220,7 @@
           </ng-container>
 
           <ion-button expand="block" color="success" style="margin-top: 30px;" (click)="saveChanges()">
-            {{ campoEditando === 'contrasena' ? 'Actualizar Contraseña' : 'Confirmar' }}
+            {{ (campoEditando === 'contrasena' ? 'PROFILE.UPDATE_PASSWORD' : 'PROFILE.CONFIRM') | translate }}
           </ion-button>
 
         </div>
