@@ -2,14 +2,13 @@
 
   <div class="welcome-header">
     <div class="text-container">
-      <p class="welcome-text">Bienvenido</p>
+      <p class="welcome-text">{{ 'HOME_PAGE.WELCOME' | translate }}</p>
       <h1 class="username"> {{ nombreUsuario }} {{ apellidoUsuario }} </h1>
       <p class="text-date">{{ currentDate | date:"EEEE, d 'de' MMMM 'de' yyyy":"":"es-AR" }}</p>
     </div>
     <div class="profile-button" (click)="goToProfile()">
       <ion-avatar class="avatar-animated">
         <img [src]="userAvatar || 'https://ionicframework.com/docs/img/demos/avatar.svg'" />
-
         <img [src]="userAvatar || 'assets/default-avatar.png'" />
         <ng-template #iconoGenerico>
           <div class="generic-avatar-placeholder">
@@ -20,32 +19,31 @@
     </div>
   </div>
 
-<div class="circular-container">
+  <div class="circular-container">
     <svg viewBox="0 0 100 100" class="pie-chart">
       <circle class="circle-background" cx="50" cy="50" r="40" />
-      
       <circle class="progress-circle" 
               cx="50" cy="50" r="40" 
               stroke-dasharray="251.32" 
               [attr.stroke-dashoffset]="strokeDashoffset" />
-      <text x="50" y="35" class="text-ratio">PROGRESO</text>
+      <text x="50" y="35" class="text-ratio">{{ 'HOME_PAGE.PROGRESS' | translate }}</text>
       <text x="50" y="55" class="text-number">{{ totalKcal }}</text>
-      <text x="50" y="68" class="subtitle-text">Kcal Consumidas</text>
+      <text x="50" y="68" class="subtitle-text">{{ 'HOME_PAGE.CONSUMED_KCAL' | translate }}</text>
     </svg>
 
     <div class="meta-input-container">
-      <span class="meta-label">Meta:</span>
+      <span class="meta-label">{{ 'HOME_PAGE.GOAL' | translate }}</span>
       <input type="number" 
              [(ngModel)]="metaKcal" 
              (input)="onMetaChange()" 
              class="meta-editable-input" />
-      <span class="meta-unit">kcal</span>
+      <span class="meta-unit">{{ 'HOME_PAGE.KCAL' | translate }}</span>
     </div>
   </div>
 
   <div class="date-selector-container ion-padding-horizontal ion-margin-bottom">
     <ion-item lines="none" class="date-picker-item">
-      <ion-label>Fecha de registro:</ion-label>
+      <ion-label>{{ 'HOME_PAGE.REGISTRATION_DATE' | translate }}</ion-label>
       <ion-datetime-button datetime="datetime"></ion-datetime-button>
     </ion-item>
     
@@ -65,7 +63,7 @@
       
       <div class="nutrient-row">
         <div class="nutrient-info">
-          <ion-label>Grasas</ion-label>
+          <ion-label>{{ 'HOME_PAGE.FATS' | translate }}</ion-label>
           <span class="percentage-text">{{ percentageFats }}%</span>
         </div>
         <ion-progress-bar style="--progress-background: #e0e0e0; --background: #f5f5f5;" [value]="percentageFats / 100"></ion-progress-bar>
@@ -73,7 +71,7 @@
 
       <div class="nutrient-row">
         <div class="nutrient-info">
-          <ion-label>Proteínas</ion-label>
+          <ion-label>{{ 'HOME_PAGE.PROTEINS' | translate }}</ion-label>
           <span class="percentage-text">{{ proteinPercentage }}%</span>
         </div>
         <ion-progress-bar style="--progress-background: #e0e0e0; --background: #f5f5f5;" [value]="proteinPercentage / 100"></ion-progress-bar>
@@ -81,7 +79,7 @@
 
       <div class="nutrient-row">
         <div class="nutrient-info">
-          <ion-label>Carbohidratos</ion-label>
+          <ion-label>{{ 'HOME_PAGE.CARBS' | translate }}</ion-label>
           <span class="percentage-text">{{ percentageCarbo }}%</span>
         </div>
         <ion-progress-bar style="--progress-background: #e0e0e0; --background: #f5f5f5;" [value]="percentageCarbo / 100"></ion-progress-bar>
@@ -91,7 +89,7 @@
 
       <div class="water-section-unified">
         <div class="nutrient-info">
-          <ion-label>Agua</ion-label>
+          <ion-label>{{ 'HOME_PAGE.WATER' | translate }}</ion-label>
           <span class="percentage-text">{{ aguaConsumida }} / {{ aguaMeta }} ml</span>
         </div>
 
@@ -104,45 +102,40 @@
           <div class="custom-option">
             <ion-icon name="water-outline"></ion-icon>
             <span>150 ml</span>
-            <ion-button size="small" fill="clear" (click)="agregarAgua(150)">Agregar</ion-button>
+            <ion-button size="small" fill="clear" (click)="agregarAgua(150)">{{ 'HOME_PAGE.ADD' | translate }}</ion-button>
           </div>
 
           <div class="custom-option">
             <ion-icon name="cafe-outline"></ion-icon>
             <span>250 ml</span>
-            <ion-button size="small" fill="clear" (click)="agregarAgua(250)">Agregar</ion-button>
+            <ion-button size="small" fill="clear" (click)="agregarAgua(250)">{{ 'HOME_PAGE.ADD' | translate }}</ion-button>
           </div>
 
           <div class="custom-option">
             <ion-icon name="beaker-outline"></ion-icon>
             <span>500 ml</span>
-            <ion-button size="small" fill="clear" (click)="agregarAgua(500)">Agregar</ion-button>
+            <ion-button size="small" fill="clear" (click)="agregarAgua(500)">{{ 'HOME_PAGE.ADD' | translate }}</ion-button>
           </div>
         </div>
       </div>
-
     </ion-card-content>
   </ion-card>
 
   <ion-card class="nutrition-card">
     <ion-card-content>
-      <ion-label class="micronutrient-title">Detalles adicionales</ion-label>
-
+      <ion-label class="micronutrient-title">{{ 'HOME_PAGE.ADDITIONAL_DETAILS' | translate }}</ion-label>
       <div class="row-micronutrient" style="padding: 10px 0; border-bottom: 0.5px solid #5c5d61;">
-        <span>Sodio</span>
+        <span>{{ 'HOME_PAGE.SODIUM' | translate }}</span>
         <strong color="dark">{{ sodioMg }} mg</strong>
       </div>
-
       <div class="row-micronutrient" style="padding: 10px 0; border-bottom: 0.5px solid #5c5d61;">
-        <span>Fibra</span>
+        <span>{{ 'HOME_PAGE.FIBER' | translate }}</span>
         <strong color="dark">{{ fibraG }} g</strong>
       </div>
-
       <div class="row-micronutrient" style="padding: 10px 0;">
-        <span>Potasio</span>
+        <span>{{ 'HOME_PAGE.POTASSIUM' | translate }}</span>
         <strong color="dark">{{ potasioMg }} mg</strong>
       </div>
-
     </ion-card-content>
   </ion-card>
 

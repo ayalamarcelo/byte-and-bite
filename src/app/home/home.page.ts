@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule , NavController} from '@ionic/angular';
-// import { Router } from '@angular/router';
 import { NutritionService } from '../services/nutrition.service';
 import { fetchUserAttributes } from 'aws-amplify/auth';
 import { AvatarService } from '../services/avatar.service';
@@ -11,8 +10,7 @@ import { AvatarService } from '../services/avatar.service';
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
-  standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, DatePipe]
+  standalone: false
 })
 
 export class HomePage implements OnInit {

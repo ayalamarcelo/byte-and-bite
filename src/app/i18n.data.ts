@@ -1,6 +1,6 @@
 export const TRANSLATIONS: { [key: string]: any } = {
   es: {
-    // Página 1
+    // Página WELCOME
     WELCOME_TITLE: "Bienvenido a",
     TERMS_PART_1: "Al hacer clic en siguiente, aceptas los",
     TERMS_LINK: "Términos y Condiciones de Uso",
@@ -78,6 +78,24 @@ export const TRANSLATIONS: { [key: string]: any } = {
       CONTACT_TEXT: "Si tienes alguna duda sobre nuestros términos, contáctanos en hr@byteandbite.com.",
       ACCEPT_LABEL: "He leído y acepto los Términos y Condiciones.",
       ACCEPT_BTN: "Aceptar y continuar"
+    },
+    // HOME
+    HOME_PAGE: {
+      WELCOME: "Bienvenido",
+      PROGRESS: "PROGRESO",
+      CONSUMED_KCAL: "Kcal Consumidas",
+      GOAL: "Meta:",
+      KCAL: "kcal",
+      REGISTRATION_DATE: "Fecha de registro:",
+      FATS: "Grasas",
+      PROTEINS: "Proteínas",
+      CARBS: "Carbohidratos",
+      WATER: "Agua",
+      ADD: "Agregar",
+      ADDITIONAL_DETAILS: "Detalles adicionales",
+      SODIUM: "Sodio",
+      FIBER: "Fibra",
+      POTASSIUM: "Potasio"
     }
   },
   en: {
@@ -159,6 +177,24 @@ export const TRANSLATIONS: { [key: string]: any } = {
       CONTACT_TEXT: "If you have any queries regarding any of our terms, please contact us at hr@byteandbite.com.",
       ACCEPT_LABEL: "I have read and agree to the Terms and Conditions.",
       ACCEPT_BTN: "Accept and Continue"
+    },
+    // Home
+    HOME_PAGE: {
+      WELCOME: "Welcome",
+      PROGRESS: "PROGRESS",
+      CONSUMED_KCAL: "Kcal Consumed",
+      GOAL: "Goal:",
+      KCAL: "kcal",
+      REGISTRATION_DATE: "Registration date:",
+      FATS: "Fats",
+      PROTEINS: "Proteins",
+      CARBS: "Carbs",
+      WATER: "Water",
+      ADD: "Add",
+      ADDITIONAL_DETAILS: "Additional details",
+      SODIUM: "Sodium",
+      FIBER: "Fiber",
+      POTASSIUM: "Potassium"
     }
   }
 };
