@@ -26,19 +26,17 @@ export class LoginPage implements OnInit {
 
   ngOnInit() { }
 
-  
-  // async continueWithGoogle() {
-  //   try {
-  //     // Al ejecutar esta función, Amplify abrirá el navegador del sistema
-  //     // hacia la URL de login de Cognito 
-  //     await signInWithRedirect({
-  //       provider: 'Google'
-  //     });
-  //   } catch (error: any) {
-  //     console.error('Error al iniciar sesión con Google:', error);
-  //     this.presentAlert('Error', 'No se pudo conectar con Google en este momento.');
-  //   }
-  // }
+  /**
+ * Gestiona el proceso de autenticación del usuario.
+ * Este método invoca el servicio de autenticación de Amplify, maneja los estados de carga,
+ * las redirecciones tras un inicio de sesión exitoso y gestiona los flujos de 
+ * autenticación multifactor o cambios de contraseña obligatorios.
+ * @function handleLogin
+ * @async
+ * @returns {Promise<void>} No retorna valor, realiza navegación o muestra alertas.
+ * @throws {UserNotConfirmedException} Si el usuario no ha verificado su correo electrónico.
+ * @throws {AuthError} Errores genéricos de credenciales inválidas u otros fallos del servicio.
+ */
 
   async handleLogin() {
     const loading = await this.loadingController.create({
@@ -76,6 +74,16 @@ export class LoginPage implements OnInit {
     }
   }
 
+  /**
+ * Muestra una alerta emergente (toast/modal) al usuario.
+ * * Utiliza el `AlertController` de Ionic para desplegar un aviso con un botón de confirmación.
+ * * @function presentAlert
+ * @async
+ * @param {string} header - El título o encabezado que aparecerá en la parte superior de la alerta.
+ * @param {string} message - El cuerpo del mensaje informativo para el usuario.
+ * @returns {Promise<void>} Una promesa que se resuelve cuando la alerta ha sido presentada.
+ */
+
   async presentAlert(header: string, message: string) {
     const alert = await this.alertController.create({
       header,
@@ -85,6 +93,23 @@ export class LoginPage implements OnInit {
     await alert.present();
   }
 
-  goToWelcome() { this.navCtrl.navigateBack(['/welcome']); }
-  goToSignUp() { this.navCtrl.navigateForward(['/signup']); }
+  /**
+ * Navega hacia atrás en la pila de navegación hasta la página de bienvenida.
+ * * Utiliza `navCtrl.navigateBack` para asegurar una transición visual correcta (animación de retroceso).
+ * @function goToWelcome
+ * @returns {void}
+ */
+  goToWelcome() {
+    this.navCtrl.navigateBack(['/welcome']);
+  }
+
+  /**
+   * Navega hacia adelante en la pila de navegación hacia la página de registro.
+   * * Utiliza `navCtrl.navigateForward` para apilar la vista y permitir el regreso a la página anterior.
+   * @function goToSignUp
+   * @returns {void}
+   */
+  goToSignUp() {
+    this.navCtrl.navigateForward(['/signup']);
+  }
 }

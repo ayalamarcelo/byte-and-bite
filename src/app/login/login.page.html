@@ -1,6 +1,7 @@
 <ion-content class="ion-padding">
   <div class="login-container">
 
+    <!-- Buttons -->
     <div class="ion-text">
       <ion-button fill="clear" size="medium" (click)="goToWelcome()"
         style="font-weight: 300; text-transform: capitalize;">
@@ -13,6 +14,7 @@
       </ion-button>
     </div>
 
+    <!-- TITULO -->
     <h1 class="ion-padding-bottom ion-text-center">{{ 'LOGIN_TITLE' | translate }}</h1>
 
     <div class="ion-margin-bottom ion-justify-content-center" style="display: flex;">
@@ -21,19 +23,6 @@
         <ion-icon name="person-outline" style="font-size: 60px; color: var(--ion-color-medium);"></ion-icon>
       </ion-avatar>
     </div>
-    
-    <!-- GOOGLE Funcionalidad para más adelante -->
-    <!--<div class="ion-margin-vertical">
-      <ion-button expand="block" fill="outline" color="primary" (click)="continueWithGoogle()">
-        <ion-icon slot="start" name="logo-google"></ion-icon>
-        {{ 'CONTINUE_GOOGLE' | translate }}
-      </ion-button>
-    </div> 
-
-    <div class="ion-text-center ion-margin-vertical">
-      <p style="color: var(--ion-color-medium); margin: 0;">{{ 'OR' | translate }}</p>
-    </div> -->
-    <br>
 
     <ion-input label="{{ 'EMAIL_LABEL' | translate }}" label-placement="floating" fill="outline" type="email"
       class="ion-margin-bottom" [(ngModel)]="email">
@@ -52,6 +41,7 @@
           --background-checked: var(--ion-color-primary);
           --border-color-checked: var(--ion-color-primary);
         ">
+        <!-- Check para recibir información -->
         <p style="font-size: 0.85rem; white-space: normal; margin: 0; color: var(--ion-color-step-600);">
           {{ 'NEWSLETTER' | translate }}
         </p>
@@ -62,6 +52,7 @@
       {{ 'LOGIN_BTN' | translate }}
     </ion-button>
 
+    <!-- Direcciona a 'registrar' si el usuario no tiene cuenta -->
     <div class="ion-text-center ion-margin-top">
       <p>{{ 'NO_ACCOUNT' | translate }} <a (click)="goToSignUp()" style="cursor: pointer;"> {{ 'REGISTER' | translate
           }}</a></p>
