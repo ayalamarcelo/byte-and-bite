@@ -9,8 +9,7 @@ import { TermsPage } from '../terms/terms.page';
   standalone: false
 })
 export class WelcomePage implements OnInit {
-  
-  // podemos guardar en localstorage después hay que guardarlo en cognito
+
   userHasAgreed: boolean = false;
 
   constructor(
@@ -18,28 +17,40 @@ export class WelcomePage implements OnInit {
     private navCtrl: NavController
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
-  // Abre el modal de terminos y condiciones
+  /**
+     * Presenta un modal con los términos y condiciones de la aplicación.
+     * * Bloquea el cierre accidental del modal (`backdropDismiss: false`).
+     * * Al aceptar, persiste la decisión en `localStorage` y redirige al usuario al login.
+     * * @async
+     * @function presentTermsModal
+     * @returns {Promise<void>} Una promesa que se resuelve cuando el usuario cierra el modal y se procesa su decisión.
+     */
   async presentTermsModal() {
-  const modal = await this.modalCtrl.create({
-    component: TermsPage,
-    backdropDismiss: false
-  });
+    const modal = await this.modalCtrl.create({
+      component: TermsPage,
+      backdropDismiss: false
+    });
 
-  await modal.present();
+    await modal.present();
 
-  const { data } = await modal.onDidDismiss();
+    const { data } = await modal.onDidDismiss();
 
-  if (data && data.accepted) {
+    if (data && data.accepted) {
       this.userHasAgreed = true;
-      // GUARDAR ACA: así el navegador recuerda la decisión
-      localStorage.setItem('hasAcceptedTerms', 'true'); 
+      // Realiza la persistencia
+      localStorage.setItem('hasAcceptedTerms', 'true');
       this.navCtrl.navigateForward('/login');
     }
-}
+  }
 
-// valida y pasa a login
+  /**
+   * Valida si el usuario ya aceptó los términos y condiciones.
+   * * Si el usuario ya aceptó, navega directamente al login.
+   * * Si no, invoca el flujo de aceptación mediante `presentTermsModal`.
+   * @function validateAndGo
+   */
   validateAndGo() {
     if (this.userHasAgreed) {
       this.navCtrl.navigateForward('/login');

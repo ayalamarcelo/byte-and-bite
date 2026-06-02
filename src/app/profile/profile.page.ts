@@ -227,52 +227,38 @@ export class ProfilePage implements OnInit {
   }
 
   async ejecutarCamara(usarCamara: boolean) {
-    this.isMenuOpen = false; // Cerramos nuestro menú
+  this.isMenuOpen = false; 
 
-    try {
-      const image = await Camera.getPhoto({
-        quality: 90,
-        allowEditing: true,
-        resultType: CameraResultType.DataUrl,
-        // Aquí forzamos una opción u otra, ya no usamos Prompt
-        source: usarCamara ? CameraSource.Camera : CameraSource.Photos
-      });
+  try {
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: true,
+      resultType: CameraResultType.DataUrl,
+      source: usarCamara ? CameraSource.Camera : CameraSource.Photos
+    });
 
-      if (image.dataUrl) {
-        this.avatarService.updateAvatar(image.dataUrl); // Actualización visual rápida
-        if (this.userId) {
-          const remoteUrl = await this.firebaseService.uploadAvatar(this.userId, image.dataUrl);
-          this.avatarService.updateAvatar(remoteUrl);
-        }
+    if (image.dataUrl) {
+      this.avatarService.updateAvatar(image.dataUrl);
+      
+      if (this.userId) {
+        const remoteUrl = await this.firebaseService.uploadAvatar(this.userId, image.dataUrl);
+        this.avatarService.updateAvatar(remoteUrl);
       }
-    } catch (e) {
-      // Si el usuario cancela en el menú NATIVO, cae aquí.
-      console.log("Cancelado");
     }
+  } catch (e) {
+    console.log("Acción cancelada");
   }
+}
 
-  async ejecutarSeleccion(usarCamara: boolean) {
-    this.isMenuOpen = false;
-
-    try {
-      const image = await Camera.getPhoto({
-        quality: 90,
-        allowEditing: true,
-        resultType: CameraResultType.DataUrl,
-        source: usarCamara ? CameraSource.Camera : CameraSource.Photos
-      });
-
-      if (image.dataUrl) {
-        this.avatarService.updateAvatar(image.dataUrl); // Actualización visual rápida
-        if (this.userId) {
-          const remoteUrl = await this.firebaseService.uploadAvatar(this.userId, image.dataUrl);
-          this.avatarService.updateAvatar(remoteUrl);
-        }
-      }
-    } catch (e) {
-      console.log("Acción cancelada");
-    }
-  }
+/**
+   * Captura una imagen desde la cámara o la galería y la procesa para actualizar el avatar.
+   * * Cierra el menú de opciones antes de iniciar el proceso.
+   * * Realiza una actualización local inmediata del avatar y posteriormente lo sube a Firebase.
+   * * @async
+   * @function ejecutarCamara
+   * @param {boolean} usarCamara - Define la fuente de la imagen: true para abrir la cámara, false para la galería.
+   * @returns {Promise<void>} Una promesa que se resuelve al finalizar el proceso de captura y subida.
+   */
 
   async abrirMenuOpciones() {
     const actionSheet = await this.actionSheetCtrl.create({
@@ -281,12 +267,12 @@ export class ProfilePage implements OnInit {
         {
           text: 'Cámara',
           icon: 'camera',
-          handler: () => this.ejecutarSeleccion(true) // Aquí SÍ pasas el argumento
+          handler: () => this.ejecutarCamara(true)
         },
         {
           text: 'Galería',
           icon: 'image',
-          handler: () => this.ejecutarSeleccion(false) // Aquí SÍ pasas el argumento
+          handler: () => this.ejecutarCamara(false)
         },
         {
           text: 'Cancelar',
