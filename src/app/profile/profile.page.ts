@@ -12,10 +12,12 @@ import { TranslateService } from '@ngx-translate/core';
 import { AvatarService } from '../services/avatar.service';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { ActionSheetController } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 
 // Importaciones de AWS Amplify
-import { fetchUserAttributes, updatePassword, getCurrentUser } from 'aws-amplify/auth';
+import { fetchUserAttributes, updatePassword, getCurrentUser, signOut } from 'aws-amplify/auth';
 import { FirebaseService } from '../services/firebase.service';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-profile',
@@ -57,7 +59,9 @@ export class ProfilePage implements OnInit {
     public languageService: LanguageService,
     public avatarService: AvatarService,
     private actionSheetCtrl: ActionSheetController,
-    private firebaseService: FirebaseService
+    private firebaseService: FirebaseService,
+    private loadingCtrl: LoadingController,
+    private navCtrl: NavController
   ) {
     // Aseguramos que los iconos estén registrados
     addIcons({ createOutline, globeOutline });
@@ -154,7 +158,7 @@ export class ProfilePage implements OnInit {
     }
   }
 
-    togglePasswordVisibility(campo: 'old' | 'new') {
+  togglePasswordVisibility(campo: 'old' | 'new') {
     if (campo === 'old') {
       this.showOldPassword = !this.showOldPassword;
     } else {
@@ -190,15 +194,9 @@ export class ProfilePage implements OnInit {
     this.isModalOpen = false;
   }
 
-
-
   onToggleChange(tipo: string) {
     const estado = tipo === 'recordatorios' ? this.recordatoriosActivos : this.alertasActivas;
     console.log(`Estado de ${tipo}:`, estado);
-  }
-
-  async handleLogout() {
-    await this.authService.logout();
   }
 
   // ==========================================
@@ -297,5 +295,18 @@ export class ProfilePage implements OnInit {
       ]
     });
     await actionSheet.present();
+  }
+
+  /** 
+   * Cierra la sesión del usuario actual.
+   * Ejecuta una pausa artificial de 1 segundo para mejorar la experiencia
+   * @async
+   * @function cerrarSesion
+   * @returns { Promise<void> } Una promesa que se resuelve cuando el cierre de sesión ha finalizado.
+  */
+
+  async cerrarSesion() {
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    await this.authService.logout();
   }
 }

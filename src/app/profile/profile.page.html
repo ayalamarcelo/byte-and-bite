@@ -51,9 +51,10 @@
       <ion-card class="main-card">
         <ion-card-content class="ion-text-center">
           <h2 class="user-name">{{ userService.userName }} {{ userService.userLastName }}</h2>
-          <ion-button (click)="handleLogout()" fill="clear" color="success" size="small" class="logout-btn">
+          <ion-button (click)="cerrarSesion()" id="open-loading" fill="clear" color="success" size="small" class="logout-btn">
             {{ 'PROFILE.LOGOUT' | translate }}
           </ion-button>
+          <ion-loading trigger="open-loading" message="Cerrando sesión..." duration="1000"></ion-loading>
         </ion-card-content>
       </ion-card>
     </div>
