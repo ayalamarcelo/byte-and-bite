@@ -52,6 +52,7 @@ export class SearchPage implements OnInit {
   ) {}
 
   // Se ejecuta cuando la página de búsqueda se inicia
+
   async ngOnInit() {
     // La suscripción se mueve aquí para asegurar la inicialización correcta del buscador con RxJS
     this.searchSubject.pipe(

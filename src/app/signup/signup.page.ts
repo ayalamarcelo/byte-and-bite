@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-/* import { Router } from '@angular/router'; */
 import { signUp } from 'aws-amplify/auth';
-import { AlertController, LoadingController, NavController } from '@ionic/angular';
+import { AlertController, LoadingController, NavController, ModalController } from '@ionic/angular';
+import { ConfirmSignupPage } from '../confirm-signup/confirm-signup.page';
 
 @Component({
   selector: 'app-signup',
@@ -22,7 +22,8 @@ export class SignupPage implements OnInit {
   constructor(
     private navCtrl: NavController,
     private alertController: AlertController,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private modalController: ModalController
   ) { }
 
   ngOnInit() { }
@@ -45,7 +46,7 @@ export class SignupPage implements OnInit {
 
     try {
       const { nextStep } = await signUp({
-        username: this.email, // es el mail, cognito lo usa como username
+        username: this.email,
         password: this.password,
         options: {
           userAttributes: {
@@ -59,17 +60,33 @@ export class SignupPage implements OnInit {
       await loading.dismiss();
 
       if (nextStep.signUpStep === 'CONFIRM_SIGN_UP') {
-        this.presentAlert('¡Casi listo!', 'Revisa tu email real. Te enviamos un código de confirmación.');
-        // acá podemos ir a una página de verificación o a la consola de aws
+        // Abrimos el modal directamente al terminar el registro
+        const modal = await this.modalController.create({
+          component: ConfirmSignupPage,
+          componentProps: {
+            email: this.email, // Pasamos el email para que el usuario no tenga que escribirlo de nuevo
+            password: this.password
+          }
+        });
+
+        await modal.present();
+
+        // Esperamos a que el usuario termine en el modal
+        const { data } = await modal.onDidDismiss();
+
+        // Si el usuario confirmó exitosamente, navegamos al login o al home
+        if (data?.confirmed) {
+          this.navCtrl.navigateRoot(['/tabs/home']);
+        }
       }
 
     } catch (error: any) {
       await loading.dismiss();
-      console.error('Error en SignUp:', error);
+      // console.error('Error en SignUp:', error);
       this.presentAlert('Error', error.message || 'Ocurrió un error en el registro');
     }
   }
-  
+
   //Navega de vuelta al login con animación de retroceso
   goToLogin() {
     this.navCtrl.navigateBack('/login');

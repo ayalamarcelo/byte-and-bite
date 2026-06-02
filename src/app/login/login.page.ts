@@ -51,55 +51,27 @@ export class LoginPage implements OnInit {
         password: this.password
       });
 
-      console.log('Login successful. Next step:', nextStep.signInStep);
       await loading.dismiss();
 
       if (isSignedIn) {
-        // usuario autenticado completamente
         this.navCtrl.navigateRoot(['/tabs/home'], { replaceUrl: true });
+      } else if (nextStep.signInStep === 'CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED') {
+        this.presentAlert('New password', 'Your user requires you to change your temporary password.');
       } else {
-        // manejo de estados intermedios de cognito
-        switch (nextStep.signInStep) {
-          case 'CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED':
-            this.presentAlert('New password', 'Your user was created in the console and requires you to change your temporary password.');
-            break;
-          // lo envio para confirmar
-          case 'CONFIRM_SIGN_UP':
-            await loading.dismiss(); // quita el loading antes de mostrar el modal
-
-            const modal = await this.modalController.create({
-              component: ConfirmSignupPage,
-              componentProps: {
-                email: this.email // pasamos el email como @Input al modal
-              }
-            });
-
-            await modal.present();
-
-            const { data } = await modal.onWillDismiss();
-
-            if (data?.confirmed) {
-              // si el usuario se confirmó con éxito en el modal
-              this.presentAlert('Verified', 'Your account is active. You can login now.');
-            }
-            break;
-
-          case 'DONE':
-            this.navCtrl.navigateRoot(['/tabs/home'], { replaceUrl: true });
-            break;
-
-          default:
-            console.warn('Unhandled step:', nextStep.signInStep);
-            break;
-        }
+        console.warn('Unhandled step:', nextStep.signInStep);
       }
 
     } catch (error: any) {
       await loading.dismiss();
       console.error('Login Error:', error);
 
-      // muestras el mensaje de error real que viene de AWS
-      this.presentAlert('Error', error.message || 'Incorrect credentials');
+      // Si el usuario intenta loguearse antes de confirmar, Amplify lanzará este error.
+      // Primero debe confirmar su cuenta.
+      if (error.name === 'UserNotConfirmedException') {
+        this.presentAlert('Not confirmed', 'Please check your email to confirm your account.');
+      } else {
+        this.presentAlert('Error', error.message || 'Incorrect credentials');
+      }
     }
   }
 

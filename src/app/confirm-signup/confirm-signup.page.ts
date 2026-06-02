@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ModalController, AlertController, LoadingController } from '@ionic/angular';
-import { confirmSignUp, resendSignUpCode } from 'aws-amplify/auth';
+import { confirmSignUp, resendSignUpCode, signIn } from 'aws-amplify/auth';
 
 @Component({
   selector: 'app-confirm-signup',
@@ -10,6 +10,7 @@ import { confirmSignUp, resendSignUpCode } from 'aws-amplify/auth';
 })
 export class ConfirmSignupPage {
   @Input() email: string = ''; // Recibido desde el LoginPage
+  @Input() password: string = '';
   code: string = '';
 
   constructor(
@@ -30,6 +31,7 @@ export class ConfirmSignupPage {
         confirmationCode: this.code.trim()
       });
 
+      await signIn({ username: this.email, password: this.password });
       await loading.dismiss();
       // Cerramos el modal avisando éxito
       this.modalCtrl.dismiss({ confirmed: true });
