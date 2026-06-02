@@ -14,7 +14,8 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { ActionSheetController } from '@ionic/angular';
 
 // Importaciones de AWS Amplify
-import { fetchUserAttributes, updatePassword } from 'aws-amplify/auth';
+import { fetchUserAttributes, updatePassword, getCurrentUser } from 'aws-amplify/auth';
+import { FirebaseService } from '../services/firebase.service';
 
 @Component({
   selector: 'app-profile',
@@ -30,6 +31,7 @@ export class ProfilePage implements OnInit {
 
   // Datos de Cuenta (AWS Amplify)
   userEmail: string = 'Cargando...';
+  userId: string = '';
   oldPasswordInput: string = '';
   newPasswordInput: string = '';
 
@@ -54,19 +56,42 @@ export class ProfilePage implements OnInit {
     public userService: UserService,
     public languageService: LanguageService,
     public avatarService: AvatarService,
-    private actionSheetCtrl: ActionSheetController
+    private actionSheetCtrl: ActionSheetController,
+    private firebaseService: FirebaseService
   ) {
     // Aseguramos que los iconos estén registrados
     addIcons({ createOutline, globeOutline });
   }
 
   async ngOnInit() {
+    try {
+      const user = await getCurrentUser();
+      this.userId = user.userId;
+      await this.cargarPerfilUsuario();
+    } catch (e) {
+      console.log('No hay usuario logueado o error obteniendo ID', e);
+    }
+
     await Promise.all([
       this.cargarEmailUsuario(),
       this.userService.loadUserData(),
     ]);
 
     console.log("Datos cargados correctamente");
+  }
+
+  async cargarPerfilUsuario() {
+    if (this.userId) {
+      const perfil = await this.firebaseService.getProfile(this.userId);
+      if (perfil) {
+        if (perfil['edad'] !== undefined) this.edad = perfil['edad'];
+        if (perfil['peso'] !== undefined) this.peso = perfil['peso'];
+        if (perfil['altura'] !== undefined) this.altura = perfil['altura'];
+        if (perfil['avatarUrl']) {
+          this.avatarService.updateAvatar(perfil['avatarUrl']);
+        }
+      }
+    }
   }
 
   // ==========================================
@@ -137,7 +162,7 @@ export class ProfilePage implements OnInit {
     }
   }
 
-  saveChanges() {
+  async saveChanges() {
     // Si estamos editando la contraseña, delegamos la acción a AWS y salimos de la función
     if (this.campoEditando === 'contrasena') {
       this.actualizarPasswordCognito();
@@ -148,6 +173,19 @@ export class ProfilePage implements OnInit {
     if (this.campoEditando === 'edad') this.edad = this.valorTemporal;
     if (this.campoEditando === 'peso') this.peso = this.valorTemporal;
     if (this.campoEditando === 'altura') this.altura = this.valorTemporal;
+
+    // Persistir en Firebase si tenemos el ID del usuario
+    if (this.userId && ['edad', 'peso', 'altura'].includes(this.campoEditando)) {
+      try {
+        await this.firebaseService.updateProfile(this.userId, {
+          edad: this.edad,
+          peso: this.peso,
+          altura: this.altura
+        });
+      } catch (error) {
+        console.error('Error guardando perfil en Firebase', error);
+      }
+    }
 
     this.isModalOpen = false;
   }
@@ -203,7 +241,11 @@ export class ProfilePage implements OnInit {
       });
 
       if (image.dataUrl) {
-        this.avatarService.updateAvatar(image.dataUrl);
+        this.avatarService.updateAvatar(image.dataUrl); // Actualización visual rápida
+        if (this.userId) {
+          const remoteUrl = await this.firebaseService.uploadAvatar(this.userId, image.dataUrl);
+          this.avatarService.updateAvatar(remoteUrl);
+        }
       }
     } catch (e) {
       // Si el usuario cancela en el menú NATIVO, cae aquí.
@@ -223,7 +265,11 @@ export class ProfilePage implements OnInit {
       });
 
       if (image.dataUrl) {
-        this.avatarService.updateAvatar(image.dataUrl);
+        this.avatarService.updateAvatar(image.dataUrl); // Actualización visual rápida
+        if (this.userId) {
+          const remoteUrl = await this.firebaseService.uploadAvatar(this.userId, image.dataUrl);
+          this.avatarService.updateAvatar(remoteUrl);
+        }
       }
     } catch (e) {
       console.log("Acción cancelada");
