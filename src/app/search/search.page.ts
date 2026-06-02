@@ -7,6 +7,12 @@ import { ToastController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
+
+/**
+ * Componente de búsqueda de alimentos.
+ * Gestiona consultas a la API (Edamam), selección de ítems, almacenamiento en caché
+ * local y sincronización con servicios de nutrición y Firebase.
+ */
 @Component({
   selector: 'app-search',
   templateUrl: './search.page.html',
@@ -14,10 +20,15 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
   standalone: false, // Este componente pertenece a un módulo (SearchPageModule)
 })
 export class SearchPage implements OnInit {
-  // Variables de estado del buscador y de la UI
-  query: string = ''; // Lo que el usuario escribe en la barra de búsqueda
+  /** @member {string} query - Valor actual de la barra de búsqueda. */
+  query: string = '';
+
+  /** @member {any[]} resultadosBusqueda - Lista de alimentos encontrados vía API. */
   resultadosBusqueda: any[] = []; // Resultados que devuelve la API de Edamam
-  alimentoSeleccionado: any = null; // El alimento que el usuario eligió de la lista
+
+  /** @member {any} alimentoSeleccionado - Ítem actualmente seleccionado para inspección. */
+  alimentoSeleccionado: any = null;
+
   historial: any[] = []; // Últimas 5 búsquedas que hizo el usuario (Mantenido para compatibilidad)
   userId: string = ''; // ID del usuario logueado en Amplify
 
@@ -49,10 +60,13 @@ export class SearchPage implements OnInit {
     private firebaseService: FirebaseService,
     private nutritionService: NutritionService,
     private toastController: ToastController
-  ) {}
+  ) { }
 
-  // Se ejecuta cuando la página de búsqueda se inicia
 
+  /**
+   * Inicializa las suscripciones de búsqueda (RxJS) y recupera estados guardados.
+   * @function ngOnInit
+   */
   async ngOnInit() {
     // La suscripción se mueve aquí para asegurar la inicialización correcta del buscador con RxJS
     this.searchSubject.pipe(
@@ -68,6 +82,12 @@ export class SearchPage implements OnInit {
     const guardado = localStorage.getItem('ultimoAlimento');
     if (guardado) this.alimentoSeleccionado = JSON.parse(guardado);
   }
+
+
+  /**
+   * Dispara la búsqueda tras verificar longitud mínima.
+   * @function onSearchChange
+   */
 
   async onSearchChange(event: any) {
     const valor = event.detail.value;
@@ -85,23 +105,27 @@ export class SearchPage implements OnInit {
     }
   }
 
+  /**
+   * Guarda el alimento seleccionado en la base de datos (Firebase).
+   * @function guardarBookmark
+   */
   async guardarBookmark(item: any) {
-    if (!this.userId) return; 
-    
+    if (!this.userId) return;
+
     const food = item.food;
     const nutrients = food.nutrients || {};
 
     await this.firebaseService.agregarBookmark(this.userId, {
       nombre: food.label,
-      categoria: this.determinarCategoria(nutrients), 
+      categoria: this.determinarCategoria(nutrients),
       kcal: Math.round(nutrients.ENERC_KCAL || 0),
-      gramos: 100, 
+      gramos: 100,
       img: food.image || this.defaultImage,
-      
+
       grasasG: nutrients.FAT || 0,
       proteinasG: nutrients.PROCNT || 0,
       carbohidratosG: nutrients.CHOCDF || 0,
-      
+
       sodioMg: nutrients.NA || 0,
       fibraG: nutrients.FIBTG || 0,
       potasioMg: nutrients.K || 0
@@ -116,6 +140,10 @@ export class SearchPage implements OnInit {
     await toast.present();
   }
 
+  /**
+   * Alterna la visualización de detalles y gestiona la caché de alimentos.
+   * @function mostrarInfo
+   */
   mostrarInfo(item: any) {
     if (this.itemExpandido === item) {
       this.itemExpandido = null;
@@ -143,6 +171,11 @@ export class SearchPage implements OnInit {
     return this.calcularTotalCalorias();
   }
 
+  /**
+   * Calcula el total de calorías de la lista de consumo.
+   * @function calcularTotalCalorias
+   * @returns {number}
+   */
   calcularTotalCalorias(): number {
     return this.listaConsumo.reduce((total, item) => {
       const kcalBase = item.food.nutrients?.ENERC_KCAL || 0;
@@ -151,7 +184,10 @@ export class SearchPage implements OnInit {
     }, 0);
   }
 
-  // Cuando el usuario elige un ítem de la lista desplegable de resultados
+  /**
+   * Gestiona la selección del alimento, actualizando historial y UI.
+   * @function seleccionarAlimento
+   */
   seleccionarAlimento(item: any) {
     const food = item.food;
     this.query = food.label; // Pone el nombre en el buscador
@@ -160,7 +196,7 @@ export class SearchPage implements OnInit {
       image: food.image || this.defaultImage
     };
     this.cantidad = 100; // Resetea los gramos a 100
-    
+
     // Lo guarda en localStorage por si el usuario recarga la app
     localStorage.setItem('ultimoAlimento', JSON.stringify(this.alimentoSeleccionado));
     this.resultadosBusqueda = []; // Esconde la lista desplegable
@@ -170,7 +206,7 @@ export class SearchPage implements OnInit {
       this.listaRecientes.unshift(item);
       localStorage.setItem('recientes', JSON.stringify(this.listaRecientes));
     }
-    
+
     if (!this.historial.find(h => h.food.label === food.label)) {
       this.historial.unshift(item);
       this.historial = this.historial.slice(0, 5); // Corta el array para que solo queden 5
@@ -184,11 +220,14 @@ export class SearchPage implements OnInit {
     this.historial = this.historial.filter(h => h.food.label !== item.food.label);
   }
 
-  // Manda el alimento directamente al Home (al contador de macros) con la cantidad ingresada
+  /**
+   * Envía el alimento al servicio de nutrición global.
+   * @function agregarAlimentoDesdeContador
+   */
   agregarAlimentoDesdeContador() {
     if (!this.alimentoSeleccionado) return;
     const food = this.alimentoSeleccionado;
-    
+
     // Estructura limpia que el Home entiende
     const alimentoParaHome = {
       nombre: food.label,
@@ -199,7 +238,7 @@ export class SearchPage implements OnInit {
 
     // Llama al servicio centralizado para que impacte en la UI principal
     this.nutritionService.agregarAlimento(alimentoParaHome, this.cantidad);
-    
+
     // Limpia la pantalla para que puedas buscar otra cosa
     this.alimentoSeleccionado = null;
     this.cantidad = 100;
@@ -226,22 +265,27 @@ export class SearchPage implements OnInit {
     this.cantidad = 100;
   }
 
-  // MAGIA DE CATEGORÍAS: Esta función calcula qué macro es más predominante y le pone ese nombre
+  /**
+   * Clasifica un alimento por su macro nutriente predominante.
+   * @function determinarCategoria
+   * @param {any} nutrients - Datos nutricionales del alimento.
+   * @returns {string} - 'Proteínas' | 'Carbohidratos' | 'Grasas' | 'General'.
+   */
   determinarCategoria(nutrients: any): string {
     if (!nutrients) return 'General';
-    
+
     const prot = nutrients.PROCNT || 0; // Proteínas
     const carb = nutrients.CHOCDF || 0; // Carbohidratos
     const fat = nutrients.FAT || 0;     // Grasas
-    
+
     const max = Math.max(prot, carb, fat); // ¿Cuál de los 3 números es mayor?
     if (max === 0) return 'General'; // Si todos son cero (ej: agua), es General
-    
+
     // Devuelve el nombre del filtro exacto según el macro que ganó
     if (max === carb) return 'Carbohidratos';
     if (max === prot) return 'Proteínas';
     if (max === fat) return 'Grasas';
-    
+
     return 'General'; // Por las dudas
   }
 
@@ -259,6 +303,10 @@ export class SearchPage implements OnInit {
     this.alimentoParaEditar = null;
   }
 
+  /**
+   * Transfiere todos los alimentos seleccionados al contador diario (Home).
+   * @function transferirAlimentosAHome
+   */
   async transferirAlimentosAHome() {
     if (this.listaConsumo.length === 0) return;
 
