@@ -22,33 +22,33 @@
 
     <!-- GRÁFICO CIRCULAR: Anillo interactivo SVG que muestra el progreso de calorías diarias -->
   <div class="circular-container">
-    <svg viewBox="0 0 100 100" class="pie-chart">
-      <!-- Círculo gris de fondo -->
-      <circle class="circle-background" cx="50" cy="50" r="40" />
-      <!-- Círculo azul de progreso (se va rellenando según el strokeDashoffset) -->
-      <circle class="progress-circle" 
-              cx="50" cy="50" r="40" 
-              stroke-dasharray="251.32" 
-              [attr.stroke-dashoffset]="strokeDashoffset" />
-              
-      <!-- Textos internos fijados en el centro del círculo -->
-      <text x="50" y="35" class="text-ratio">{{ 'HOME_PAGE.PROGRESS' | translate }}</text>
-      <text x="50" y="55" class="text-number">{{ totalKcal }}</text>
-      <text x="50" y="68" class="subtitle-text">{{ 'HOME_PAGE.CONSUMED_KCAL' | translate }}</text>
-    </svg>
+      <svg viewBox="0 0 100 100" class="pie-chart">
+        <circle class="circle-background" cx="50" cy="50" r="40" />
+        
+        <circle class="progress-circle" 
+                [ngClass]="{'meta-reached': totalKcal >= metaKcal}"
+                cx="50" cy="50" r="40" 
+                stroke-dasharray="251.32" 
+                [attr.stroke-dashoffset]="strokeDashoffset" />
+                
+        <text x="50" y="35" class="text-ratio" [ngClass]="{'meta-reached': totalKcal >= metaKcal}">
+          {{ 'HOME_PAGE.PROGRESS' | translate }}
+        </text>
+        <text x="50" y="55" class="text-number">{{ totalKcal }}</text>
+        <text x="50" y="68" class="subtitle-text">{{ 'HOME_PAGE.CONSUMED_KCAL' | translate }}</text>
+      </svg>
 
-    <!-- Entrada editable para que el usuario cambie su meta de calorías en el momento -->
-    <div class="meta-input-container">
-      <span class="meta-label">{{ 'HOME_PAGE.GOAL' | translate }}</span>
-      <input type="number" 
-             [(ngModel)]="metaKcal" 
-             (input)="onMetaChange()" 
-             class="meta-editable-input" />
-      <span class="meta-unit">{{ 'HOME_PAGE.KCAL' | translate }}</span>
+        <div class="meta-input-container">
+          <span class="meta-label">{{ 'HOME_PAGE.GOAL' | translate }}</span>
+          <input type="number" 
+                [(ngModel)]="metaKcal" 
+                (input)="onMetaChange()" 
+                class="meta-editable-input" />
+          <span class="meta-unit">{{ 'HOME_PAGE.KCAL' | translate }}</span>
+        </div>
     </div>
-  </div>
 
-  <!-- CALENDARIO: Selector de fecha nativo de Ionic por si se quiere revisar el historial -->
+  <!-- CALENDARIO: Selector de fecha nativo de Ionic por si se quiere revisar el historial
   <div class="date-selector-container ion-padding-horizontal ion-margin-bottom">
     <ion-item lines="none" class="date-picker-item">
       <ion-label>{{ 'HOME_PAGE.REGISTRATION_DATE' | translate }}</ion-label>
@@ -65,6 +65,7 @@
       </ng-template>
     </ion-modal>
   </div>
+  -->
 
   <!-- SECCIÓN PRINCIPAL DE NUTRICIÓN: Barras de progreso para Grasas, Proteínas y Carbohidratos -->
   <ion-card class="nutrition-card">
@@ -76,25 +77,23 @@
           <ion-label>{{ 'HOME_PAGE.FATS' | translate }}</ion-label>
           <span class="percentage-text">{{ percentageFats }}%</span>
         </div>
-        <ion-progress-bar style="--progress-background: #e0e0e0; --background: #f5f5f5;" [value]="percentageFats / 100"></ion-progress-bar>
+        <ion-progress-bar [value]="percentageFats / 100"></ion-progress-bar>
       </div>
 
-      <!-- Barra de Proteínas -->
       <div class="nutrient-row">
         <div class="nutrient-info">
           <ion-label>{{ 'HOME_PAGE.PROTEINS' | translate }}</ion-label>
           <span class="percentage-text">{{ proteinPercentage }}%</span>
         </div>
-        <ion-progress-bar style="--progress-background: #e0e0e0; --background: #f5f5f5;" [value]="proteinPercentage / 100"></ion-progress-bar>
+        <ion-progress-bar [value]="proteinPercentage / 100"></ion-progress-bar>
       </div>
 
-      <!-- Barra de Carbohidratos -->
       <div class="nutrient-row">
         <div class="nutrient-info">
           <ion-label>{{ 'HOME_PAGE.CARBS' | translate }}</ion-label>
           <span class="percentage-text">{{ percentageCarbo }}%</span>
         </div>
-        <ion-progress-bar style="--progress-background: #e0e0e0; --background: #f5f5f5;" [value]="percentageCarbo / 100"></ion-progress-bar>
+        <ion-progress-bar [value]="percentageCarbo / 100"></ion-progress-bar>
       </div>
 
       <div class="divider"></div>
@@ -108,7 +107,10 @@
 
         <!-- Barra azul con el porcentaje numérico superpuesto -->
         <div class="progress-water">
-          <ion-progress-bar class="water-bar" [value]="porcentajeAgua"></ion-progress-bar>
+          <ion-progress-bar class="water-bar" 
+                            [ngClass]="{'water-meta-reached': aguaConsumida >= aguaMeta}"
+                            [value]="porcentajeAgua">
+          </ion-progress-bar>
           <div class="text-over-bar">{{ porcentajeAguaEntero }}%</div> 
         </div>
 

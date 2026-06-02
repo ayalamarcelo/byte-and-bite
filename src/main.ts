@@ -1,5 +1,5 @@
 import { Amplify } from 'aws-amplify';
-import  amplifyconfig  from '../amplifyconfiguration.json';
+import  amplifyconfig  from './amplifyconfiguration.json';
 // puede que les de en rojo por tema ruteo, quiten un punto o ajustenlo
 
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';

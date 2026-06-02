@@ -84,12 +84,12 @@ export class HomePage implements OnInit {
 
     // Escucha en tiempo real cuánta agua va tomando el usuario en el día
     this.nutritionService.agua$.subscribe(ml => {
-      this.aguaConsumida = ml;
+      this.aguaConsumida = Math.min(ml, this.aguaMeta);
+      
       this.porcentajeAgua = this.aguaConsumida / this.aguaMeta; 
       this.porcentajeAguaEntero = Math.round(this.porcentajeAgua * 100);
     });
 
-    // Escucha si el usuario cambió su foto desde el perfil para actualizarla acá
     this.avatarService.avatar$.subscribe(url => {
       console.log('Avatar actualizado en Home:', url);
       this.userAvatar = url;
@@ -120,7 +120,16 @@ export class HomePage implements OnInit {
 
   // Suma los mililitros seleccionados (150, 250, 500) al contador diario del servicio
   agregarAgua(cantidadMl: number) {
-    this.nutritionService.sumarAgua(cantidadMl);
+    if (this.aguaConsumida >= this.aguaMeta) return;
+
+    const nuevoTotal = this.aguaConsumida + cantidadMl;
+
+    if (nuevoTotal > this.aguaMeta) {
+      const diferencia = this.aguaMeta - this.aguaConsumida;
+      this.nutritionService.sumarAgua(diferencia);
+    } else {
+      this.nutritionService.sumarAgua(cantidadMl);
+    }
   }
 
   // Redirige al usuario hacia la pestaña de perfil al tocar el avatar

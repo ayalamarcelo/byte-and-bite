@@ -45,6 +45,15 @@ ion-content {
   }
 }
 
+.progress-circle.meta-reached {
+  stroke: #669c57; 
+}
+
+.text-ratio.meta-reached {
+  fill: #669c57;
+  transition: fill 0.3s ease-in-out;
+}
+
 .profile-button {
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -116,7 +125,7 @@ ion-content {
   stroke: #3880ff; 
   stroke-width: 8;
   stroke-linecap: round;
-  transition: stroke-dashoffset 0.3s ease-in-out;
+  transition: stroke-dashoffset 0.3s ease-in-out, stroke 0.3s ease-in-out; 
 }
 
 .meta-input-container {
@@ -125,14 +134,14 @@ ion-content {
   align-items: center;
   gap: 4px;
   font-family: var(--ion-font-family, sans-serif);
-  color: #a0a0a0;
+  color: #737373 !important; /* Color gris intermedio para las palabras Meta y kcal */
   font-size: 14px;
 
   .meta-editable-input {
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(120, 120, 120, 0.15) !important;
+    border: 1px solid rgba(120, 120, 120, 0.3) !important;
     border-radius: 6px;
-    color: #ffffff;
+    color: #1a1a1a !important;
     width: 65px;
     text-align: center;
     padding: 2px 4px;
@@ -141,8 +150,21 @@ ion-content {
     outline: none;
 
     &:focus {
-      border-color: #3880ff;
-      background: rgba(56, 128, 255, 0.1);
+      border-color: #42b883 !important;
+      background: rgba(66, 184, 131, 0.1) !important;
+    }
+  }
+}
+
+/* Fuerza el texto a blanco cuando el navegador pasa a modo oscuro */
+@media (prefers-color-scheme: dark) {
+  .meta-input-container {
+    color: #a0a0a0 !important;
+    
+    .meta-editable-input {
+      color: #ffffff !important;
+      background: rgba(255, 255, 255, 0.08) !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
     }
   }
 }
@@ -178,8 +200,8 @@ ion-content {
   background: var(--ion-card-background) !important;
   border-radius: 12px !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
-  margin: 0 auto 16px !important; 
-  width: calc(100% - 32px) !important; 
+  margin: 10px auto 16px !important; 
+  width: calc(100% - 32px) !important;
   max-width: 100% !important;
   padding: 16px !important;
 }
@@ -233,6 +255,27 @@ ion-content {
   }
 }
 
+.nutrient-row:nth-of-type(1) ion-progress-bar {
+  --progress-background: #9c27b0 !important;
+  --background: rgba(156, 39, 176, 0.15) !important;
+  height: 8px;
+  border-radius: 4px;
+}
+
+.nutrient-row:nth-of-type(2) ion-progress-bar {
+  --progress-background: #ff6b6b !important;
+  --background: rgba(255, 107, 107, 0.15) !important;
+  height: 8px;
+  border-radius: 4px;
+}
+
+.nutrient-row:nth-of-type(3) ion-progress-bar {
+  --progress-background: #fcc419 !important;
+  --background: rgba(252, 196, 25, 0.15) !important;
+  height: 8px;
+  border-radius: 4px;
+}
+
 .divider {
   height: 1px;
   background: var(--ion-color-step-150, #e0e0e0);
@@ -262,6 +305,11 @@ ion-content {
 .water-bar {
   height: 100%;
   border-radius: 8px; 
+  transition: --progress-background 0.3s ease-in-out;
+}
+
+.water-bar.water-meta-reached {
+  --progress-background: #669c57 !important; 
 }
 
 .text-over-bar {
@@ -309,6 +357,7 @@ ion-content {
     font-size: 0.7rem;
     font-weight: bold;
     text-transform: uppercase;
+    --border-radius: 8px !important; 
   }
 }
 
