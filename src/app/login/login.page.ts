@@ -26,18 +26,19 @@ export class LoginPage implements OnInit {
 
   ngOnInit() { }
 
-  async continueWithGoogle() {
-    try {
-      // Al ejecutar esta función, Amplify abrirá el navegador del sistema
-      // hacia la URL de login de Cognito 
-      await signInWithRedirect({
-        provider: 'Google'
-      });
-    } catch (error: any) {
-      console.error('Error al iniciar sesión con Google:', error);
-      this.presentAlert('Error', 'No se pudo conectar con Google en este momento.');
-    }
-  }
+  
+  // async continueWithGoogle() {
+  //   try {
+  //     // Al ejecutar esta función, Amplify abrirá el navegador del sistema
+  //     // hacia la URL de login de Cognito 
+  //     await signInWithRedirect({
+  //       provider: 'Google'
+  //     });
+  //   } catch (error: any) {
+  //     console.error('Error al iniciar sesión con Google:', error);
+  //     this.presentAlert('Error', 'No se pudo conectar con Google en este momento.');
+  //   }
+  // }
 
   async handleLogin() {
     const loading = await this.loadingController.create({

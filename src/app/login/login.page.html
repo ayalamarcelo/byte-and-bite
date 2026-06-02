@@ -21,25 +21,27 @@
         <ion-icon name="person-outline" style="font-size: 60px; color: var(--ion-color-medium);"></ion-icon>
       </ion-avatar>
     </div>
-
-    <div class="ion-margin-vertical">
+    
+    <!-- GOOGLE Funcionalidad para más adelante -->
+    <!--<div class="ion-margin-vertical">
       <ion-button expand="block" fill="outline" color="primary" (click)="continueWithGoogle()">
         <ion-icon slot="start" name="logo-google"></ion-icon>
         {{ 'CONTINUE_GOOGLE' | translate }}
       </ion-button>
-    </div>
+    </div> 
 
     <div class="ion-text-center ion-margin-vertical">
       <p style="color: var(--ion-color-medium); margin: 0;">{{ 'OR' | translate }}</p>
-    </div>
+    </div> -->
+    <br>
 
-    <ion-input label="{{ 'EMAIL_LABEL' | translate }}" label-placement="floating" fill="outline" type="email" class="ion-margin-bottom"
-      [(ngModel)]="email">
+    <ion-input label="{{ 'EMAIL_LABEL' | translate }}" label-placement="floating" fill="outline" type="email"
+      class="ion-margin-bottom" [(ngModel)]="email">
       <ion-icon slot="start" name="mail-outline" aria-hidden="true"></ion-icon>
     </ion-input>
 
-    <ion-input label="{{ 'PASSWORD_LABEL' | translate }}" label-placement="floating" fill="outline" type="password" class="ion-margin-bottom"
-      [(ngModel)]="password">
+    <ion-input label="{{ 'PASSWORD_LABEL' | translate }}" label-placement="floating" fill="outline" type="password"
+      class="ion-margin-bottom" [(ngModel)]="password">
       <ion-icon slot="start" name="lock-closed-outline" aria-hidden="true"></ion-icon>
     </ion-input>
 
@@ -61,7 +63,8 @@
     </ion-button>
 
     <div class="ion-text-center ion-margin-top">
-      <p>{{ 'NO_ACCOUNT' | translate }} <a (click)="goToSignUp()" style="cursor: pointer;"> {{ 'REGISTER' | translate }}</a></p>
+      <p>{{ 'NO_ACCOUNT' | translate }} <a (click)="goToSignUp()" style="cursor: pointer;"> {{ 'REGISTER' | translate
+          }}</a></p>
     </div>
 
   </div>
