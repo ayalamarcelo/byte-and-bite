@@ -3,6 +3,11 @@ import { signUp } from 'aws-amplify/auth';
 import { AlertController, LoadingController, NavController, ModalController } from '@ionic/angular';
 import { ConfirmSignupPage } from '../confirm-signup/confirm-signup.page';
 
+/**
+ * Componente encargado del registro de nuevos usuarios en la aplicación.
+ * Gestiona la captura de datos, validaciones de formulario y la comunicación 
+ * con AWS Amplify para la creación de cuentas.
+ */
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.page.html',
@@ -11,7 +16,7 @@ import { ConfirmSignupPage } from '../confirm-signup/confirm-signup.page';
 })
 export class SignupPage implements OnInit {
 
-  // variables para el formulario
+  // Variables para el formulario
   name = '';
   lastname = '';
   email = '';
@@ -28,7 +33,16 @@ export class SignupPage implements OnInit {
 
   ngOnInit() { }
 
+  /**
+   * Ejecuta el proceso de registro del usuario.
+   * * Realiza validaciones de campos (coincidencia de contraseñas, términos).
+   * * Llama a `signUp` de Amplify y, tras el éxito, abre un modal de confirmación.
+   * * @function handleSignUp
+   * @async
+   * @returns {Promise<void>}
+   */
   async handleSignUp() {
+    // Validación de integridad de datos
     if (this.password !== this.repeatPassword) {
       this.presentAlert('Error', 'Las contraseñas no coinciden.');
       return;
@@ -45,6 +59,7 @@ export class SignupPage implements OnInit {
     await loading.present();
 
     try {
+      // Registro en AWS Amplify
       const { nextStep } = await signUp({
         username: this.email,
         password: this.password,
@@ -59,22 +74,21 @@ export class SignupPage implements OnInit {
 
       await loading.dismiss();
 
+      // Manejo de flujo según el estado del registro
       if (nextStep.signUpStep === 'CONFIRM_SIGN_UP') {
-        // Abrimos el modal directamente al terminar el registro
         const modal = await this.modalController.create({
           component: ConfirmSignupPage,
           componentProps: {
-            email: this.email, // Pasamos el email para que el usuario no tenga que escribirlo de nuevo
+            email: this.email,
             password: this.password
           }
         });
 
         await modal.present();
 
-        // Esperamos a que el usuario termine en el modal
+        // Espera el resultado del modal de confirmación
         const { data } = await modal.onDidDismiss();
 
-        // Si el usuario confirmó exitosamente, navegamos al login o al home
         if (data?.confirmed) {
           this.navCtrl.navigateRoot(['/tabs/home']);
         }
@@ -82,16 +96,27 @@ export class SignupPage implements OnInit {
 
     } catch (error: any) {
       await loading.dismiss();
-      // console.error('Error en SignUp:', error);
       this.presentAlert('Error', error.message || 'Ocurrió un error en el registro');
     }
   }
 
-  //Navega de vuelta al login con animación de retroceso
+  /**
+   * Navega de vuelta a la página de login utilizando el controlador de navegación.
+   * @function goToLogin
+   * @returns {void}
+   */
   goToLogin() {
     this.navCtrl.navigateBack('/login');
   }
 
+  /**
+   * Muestra una alerta emergente con un título y mensaje.
+   * @function presentAlert
+   * @async
+   * @param {string} header - Título de la alerta.
+   * @param {string} message - Descripción del error o aviso.
+   * @returns {Promise<void>}
+   */
   async presentAlert(header: string, message: string) {
     const alert = await this.alertController.create({
       header, message, buttons: ['OK'],
