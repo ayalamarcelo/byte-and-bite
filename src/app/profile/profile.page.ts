@@ -227,7 +227,6 @@ export class ProfilePage implements OnInit {
   }
 
   async ejecutarCamara(usarCamara: boolean) {
-<<<<<<< HEAD
   this.isMenuOpen = false; 
 
   try {
@@ -248,34 +247,6 @@ export class ProfilePage implements OnInit {
     }
   } catch (e) {
     console.log("Acción cancelada");
-=======
-    // 1. Cerramos el menú inmediatamente
-    this.isMenuOpen = false;
-
-    // 2. Usamos setTimeout para que la UI se renderice sin el menú
-    // antes de que Capacitor bloquee el hilo para abrir la cámara
-    setTimeout(async () => {
-      try {
-        const image = await Camera.getPhoto({
-          quality: 90,
-          allowEditing: true,
-          resultType: CameraResultType.DataUrl,
-          source: usarCamara ? CameraSource.Camera : CameraSource.Photos
-        });
-
-        if (image.dataUrl) {
-          this.avatarService.updateAvatar(image.dataUrl);
-
-          if (this.userId) {
-            const remoteUrl = await this.firebaseService.uploadAvatar(this.userId, image.dataUrl);
-            this.avatarService.updateAvatar(remoteUrl);
-          }
-        }
-      } catch (e) {
-        console.log("Acción cancelada");
-      }
-    }, 100); // 100ms es suficiente para que la UI se refresque
->>>>>>> 297af34 (chore: add @capacitor/preferences and update avatar logic)
   }
 }
 
