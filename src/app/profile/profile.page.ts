@@ -19,9 +19,6 @@ import { fetchUserAttributes, updatePassword, getCurrentUser, signOut } from 'aw
 import { FirebaseService } from '../services/firebase.service';
 import { LoadingController } from '@ionic/angular';
 
-// [AGREGADO] Capacitor Preferences para persistir estado de notificaciones y datos físicos
-import { Preferences } from '@capacitor/preferences';
-
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
@@ -29,7 +26,6 @@ import { Preferences } from '@capacitor/preferences';
   standalone: false
 })
 export class ProfilePage implements OnInit {
-
   // Datos Físicos
   edad: number = 25;
   peso: number = 68;
@@ -44,11 +40,11 @@ export class ProfilePage implements OnInit {
   // Control del Modal
   isModalOpen: boolean = false;
   campoEditando: string = '';
-  valorTemporal: any = 0;
+  valorTemporal: any = 0; // Cambiado a 'any' para soportar tanto números (edad) como texto   
 
-  // [MODIFICADO] Preferencias — ahora se cargan desde Preferences al iniciar
+  // Preferencias
   alertasActivas: boolean = false;
-  recordatoriosActivos: boolean = false;
+  recordatoriosActivos: boolean = true;
 
   // menu
   isMenuOpen = false;
@@ -56,15 +52,9 @@ export class ProfilePage implements OnInit {
   showOldPassword: boolean = false;
   showNewPassword: boolean = false;
 
-  // [AGREGADO] Claves de Preferences para notificaciones
-  private readonly NOTIF_KEYS = {
-    recordatorios: 'notif_recordatorios',
-    alertas: 'notif_alertas'
-  };
-
   constructor(
     private authService: AuthService,
-    private alertController: AlertController,
+    private alertController: AlertController, // Agregado para los mensajes de éxito/error
     public userService: UserService,
     public languageService: LanguageService,
     public avatarService: AvatarService,
@@ -73,6 +63,7 @@ export class ProfilePage implements OnInit {
     private loadingCtrl: LoadingController,
     private navCtrl: NavController
   ) {
+    // Aseguramos que los iconos estén registrados
     addIcons({ createOutline, globeOutline });
   }
 
@@ -88,109 +79,10 @@ export class ProfilePage implements OnInit {
     await Promise.all([
       this.cargarEmailUsuario(),
       this.userService.loadUserData(),
-      // [AGREGADO] Cargar estado guardado de las notificaciones
-      this.cargarEstadoNotificaciones()
     ]);
 
     console.log("Datos cargados correctamente");
   }
-
-  // ==========================================
-  // LÓGICA DE NOTIFICACIONES
-  // ==========================================
-
-  // [AGREGADO] Carga el estado guardado de cada toggle desde Preferences
-  async cargarEstadoNotificaciones() {
-    try {
-      const [recordRes, alertRes] = await Promise.all([
-        Preferences.get({ key: this.NOTIF_KEYS.recordatorios }),
-        Preferences.get({ key: this.NOTIF_KEYS.alertas })
-      ]);
-
-      // Si hay un valor guardado lo usa, si no queda en false por defecto
-      if (recordRes.value !== null) {
-        this.recordatoriosActivos = recordRes.value === 'true';
-      }
-      if (alertRes.value !== null) {
-        this.alertasActivas = alertRes.value === 'true';
-      }
-
-      console.log('Estado notificaciones cargado:', {
-        recordatorios: this.recordatoriosActivos,
-        alertas: this.alertasActivas
-      });
-    } catch (error) {
-      console.error('Error al cargar estado de notificaciones:', error);
-    }
-  }
-
-  // [AGREGADO] Se llama cuando el usuario mueve cualquier toggle
-  // Guarda el nuevo estado y ejecuta la lógica de suscripción/desuscripción
-  async onToggleChange(tipo: string) {
-    if (tipo === 'recordatorios') {
-      // Guardar estado en Preferences
-      await Preferences.set({
-        key: this.NOTIF_KEYS.recordatorios,
-        value: String(this.recordatoriosActivos)
-      });
-
-      // Lógica FCM: suscribir o desuscribir del topic de recordatorios
-      if (this.recordatoriosActivos) {
-        await this.suscribirATopic('recordatorios_comida');
-        console.log('Suscripto a recordatorios de comida');
-      } else {
-        await this.desuscribirDeTopic('recordatorios_comida');
-        console.log('Desuscripto de recordatorios de comida');
-      }
-
-    } else if (tipo === 'alertas') {
-      // Guardar estado en Preferences
-      await Preferences.set({
-        key: this.NOTIF_KEYS.alertas,
-        value: String(this.alertasActivas)
-      });
-
-      // Lógica FCM: suscribir o desuscribir del topic de alertas
-      if (this.alertasActivas) {
-        await this.suscribirATopic('alertas_generales');
-        console.log('Suscripto a alertas generales');
-      } else {
-        await this.desuscribirDeTopic('alertas_generales');
-        console.log('Desuscripto de alertas generales');
-      }
-    }
-  }
-
-  // [AGREGADO] Suscribe al usuario a un topic de FCM
-  // Cuando integres @capacitor/push-notifications, completá esta función
-  async suscribirATopic(topic: string) {
-    try {
-      // TODO: cuando instales @capacitor/push-notifications descomentar:
-      // const { PushNotifications } = await import('@capacitor/push-notifications');
-      // await PushNotifications.requestPermissions();
-      // await PushNotifications.register();
-      // El token FCM se obtiene en el listener 'registration'
-      // y con ese token llamás a tu backend para suscribir al topic
-      console.log(`[FCM] Suscripto al topic: ${topic}`);
-    } catch (error) {
-      console.error(`Error al suscribirse al topic ${topic}:`, error);
-    }
-  }
-
-  // [AGREGADO] Desuscribe al usuario de un topic de FCM
-  async desuscribirDeTopic(topic: string) {
-    try {
-      // TODO: cuando integres FCM completá con la llamada a tu backend
-      // para desuscribir el token del topic
-      console.log(`[FCM] Desuscripto del topic: ${topic}`);
-    } catch (error) {
-      console.error(`Error al desuscribirse del topic ${topic}:`, error);
-    }
-  }
-
-  // ==========================================
-  // LÓGICA DE FIREBASE (PERFIL)
-  // ==========================================
 
   async cargarPerfilUsuario() {
     if (this.userId) {
@@ -227,12 +119,15 @@ export class ProfilePage implements OnInit {
     }
 
     try {
+      // Impacta directamente en el backend de AWS
       await updatePassword({
         oldPassword: this.oldPasswordInput,
         newPassword: this.newPasswordInput
       });
 
       this.presentAlert('Éxito', 'Tu contraseña ha sido actualizada correctamente.');
+
+      // Cerramos modal y limpiamos campos por seguridad
       this.isModalOpen = false;
       this.oldPasswordInput = '';
       this.newPasswordInput = '';
@@ -255,6 +150,7 @@ export class ProfilePage implements OnInit {
     if (campo === 'peso') this.valorTemporal = this.peso;
     if (campo === 'altura') this.valorTemporal = this.altura;
     if (campo === 'contrasena') {
+      // Limpiamos los inputs temporales antes de abrir el modal
       this.oldPasswordInput = '';
       this.newPasswordInput = '';
       this.showOldPassword = false;
@@ -271,15 +167,18 @@ export class ProfilePage implements OnInit {
   }
 
   async saveChanges() {
+    // Si estamos editando la contraseña, delegamos la acción a AWS y salimos de la función
     if (this.campoEditando === 'contrasena') {
       this.actualizarPasswordCognito();
       return;
     }
 
+    // Si son datos físicos, se actualizan las variables locales
     if (this.campoEditando === 'edad') this.edad = this.valorTemporal;
     if (this.campoEditando === 'peso') this.peso = this.valorTemporal;
     if (this.campoEditando === 'altura') this.altura = this.valorTemporal;
 
+    // Persistir en Firebase si tenemos el ID del usuario
     if (this.userId && ['edad', 'peso', 'altura'].includes(this.campoEditando)) {
       try {
         await this.firebaseService.updateProfile(this.userId, {
@@ -293,6 +192,11 @@ export class ProfilePage implements OnInit {
     }
 
     this.isModalOpen = false;
+  }
+
+  onToggleChange(tipo: string) {
+    const estado = tipo === 'recordatorios' ? this.recordatoriosActivos : this.alertasActivas;
+    console.log(`Estado de ${tipo}:`, estado);
   }
 
   // ==========================================
@@ -323,28 +227,38 @@ export class ProfilePage implements OnInit {
   }
 
   async ejecutarCamara(usarCamara: boolean) {
-    this.isMenuOpen = false;
+  this.isMenuOpen = false; 
 
-    try {
-      const image = await Camera.getPhoto({
-        quality: 90,
-        allowEditing: true,
-        resultType: CameraResultType.DataUrl,
-        source: usarCamara ? CameraSource.Camera : CameraSource.Photos
-      });
+  try {
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: true,
+      resultType: CameraResultType.DataUrl,
+      source: usarCamara ? CameraSource.Camera : CameraSource.Photos
+    });
 
-      if (image.dataUrl) {
-        this.avatarService.updateAvatar(image.dataUrl);
-
-        if (this.userId) {
-          const remoteUrl = await this.firebaseService.uploadAvatar(this.userId, image.dataUrl);
-          this.avatarService.updateAvatar(remoteUrl);
-        }
+    if (image.dataUrl) {
+      this.avatarService.updateAvatar(image.dataUrl);
+      
+      if (this.userId) {
+        const remoteUrl = await this.firebaseService.uploadAvatar(this.userId, image.dataUrl);
+        this.avatarService.updateAvatar(remoteUrl);
       }
-    } catch (e) {
-      console.log("Acción cancelada");
     }
+  } catch (e) {
+    console.log("Acción cancelada");
   }
+}
+
+/**
+   * Captura una imagen desde la cámara o la galería y la procesa para actualizar el avatar.
+   * * Cierra el menú de opciones antes de iniciar el proceso.
+   * * Realiza una actualización local inmediata del avatar y posteriormente lo sube a Firebase.
+   * * @async
+   * @function ejecutarCamara
+   * @param {boolean} usarCamara - Define la fuente de la imagen: true para abrir la cámara, false para la galería.
+   * @returns {Promise<void>} Una promesa que se resuelve al finalizar el proceso de captura y subida.
+   */
 
   async abrirMenuOpciones() {
     const actionSheet = await this.actionSheetCtrl.create({
@@ -369,16 +283,15 @@ export class ProfilePage implements OnInit {
     await actionSheet.present();
   }
 
-  /**
+  /** 
    * Cierra la sesión del usuario actual.
    * Ejecuta una pausa artificial de 1 segundo para mejorar la experiencia
-   */
+   * @async
+   * @function cerrarSesion
+   * @returns { Promise<void> } Una promesa que se resuelve cuando el cierre de sesión ha finalizado.
+  */
+
   async cerrarSesion() {
-    // [AGREGADO] Limpiar estado de notificaciones al cerrar sesión
-    await Promise.all([
-      Preferences.remove({ key: this.NOTIF_KEYS.recordatorios }),
-      Preferences.remove({ key: this.NOTIF_KEYS.alertas })
-    ]);
     await new Promise(resolve => setTimeout(resolve, 1000));
     await this.authService.logout();
   }
