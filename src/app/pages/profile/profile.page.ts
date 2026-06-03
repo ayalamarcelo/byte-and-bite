@@ -67,6 +67,11 @@ export class ProfilePage implements OnInit {
     addIcons({ createOutline, globeOutline });
   }
 
+  /**
+   * @function ngOnInit
+   * @description La función será ejecutada automáticamente al inicializar la pantalla de perfil.
+   * Obtiene de forma asíncrona el identificador único de AWS Cognito, descarga las propiedades físicas desde Firebase y mapea el email de la cuenta.
+   */
   async ngOnInit() {
     try {
       const user = await getCurrentUser();
@@ -84,6 +89,11 @@ export class ProfilePage implements OnInit {
     console.log("Datos cargados correctamente");
   }
 
+  /**
+   * @function cargarPerfilUsuario
+   * @description La función será ejecutada internamente después de validar la sesión activa del usuario.
+   * Consulta el documento de FirebaseService para restaurar la edad, peso, altura y la URL remota de la foto de perfil en la UI.
+   */
   async cargarPerfilUsuario() {
     if (this.userId) {
       const perfil = await this.firebaseService.getProfile(this.userId);
@@ -102,6 +112,11 @@ export class ProfilePage implements OnInit {
   // LÓGICA DE SEGURIDAD (AWS COGNITO)
   // ==========================================
 
+  /**
+   * @function cargarEmailUsuario
+   * @description La función será ejecutada para consultar los atributos de seguridad del proveedor de identidad.
+   * Invoca de forma asíncrona el método fetchUserAttributes de AWS Amplify para extraer y pintar el correo del usuario en la vista.
+   */
   async cargarEmailUsuario() {
     try {
       const attributes = await fetchUserAttributes();
@@ -112,6 +127,11 @@ export class ProfilePage implements OnInit {
     }
   }
 
+  /**
+   * @function actualizarPasswordCognito
+   * @description La función será ejecutada cuando el usuario confirme el cambio de sus credenciales de acceso.
+   * Envía las contraseñas actual y nueva al pool de usuarios de AWS Cognito y notifica mediante una alerta el éxito o rechazo del servidor.
+   */
   async actualizarPasswordCognito() {
     if (!this.oldPasswordInput || !this.newPasswordInput) {
       this.presentAlert('Aviso', 'Debes ingresar tu contraseña actual y la nueva.');
@@ -142,6 +162,11 @@ export class ProfilePage implements OnInit {
   // LÓGICA DE LA INTERFAZ Y MODAL
   // ==========================================
 
+  /**
+   * @function openEditModal
+   * @description La función será ejecutada cuando el usuario presione el botón de edición en cualquier tarjeta de información del perfil.
+   * Configura la variable de control de campo, respalda los valores numéricos actuales o inicializa el formulario limpio para el cambio de credenciales.
+   */
   openEditModal(campo: string) {
     this.campoEditando = campo;
     this.isModalOpen = true;
@@ -158,6 +183,11 @@ export class ProfilePage implements OnInit {
     }
   }
 
+  /**
+   * @function togglePasswordVisibility
+   * @description La función será ejecutada cuando el usuario interactúe con el icono del ojo en los formularios de claves.
+   * Alterna las propiedades lógicas booleanas para modificar de forma dinámica el tipo de input del DOM entre 'text' y 'password'.
+   */
   togglePasswordVisibility(campo: 'old' | 'new') {
     if (campo === 'old') {
       this.showOldPassword = !this.showOldPassword;
@@ -166,6 +196,11 @@ export class ProfilePage implements OnInit {
     }
   }
 
+  /**
+   * @function saveChanges
+   * @description La función será ejecutada cuando el usuario presione el botón de Guardar dentro de la ventana de diálogo interactiva.
+   * Transfiere el dato temporal al estado de las propiedades físicas y actualiza asíncronamente el documento del perfil en Google Firebase Firestore.
+   */
   async saveChanges() {
     // Si estamos editando la contraseña, delegamos la acción a AWS y salimos de la función
     if (this.campoEditando === 'contrasena') {
@@ -194,6 +229,11 @@ export class ProfilePage implements OnInit {
     this.isModalOpen = false;
   }
 
+  /**
+   * @function onToggleChange
+   * @description La función será ejecutada automáticamente cada vez que el usuario activa o desactiva las palancas de configuración.
+   * Captura de manera reactiva el estado de los componentes de preferencias para futuras implementaciones de alertas en el dispositivo.
+   */
   onToggleChange(tipo: string) {
     const estado = tipo === 'recordatorios' ? this.recordatoriosActivos : this.alertasActivas;
     console.log(`Estado de ${tipo}:`, estado);
@@ -203,6 +243,11 @@ export class ProfilePage implements OnInit {
   // UTILIDADES
   // ==========================================
 
+  /**
+   * @function presentAlert
+   * @description La función será ejecutada internamente para instanciar componentes flotantes emergentes nativos de la interfaz de Ionic.
+   * Muestra un cuadro de diálogo contextualizado pasando un título y descripción con un botón único de descarte interactivo.
+   */
   async presentAlert(header: string, message: string) {
     const alert = await this.alertController.create({
       header,
@@ -212,54 +257,67 @@ export class ProfilePage implements OnInit {
     await alert.present();
   }
 
+  /**
+   * @function idiomaSeleccionado
+   * @description La función actúa como un getter reactivo para mapear el código lingüístico activo de la aplicación.
+   * Interroga al LanguageService para retornar la abreviación del idioma (ej: 'es' o 'en') que gobierna las traducciones del template.
+   */
   get idiomaSeleccionado() {
     return this.languageService.getCurrentLang();
   }
 
+  /**
+   * @function cambiarIdioma
+   * @description La función será ejecutada cuando el usuario elija una opción distinta en el selector desplegable de idiomas.
+   * Pasa el nuevo valor String al LanguageService para mutar de forma instantánea todos los diccionarios de traducción de la app.
+   */
   cambiarIdioma(event: any) {
     this.languageService.setLanguage(event.detail.value);
   }
 
-  // LOGICA PARA CAMBIAR IMAGEN DE PERFIL
-
+  /**
+   * @function abrirMenu
+   * @description La función será ejecutada cuando se presione sobre el área táctil de la fotografía del perfil del usuario.
+   * Modifica a verdadero la propiedad booleana encargada de renderizar el menú emergente flotante en la interfaz visual.
+   */
   abrirMenu() {
     this.isMenuOpen = true;
   }
 
-  async ejecutarCamara(usarCamara: boolean) {
-  this.isMenuOpen = false; 
-
-  try {
-    const image = await Camera.getPhoto({
-      quality: 90,
-      allowEditing: true,
-      resultType: CameraResultType.DataUrl,
-      source: usarCamara ? CameraSource.Camera : CameraSource.Photos
-    });
-
-    if (image.dataUrl) {
-      this.avatarService.updateAvatar(image.dataUrl);
-      
-      if (this.userId) {
-        const remoteUrl = await this.firebaseService.uploadAvatar(this.userId, image.dataUrl);
-        this.avatarService.updateAvatar(remoteUrl);
-      }
-    }
-  } catch (e) {
-    console.log("Acción cancelada");
-  }
-}
-
-/**
-   * Captura una imagen desde la cámara o la galería y la procesa para actualizar el avatar.
-   * * Cierra el menú de opciones antes de iniciar el proceso.
-   * * Realiza una actualización local inmediata del avatar y posteriormente lo sube a Firebase.
-   * * @async
+  /**
    * @function ejecutarCamara
-   * @param {boolean} usarCamara - Define la fuente de la imagen: true para abrir la cámara, false para la galería.
-   * @returns {Promise<void>} Una promesa que se resuelve al finalizar el proceso de captura y subida.
+   * @description La función será ejecutada de forma asíncrona para interactuar con los recursos de captura nativos del ecosistema móvil.
+   * Lanza el SDK de Capacitor Camera para obtener una imagen (DataUrl), actualiza localmente la interfaz e inicia el proceso de carga en Firebase Storage.
    */
+  async ejecutarCamara(usarCamara: boolean) {
+    this.isMenuOpen = false; 
 
+    try {
+      const image = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: true,
+        resultType: CameraResultType.DataUrl,
+        source: usarCamara ? CameraSource.Camera : CameraSource.Photos
+      });
+
+      if (image.dataUrl) {
+        this.avatarService.updateAvatar(image.dataUrl);
+        
+        if (this.userId) {
+          const remoteUrl = await this.firebaseService.uploadAvatar(this.userId, image.dataUrl);
+          this.avatarService.updateAvatar(remoteUrl);
+        }
+      }
+    } catch (e) {
+      console.log("Acción cancelada");
+    }
+  }
+
+  /**
+   * @function abrirMenuOpciones
+   * @description La función será ejecutada para componer y desplegar una hoja de acciones nativa (ActionSheetController) en la parte inferior.
+   * Ofrece de manera elegante al usuario las opciones táctiles de activar la Cámara, abrir la Galería multimedia o abortar la operación.
+   */
   async abrirMenuOpciones() {
     const actionSheet = await this.actionSheetCtrl.create({
       header: 'Seleccionar imagen',
@@ -283,14 +341,11 @@ export class ProfilePage implements OnInit {
     await actionSheet.present();
   }
 
-  /** 
-   * Cierra la sesión del usuario actual.
-   * Ejecuta una pausa artificial de 1 segundo para mejorar la experiencia
-   * @async
+  /**
    * @function cerrarSesion
-   * @returns { Promise<void> } Una promesa que se resuelve cuando el cierre de sesión ha finalizado.
-  */
-
+   * @description La función será ejecutada cuando el usuario haga click en el botón de deslogueo o abandono de cuenta.
+   * Introduce un retardo de tiempo de un segundo para suavizar la animación estética de salida y destruye la sesión en AWS Amplify.
+   */
   async cerrarSesion() {
     await new Promise(resolve => setTimeout(resolve, 1000));
     await this.authService.logout();

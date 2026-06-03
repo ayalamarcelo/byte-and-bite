@@ -5,6 +5,23 @@ import { IonicModule , NavController} from '@ionic/angular';
 import { NutritionService } from '../../services/nutrition.service';
 import { fetchUserAttributes } from 'aws-amplify/auth';
 import { AvatarService } from '../../services/avatar.service';
+import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
+import { getCurrentUser } from 'aws-amplify/auth';
+import { environment } from '../../../environments/environment';
+import { initializeApp } from 'firebase/app';
+
+const firebaseConfig = {
+  apiKey: environment.firebaseConfig.apiKey,
+  authDomain: environment.firebaseConfig.authDomain,
+  projectId: environment.firebaseConfig.projectId,
+  storageBucket: environment.firebaseConfig.storageBucket,
+  messagingSenderId: environment.firebaseConfig.messagingSenderId,
+  appId: environment.firebaseConfig.appId 
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 
 @Component({
   selector: 'app-home',
@@ -12,32 +29,26 @@ import { AvatarService } from '../../services/avatar.service';
   styleUrls: ['./home.page.scss'],
   standalone: false
 })
-
 export class HomePage implements OnInit {
 
-  // Variables para guardar la información del usuario y la fecha actual
   fotoPerfil: string = '';
   currentDate: Date = new Date();
   nombreUsuario: string = '';
   apellidoUsuario: string = '';
   userAvatar: string | null = null;
 
-  // Contador de calorías consumidas y control del gráfico circular
   totalKcal: number = 0;
-  metaKcal: number = Number(localStorage.getItem('metaCalorias')) || 2000; // Límite diario por defecto
-  strokeDashoffset: number = 251.32; // Controla qué tan lleno se ve el círculo azul
+  metaKcal: number = Number(localStorage.getItem('metaCalorias')) || 2000;
+  strokeDashoffset: number = 251.32;
 
-  // Porcentajes de los macronutrientes para las barras de progreso
   percentageFats: number = 0;
   proteinPercentage: number = 0;
   percentageCarbo: number = 0;
 
-  // Valores acumulados de los micronutrientes en miligramos o gramos
   sodioMg: number = 0;
   fibraG: number = 0;
   potasioMg: number = 0;
 
-  // Variables de control de progreso y metas fijas para los micros
   progresoSodio: number = 0;
   progresoFibra: number = 0;
   progresoPotasio: number = 0;
@@ -45,99 +56,166 @@ export class HomePage implements OnInit {
   metaFibra: number = 30;   
   metaPotasio: number = 3500; 
 
-  // Estado del contador de agua diaria
   aguaConsumida: number = 0;
   aguaMeta: number = 2000;
   porcentajeAgua: number = 0;
   porcentajeAguaEntero: number = 0;
 
+  private userId: string = '';
+
   constructor(
     private navCtrl: NavController,
-    private nutritionService: NutritionService, // Servicio de cálculos nutricionales
-    private avatarService: AvatarService // Servicio para controlar la foto de perfil
+    private nutritionService: NutritionService,
+    private avatarService: AvatarService
   ) { }
 
-  // Al arrancar la pantalla, nos suscribimos a los servicios para escuchar cambios en vivo
+  /**
+   * @function getFechaHoyString
+   * @description La función será ejecutada internamente para formatear la fecha actual del sistema.
+   * Retorna un String estandarizado en formato YYYY-MM-DD que se usa como identificador único para los documentos de la base de datos.
+   */
+  private getFechaHoyString(): string {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  }
+
+  /**
+   * @function ngOnInit
+   * @description La función será ejecutada automáticamente al inicializar la pantalla.
+   * Se conecta con AWS Amplify para traer el nombre del usuario, invoca la carga del agua desde la nube de Firebase, y se suscribe 
+   * en tiempo real a los flujos reactivos de alimentos y avatar para actualizar la UI dinámicamente.
+   */
   async ngOnInit() {
     await this.getUserInfo();
+    await this.cargarAguaDesdeFirebase();
 
-    // Escucha en tiempo real cada vez que el usuario agrega un alimento
     this.nutritionService.alimentos$.subscribe(alimentos => {
-      // Traemos el total de calorías consumidas
       this.totalKcal = this.nutritionService.getTotalKcal();
 
-      // Traemos el reparto de porcentajes de grasas, proteínas y carbohidratos
       const p = this.nutritionService.getPorcentajesMacros();
       this.percentageFats = p.grasas;
       this.proteinPercentage = p.proteinas;
       this.percentageCarbo = p.carbohidratos;
 
-      // Traemos la suma acumulada de sodio, fibra y potasio
       const micros = this.nutritionService.getMicronutrientesTotales();
       this.sodioMg = Number(micros.sodio) || 0;
       this.fibraG = Number(micros.fibra) || 0;
       this.potasioMg = Number(micros.potasio) || 0;
       
-      // Re-calculamos el diseño del anillo azul con los nuevos datos
       this.actualizarGrafico();
     });
 
-    // Escucha en tiempo real cuánta agua va tomando el usuario en el día
-    this.nutritionService.agua$.subscribe(ml => {
-      this.aguaConsumida = Math.min(ml, this.aguaMeta);
-      
-      this.porcentajeAgua = this.aguaConsumida / this.aguaMeta; 
-      this.porcentajeAguaEntero = Math.round(this.porcentajeAgua * 100);
-    });
-
     this.avatarService.avatar$.subscribe(url => {
-      console.log('Avatar actualizado en Home:', url);
       this.userAvatar = url;
     });
   }
 
-  // Método que calcula el progreso del anillo circular en base a la meta diaria
+  /**
+   * @function cargarAguaDesdeFirebase
+   * @description La función será ejecutada de forma asíncrona al arrancar la aplicación para recuperar el historial de hidratación.
+   * Se conecta a Firestore buscando el documento diario del usuario logueado en la colección 'aguaDiaria' para pintar el progreso real en frío.
+   */
+
+  async cargarAguaDesdeFirebase() {
+    try {
+      const user = await getCurrentUser();
+      this.userId = user.userId;
+      
+      if (this.userId) {
+        const fechaHoy = this.getFechaHoyString();
+        const docRef = doc(db, 'aguaDiaria', `${this.userId}_${fechaHoy}`);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          this.aguaConsumida = Number(data['mililitros']) || 0;
+        } else {
+          this.aguaConsumida = 0;
+        }
+
+        this.porcentajeAgua = this.aguaConsumida / this.aguaMeta;
+        this.porcentajeAguaEntero = Math.round(this.porcentajeAgua * 100);
+      }
+    } catch (e) {
+      console.error("Error cargando agua desde Firebase:", e);
+    }
+  }
+
+  /**
+   * @function actualizarGrafico
+   * @description La función será ejecutada para recalcular el progreso calórico diario del usuario en base a su meta.
+   * Modifica matemáticamente la propiedad strokeDashoffset para rellenar visualmente el anillo SVG de la interfaz.
+   */
   actualizarGrafico() {
-    if (this.metaKcal <= 0) this.metaKcal = 1; // Evitamos división por cero
-    
+    if (this.metaKcal <= 0) this.metaKcal = 1;
     const porcentaje = this.totalKcal / this.metaKcal;
-    const circunferencia = 2 * Math.PI * 40; // Largo total de la línea del círculo (251.32)
-    const factorProgreso = Math.min(porcentaje, 1); // El anillo no se pasa del 100% visual
-    
-    // Modificamos el offset: menos offset significa que el círculo se pinta más
+    const circunferencia = 2 * Math.PI * 40;
+    const factorProgreso = Math.min(porcentaje, 1);
     this.strokeDashoffset = circunferencia - (factorProgreso * circunferencia);
   }
 
-  // Se ejecuta automáticamente cada vez que el usuario edita el número de su meta diaria
+  /**
+   * @function onMetaChange
+   * @description La función será ejecutada automáticamente cada vez que el usuario edita numéricamente su meta de calorías en el campo de texto.
+   * Guarda de forma permanente el nuevo valor en el LocalStorage del dispositivo y actualiza el gráfico circular de progreso.
+   */
   onMetaChange() {
     if (!this.metaKcal || this.metaKcal < 0) {
       this.metaKcal = 0;
     }
     localStorage.setItem('metaCalorias', this.metaKcal.toString());
-    
     this.actualizarGrafico();
   }
 
-  // Suma los mililitros seleccionados (150, 250, 500) al contador diario del servicio
-  agregarAgua(cantidadMl: number) {
+  /**
+   * @function agregarAgua
+   * @description La función será ejecutada cuando el usuario haga click en alguno de los botones de selección rápida de medida (150ml, 250ml o 500ml).
+   * Incrementa los mililitros en pantalla cuidando de no pasar el tope, y sincroniza el nuevo total directamente actualizando un documento en Firebase Firestore.
+   */
+  async agregarAgua(cantidadMl: number) {
     if (this.aguaConsumida >= this.aguaMeta) return;
 
-    const nuevoTotal = this.aguaConsumida + cantidadMl;
-
+    let nuevoTotal = this.aguaConsumida + cantidadMl;
     if (nuevoTotal > this.aguaMeta) {
-      const diferencia = this.aguaMeta - this.aguaConsumida;
-      this.nutritionService.sumarAgua(diferencia);
-    } else {
-      this.nutritionService.sumarAgua(cantidadMl);
+      nuevoTotal = this.aguaMeta;
     }
+
+    this.aguaConsumida = nuevoTotal;
+    this.porcentajeAgua = this.aguaConsumida / this.aguaMeta;
+    this.porcentajeAguaEntero = Math.round(this.porcentajeAgua * 100);
+
+    if (this.userId) {
+      const fechaHoy = this.getFechaHoyString();
+      const docRef = doc(db, 'aguaDiaria', `${this.userId}_${fechaHoy}`);
+      try {
+        await setDoc(docRef, {
+          userId: this.userId,
+          fecha: fechaHoy,
+          mililitros: this.aguaConsumida
+        }, { merge: true });
+        console.log("Agua sincronizada en Firebase con éxito.");
+      } catch (e) {
+        console.error("Error guardando agua en Firebase:", e);
+      }
+    }
+
+    this.nutritionService.sumarAgua(cantidadMl);
   }
 
-  // Redirige al usuario hacia la pestaña de perfil al tocar el avatar
+  /**
+   * @function goToProfile
+   * @description La función será ejecutada cuando el usuario haga click en el botón del perfil con el avatar animado.
+   * Gestiona la navegación interna mediante el NavController de Ionic para redirigir al usuario hacia la pestaña de perfil.
+   */
   goToProfile() {
     this.navCtrl.navigateForward(['/tabs/profile']);
   }
 
-  // Conexión segura con AWS Amplify para traer el nombre real del usuario logueado
+  /**
+   * @function getUserInfo
+   * @description La función será ejecutada internamente de forma asíncrona al arrancar la aplicación.
+   * Establece una conexión con el backend de AWS Amplify mediante fetchUserAttributes para recuperar el nombre y apellido reales del usuario logueado.
+   */
   async getUserInfo() {
     try {
       const attributes = await fetchUserAttributes();
@@ -148,7 +226,12 @@ export class HomePage implements OnInit {
     }
   }
 
-  // Marcador de posición por si en un futuro deciden abrir la cámara directo desde la Home
+  /**
+   * @function cambiarFoto
+   * @description La función actúa como un marcador de posición (placeholder) diseñado para conectar en futuras etapas el módulo nativo de la cámara.
+   * Simula la inicialización de la galería o la captura fotográfica directa desde el dispositivo móvil.
+   */
+  
   async cambiarFoto() {
     try {
       console.log('Abriendo la galería o cámara del dispositivo...');
