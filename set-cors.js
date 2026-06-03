@@ -1,4 +1,5 @@
 const https = require('https');
+require('dotenv').config();
 const fs = require('fs');
 const os = require('os');
 
@@ -8,10 +9,11 @@ const config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
 const refreshToken = config.tokens.refresh_token;
 
 // First, get a fresh access token using the refresh token
-const clientId = '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com';
-const clientSecret = 'j9iVZfS8kkCEFUPaAboIen49';
+// Cuidado de dejar credenciales
+const clientId = process.env.CLIENT_ID;
+const clientSecret = process.env.CLIENT_SECRET;
 
-const tokenData = `grant_type=refresh_token&refresh_token=${encodeURIComponent(refreshToken)}&client_id=${clientId}&client_secret=${clientSecret}`;
+const tokenData = process.env.TOKEN_DATA;
 
 const tokenReq = https.request({
   hostname: 'oauth2.googleapis.com',
