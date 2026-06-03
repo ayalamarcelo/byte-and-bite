@@ -65,9 +65,12 @@
       label="{{ 'SIGNUP.PASSWORD' | translate }}" 
       [(ngModel)]="password" 
       label-placement="floating" 
-      fill="outline" type="password" 
+      fill="outline" [type]="showPassword ? 'text' : 'password'" 
       placeholder="{{ 'SIGNUP.PASSWORD_PLACEHOLDER' | translate }}" 
       class="custom-input ion-margin-top">
+        <ion-button slot="end" fill="clear" color="medium" (click)="togglePasswordVisibility('password')">
+          <ion-icon slot="icon-only" [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+        </ion-button>
       </ion-input>
 
       <ion-input 
@@ -75,10 +78,13 @@
       [(ngModel)]="repeatPassword" 
       label-placement="floating" 
       fill="outline" 
-      type="password" 
+      [type]="showRepeatPassword ? 'text' : 'password'" 
       placeholder="{{ 'SIGNUP.REPEAT_PASSWORD_PLACEHOLDER' | translate }}" 
       class="custom-input ion-margin-top"
       [color]="(repeatPassword && password !== repeatPassword) ? 'danger' : ''">
+        <ion-button slot="end" fill="clear" color="medium" (click)="togglePasswordVisibility('repeat')">
+          <ion-icon slot="icon-only" [name]="showRepeatPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+        </ion-button>
       </ion-input>
 
       <ion-item 

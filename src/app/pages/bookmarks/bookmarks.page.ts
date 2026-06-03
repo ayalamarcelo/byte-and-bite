@@ -33,7 +33,11 @@ export class BookmarksPage implements OnInit {
     private toastController: ToastController
   ) {}
 
-  // Método del ciclo de vida de Angular que se ejecuta al inicializar el componente
+  /**
+   * @function ngOnInit
+   * @description Método del ciclo de vida de Angular que se ejecuta al inicializar el componente.
+   * Obtiene el usuario autenticado actualmente y carga la lista de favoritos desde la base de datos.
+   */
   async ngOnInit() {
     try {
       // Obtiene el usuario autenticado actualmente a través de AWS Amplify
@@ -46,7 +50,11 @@ export class BookmarksPage implements OnInit {
     }
   }
 
-  // Método del ciclo de vida de Ionic que se ejecuta justo antes de que la página entre y se vuelva activa
+  /**
+   * @function ionViewWillEnter
+   * @description Método del ciclo de vida de Ionic que se ejecuta justo antes de que la página entre y se vuelva activa.
+   * Verifica si ya se tiene el userId, y si es así, recarga la lista. Si no, intenta obtenerlo nuevamente.
+   */
   async ionViewWillEnter() {
     // Verificamos si ya tenemos el userId. Si es así, recargamos la lista
     if (this.userId) {
@@ -63,32 +71,49 @@ export class BookmarksPage implements OnInit {
     }
   }
 
-  // Método para obtener los favoritos de la base de datos de Firebase usando el ID del usuario
+  /**
+   * @function cargarBookmarks
+   * @description Método para obtener los favoritos de la base de datos de Firebase usando el ID del usuario.
+   */
   async cargarBookmarks() {
     this.bookmarks = await this.firebaseService.getBookmarks(this.userId);
   }
 
-  // Método para guardar un nuevo alimento en la base de datos de favoritos
+  /**
+   * @function toggleBookmark
+   * @description Método para guardar un nuevo alimento en la base de datos de favoritos.
+   */
   async toggleBookmark(alimento: any) {
     if (!this.userId) return; // Si no hay usuario, cancelamos la acción
     await this.firebaseService.agregarBookmark(this.userId, alimento);
     await this.cargarBookmarks(); // Actualiza la lista para reflejar los cambios en pantalla
   }
 
-  // Método para eliminar un alimento específico de la lista de favoritos en Firebase
+  /**
+   * @function eliminarBookmark
+   * @description Método para eliminar un alimento específico de la lista de favoritos en Firebase.
+   */
   async eliminarBookmark(alimento: any) {
     if (!alimento.id) return; // Si el alimento no tiene ID, no se puede eliminar
     await this.firebaseService.eliminarBookmark(alimento.id);
     await this.cargarBookmarks(); // Recarga la lista para que el elemento desaparezca de la pantalla
   }
 
-  // Método que se activa cada vez que el usuario escribe en la barra de búsqueda
+  /**
+   * @function buscar
+   * @description Método que se activa cada vez que el usuario escribe en la barra de búsqueda.
+   * Actualiza la variable de búsqueda.
+   */
   buscar(evento: any) {
     const query = evento.target.value; // Obtiene el texto escrito en el input
     this.busqueda = query; // Actualiza la variable de búsqueda
   }
 
-  // Getter dinámico: Retorna la lista filtrada de alimentos que se mostrará en la interfaz
+  /**
+   * @function alimentosMostrados
+   * @description Getter dinámico: Retorna la lista filtrada de alimentos que se mostrará en la interfaz.
+   * Filtra por categoría y texto de búsqueda.
+   */
   get alimentosMostrados() {
     let lista = this.bookmarks; // Empezamos con la lista completa
     
@@ -107,21 +132,35 @@ export class BookmarksPage implements OnInit {
     return lista; // Devuelve la lista ya filtrada
   }
 
-  // Método para actualizar el filtro seleccionado (ej: al presionar el botón "Proteínas")
+  /**
+   * @function setFiltro
+   * @description Método para actualizar el filtro seleccionado (ej: al presionar el botón "Proteínas").
+   */
   setFiltro(filtro: string) {
     this.filtroActivo = filtro;
   }
 
-  // Método para abrir o cerrar el submenú de un alimento (donde se seleccionan los gramos)
+  /**
+   * @function toggleMenu
+   * @description Método para abrir o cerrar el submenú de un alimento (donde se seleccionan los gramos).
+   */
   toggleMenu(alimento: any) {
     alimento.menuAbierto = !alimento.menuAbierto; // Invierte el valor actual (de verdadero a falso o viceversa)
   }
 
-  // Método para registrar cuántos gramos quiere el usuario de un alimento en particular
+  /**
+   * @function seleccionarGramos
+   * @description Método para registrar cuántos gramos quiere el usuario de un alimento en particular.
+   */
   seleccionarGramos(alimento: any, gramos: number) {
     alimento.gramosSeleccionados = gramos;
   }
 
+  /**
+   * @function agregarAlHome
+   * @description Agrega el alimento con los gramos seleccionados al contador diario.
+   * Calcula los macronutrientes en base a las calorías si es necesario y muestra un mensaje de éxito.
+   */
   async agregarAlHome(alimento: any) {
     if (!alimento.gramosSeleccionados || alimento.gramosSeleccionados <= 0) return;
     

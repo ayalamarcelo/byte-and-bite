@@ -23,6 +23,21 @@ export class SignupPage implements OnInit {
   password = '';
   repeatPassword = '';
   termsAccepted = false;
+  showPassword = false;
+  showRepeatPassword = false;
+
+  /**
+   * @function togglePasswordVisibility
+   * @description Alterna la visibilidad de la contraseña o la repetición de contraseña cambiando el tipo de input.
+   * @param {string} field - El campo a alternar ('password' o 'repeat').
+   */
+  togglePasswordVisibility(field: string) {
+    if (field === 'password') {
+      this.showPassword = !this.showPassword;
+    } else {
+      this.showRepeatPassword = !this.showRepeatPassword;
+    }
+  }
 
   constructor(
     private navCtrl: NavController,

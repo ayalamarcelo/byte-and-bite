@@ -46,13 +46,16 @@
     <ion-input label="{{ 'LOGIN.PASSWORD_LABEL' | translate }}" 
     label-placement="floating" 
     fill="outline" 
-    type="password"
+    [type]="showPassword ? 'text' : 'password'"
       class="ion-margin-bottom" 
       [(ngModel)]="password">
       <ion-icon 
       slot="start" 
       name="lock-closed-outline" 
       aria-hidden="true"></ion-icon>
+      <ion-button slot="end" fill="clear" color="medium" (click)="togglePasswordVisibility()">
+        <ion-icon slot="icon-only" [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+      </ion-button>
     </ion-input>
 
     <ion-item 

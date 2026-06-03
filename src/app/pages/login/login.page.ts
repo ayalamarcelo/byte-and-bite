@@ -17,6 +17,15 @@ export class LoginPage implements OnInit {
    */
   email = '';
   password = '';
+  showPassword = false;
+
+  /**
+   * @function togglePasswordVisibility
+   * @description Alterna la visibilidad de la contraseña cambiando el tipo de input entre 'password' y 'text'.
+   */
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
 
   constructor(
     private navCtrl: NavController,
