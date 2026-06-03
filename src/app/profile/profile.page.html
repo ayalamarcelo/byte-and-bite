@@ -147,32 +147,6 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card class="data-card">
-    <ion-card-header>
-      <ion-card-title>{{ 'PROFILE.NOTIFICATIONS' | translate }}</ion-card-title>
-    </ion-card-header>
-
-    <ion-card-content>
-      <div class="info-row"
-        style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--ion-color-light);">
-        <div class="label-with-icon" style="display: flex; align-items: center; gap: 10px;">
-          <ion-icon [name]="recordatoriosActivos ? 'notifications' : 'notifications-off'" size="large"></ion-icon>
-          <span style="font-size: 1rem;">{{ 'PROFILE.FOOD_REMINDERS' | translate }}</span>
-        </div>
-        <ion-toggle [(ngModel)]="recordatoriosActivos" (ionChange)="onToggleChange('recordatorios')"></ion-toggle>
-      </div>
-
-      <div class="info-row"
-        style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0;">
-        <div class="label-with-icon" style="display: flex; align-items: center; gap: 10px;">
-          <ion-icon [name]="alertasActivas ? 'notifications' : 'notifications-off'" size="large"></ion-icon>
-          <span style="font-size: 1rem;">{{ 'PROFILE.ALERTS' | translate }}</span>
-        </div>
-        <ion-toggle [(ngModel)]="alertasActivas" (ionChange)="onToggleChange('alertas')"></ion-toggle>
-      </div>
-    </ion-card-content>
-  </ion-card>
-
   <ion-modal [isOpen]="isModalOpen" (didDismiss)="isModalOpen = false" [initialBreakpoint]="0.5"
     [breakpoints]="[0, 0.5, 0.8]">
     <ng-template>
