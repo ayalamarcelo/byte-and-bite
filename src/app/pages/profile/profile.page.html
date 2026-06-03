@@ -1,0 +1,209 @@
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <div class="ion-no-border">
+    <ion-toolbar mode="md">
+      <ion-buttons slot="start">
+        <ion-button fill="clear" routerLink="/tabs/home" class="home-btn">
+          <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </div>
+
+  <!-- AVATAR -->
+  <div class="cointainer">
+    <div class="profile-card-container">
+      <div class="ion-margin-bottom ion-justify-content-center"
+        style="position: relative; display: flex; width: 130px; margin: 0 auto;">
+
+        <ion-avatar class="avatar" (click)="abrirMenuOpciones()"
+          style="width: 130px; height: 130px; background: var(--ion-color-light); display: flex; align-items: center; justify-content: center; border-radius: 50%; cursor: pointer;">
+
+          <img *ngIf="avatarService.avatar$ | async as avatar; else placeholder" [src]="avatar"
+            alt="Avatar del usuario" />
+
+          <ng-template #placeholder>
+            <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+          </ng-template>
+        </ion-avatar>
+
+        <div (click)="abrirMenuOpciones()"
+          style="position: relative; 
+          z-index: 2;  
+          bottom: 30px;
+          left: 50px; 
+          right: 0; 
+          background: var(--ion-color-primary); 
+          color: white; 
+          width: 35px; 
+          height: 35px; 
+          border-radius: 50%; 
+          display: flex; 
+          align-items: center; 
+          justify-content: center;  
+          cursor: pointer; 
+          box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+          <ion-icon name="camera-outline" style="font-size: 20px;"></ion-icon>
+        </div>
+      </div>
+
+
+      <ion-card class="main-card">
+        <ion-card-content class="ion-text-center">
+          <h2 class="user-name">{{ userService.userName }} {{ userService.userLastName }}</h2>
+          <ion-button (click)="cerrarSesion()" id="open-loading" fill="clear" color="success" size="small" class="logout-btn">
+            {{ 'PROFILE.LOGOUT' | translate }}
+          </ion-button>
+          <ion-loading trigger="open-loading" message="Cerrando sesión..." duration="1000"></ion-loading>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+
+  <ion-card class="data-card">
+    <ion-card-header>
+      <ion-card-title>{{ 'PROFILE.PERSONAL_DATA' | translate }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item lines="full">
+        <ion-label>
+          <p>{{ 'PROFILE.AGE' | translate }}</p>
+          <h3>{{edad}} {{ 'PROFILE.YEARS' | translate }}</h3>
+        </ion-label>
+        <ion-button slot="end" fill="clear" color="medium" (click)="openEditModal('edad')">
+          <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+
+      <ion-item lines="full">
+        <ion-label>
+          <p>{{ 'PROFILE.WEIGHT' | translate }}</p>
+          <h3>{{peso}} kg</h3>
+        </ion-label>
+        <ion-button slot="end" fill="clear" color="medium" (click)="openEditModal('peso')">
+          <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-label>
+          <p>{{ 'PROFILE.HEIGHT' | translate }}</p>
+          <h3>{{altura}} m</h3>
+        </ion-label>
+        <ion-button slot="end" fill="clear" color="medium" (click)="openEditModal('altura')">
+          <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card class="data-card">
+    <ion-card-header>
+      <ion-card-title>{{ 'PROFILE.ACCOUNT' | translate }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item lines="full">
+        <ion-label>
+          <p>Email</p>
+          <h3>{{ userEmail }}</h3>
+        </ion-label>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>
+          <p>{{ 'PROFILE.PASSWORD' | translate }}</p>
+          <h3>••••••••</h3>
+        </ion-label>
+        <ion-button slot="end" fill="clear" color="medium" (click)="openEditModal('contrasena')">
+          <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- IDIOMA -->
+  <ion-card class="data-card">
+    <ion-card-header>
+      <ion-card-title>{{ 'PROFILE.PREFERENCES' | translate }}</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <div class="info-row" style="display: flex; justify-content: space-between; align-items: center;">
+        <div class="label-with-icon" style="display: flex; align-items: center; gap: 10px;">
+          <ion-icon name="earth-outline" size="large"></ion-icon>
+          <span style="font-size: 1rem;">{{ 'PROFILE.LANGUAGE' | translate }}</span>
+        </div>
+
+        <ion-segment [value]="idiomaSeleccionado" (ionChange)="cambiarIdioma($event)" mode="ios"
+          style="width: 120px; min-width: 120px;">
+
+          <ion-segment-button value="es">
+            <ion-label>ES</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="en">
+            <ion-label>EN</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+    </ion-card-content>
+  </ion-card>
+<!-- MODAL -->
+  <ion-modal 
+  [isOpen]="isModalOpen" 
+  (didDismiss)="isModalOpen = false" 
+  [initialBreakpoint]="0.5"
+    [breakpoints]="[0, 0.5, 0.8]">
+    <ng-template>
+      <ion-content class="ion-padding">
+        <div style="margin-top: 20px;">
+
+          <h2 style="text-transform: capitalize;" *ngIf="campoEditando !== 'contrasena'">{{ 'PROFILE.YOUR_FIELD' | translate:{ field: campoEditando } }}</h2>
+          <h2 *ngIf="campoEditando === 'contrasena'">{{ 'PROFILE.CHANGE_PASSWORD' | translate }}</h2>
+
+          <ng-container *ngIf="campoEditando !== 'contrasena'">
+            <ion-item lines="outline" style="--border-radius: 10px; margin-top: 20px;">
+              <ion-input type="number" [(ngModel)]="valorTemporal"></ion-input>
+            </ion-item>
+          </ng-container>
+
+          <ng-container *ngIf="campoEditando === 'contrasena'">
+            <ion-item lines="outline" style="--border-radius: 10px; margin-top: 20px;">
+              <ion-label position="floating">{{ 'PROFILE.CURRENT_PASSWORD' | translate }}</ion-label>
+              <ion-input
+                [type]="showOldPassword ? 'text' : 'password'"
+                [(ngModel)]="oldPasswordInput">
+              </ion-input>
+              <ion-button slot="end" fill="clear" color="medium"
+                (click)="togglePasswordVisibility('old')"
+                style="margin-top: 10px;">
+                <ion-icon slot="icon-only"
+                  [name]="showOldPassword ? 'eye-off-outline' : 'eye-outline'">
+                </ion-icon>
+              </ion-button>
+            </ion-item>
+
+            <ion-item lines="outline" style="--border-radius: 10px; margin-top: 20px;">
+              <ion-label position="floating">{{ 'PROFILE.NEW_PASSWORD' | translate }}</ion-label>
+              <ion-input
+                [type]="showNewPassword ? 'text' : 'password'"
+                [(ngModel)]="newPasswordInput">
+              </ion-input>
+              <ion-button slot="end" fill="clear" color="medium"
+                (click)="togglePasswordVisibility('new')"
+                style="margin-top: 10px;">
+                <ion-icon slot="icon-only"
+                  [name]="showNewPassword ? 'eye-off-outline' : 'eye-outline'">
+                </ion-icon>
+              </ion-button>
+            </ion-item>
+          </ng-container>
+
+          <ion-button expand="block" color="success" style="margin-top: 30px;" (click)="saveChanges()">
+            {{ (campoEditando === 'contrasena' ? 'PROFILE.UPDATE_PASSWORD' : 'PROFILE.CONFIRM') | translate }}
+          </ion-button>
+
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+</ion-content>

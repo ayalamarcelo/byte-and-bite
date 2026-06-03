@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>{{ 'VERIFY.TITLE' | translate }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cancel()">{{ 'VERIFY.CLOSE' | translate }}</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding ion-text-center">
+  <ion-icon 
+  name="mail-open-outline" 
+  style="font-size: 4rem; color: var(--ion-color-medium);"></ion-icon>
+  
+  <h2>{{ 'VERIFY.CONFIRM_EMAIL' | translate }}</h2>
+  <p>{{ 'VERIFY.INSTRUCTION' | translate }}<br><strong>{{ email }}</strong></p>
+
+  <ion-item 
+  lines="outline" 
+  class="ion-margin-vertical">
+    <ion-label 
+    position="stacked"></ion-label>
+    <ion-input 
+    type="tel" 
+    [(ngModel)]="code" 
+    placeholder="000000" 
+    maxlength="6"></ion-input>
+  </ion-item>
+
+  <ion-button 
+  expand="block" 
+  (click)="handleConfirm()" 
+  [disabled]="!code || code.length < 6">
+    {{ 'VERIFY.CONFIRM_BTN' | translate }}
+  </ion-button>
+
+  <ion-button fill="clear" (click)="resend()">
+    {{ 'VERIFY.RESEND.BTN' | translate }}
+  </ion-button>
+</ion-content>

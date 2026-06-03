@@ -1,0 +1,34 @@
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="welcome-container">
+    <!-- Mensaje de Bienvenida -->
+    <div class="top-content">
+      <h1 class="welcome-title">{{ 'WELCOME.TITLE' | translate }}</h1>
+
+      <div class="logo-container">
+        <div class="top-row">
+          <span class="main-text">Byte</span>
+          <span class="symbols">&&</span>
+        </div>
+        <div class="bottom-row">
+          <ion-icon name="leaf" class="leaf-icon" style="color: #6fc576;"></ion-icon>
+          <span class="main-text">Bite</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Presenta MODAL de terminos y condiciones -->
+    <div class="bottom-content">
+      <p class="terms-text">
+        {{ 'WELCOME.TERMS_PART_1' | translate }}
+        <a (click)="presentTermsModal()">{{ 'WELCOME.TERMS_LINK' | translate }}</a>
+        {{ 'WELCOME.TERMS_PART_2' | translate }}
+      </p>
+
+      <!-- Realiza la validación de términos y condiciones y pasa a la siguiente página -->
+      <ion-button (click)="validateAndGo()" expand="block" class="next-btn">
+        {{ 'WELCOME.START_BTN' | translate }}
+      </ion-button>
+    </div>
+
+  </div>
+</ion-content>

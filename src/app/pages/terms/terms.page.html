@@ -1,0 +1,49 @@
+<ion-header class="ion-no-border ion-padding">
+  <ion-toolbar color="transparent">
+    <ion-title class="ion-text-center">{{ 'TERMS.TITLE' | translate }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal(false)">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<!-- Body del Términos y condiciones -->
+<ion-content class="ion-padding">
+  <div class="terms-text">
+    <p>{{ 'TERMS.UPDATED' | translate }}</p>
+    <p>{{ 'TERMS.WELCOME' | translate }}</p>
+    <p>{{ 'TERMS.BODY' | translate }}</p>
+
+    <h4>{{ 'TERMS.INTRO_TITLE' | translate }}</h4>
+    <p>{{ 'TERMS.INTRO_TEXT' | translate }}</p>
+
+    <h4>{{ 'TERMS.LICENSE_TITLE' | translate }}</h4>
+    <p>{{ 'TERMS.LICENSE_TEXT' | translate }}</p>
+
+    <h4>{{ 'TERMS.COMMENTS_TITLE' | translate }}</h4>
+    <p>{{ 'TERMS.COMMENTS_TEXT' | translate }}</p>
+
+    <h4>{{ 'TERMS.LAW_TITLE' | translate }}</h4>
+    <p>{{ 'TERMS.LAW_TEXT' | translate }}</p>
+
+    <h4>{{ 'TERMS.CONTACT_TITLE' | translate }}</h4>
+    <p>{{ 'TERMS.CONTACT_TEXT' | translate }}</p>
+  </div>
+</ion-content>
+
+<!-- Footer del Términos y condiciones -->
+<ion-footer class="ion-no-border">
+  <ion-toolbar>
+    <div class="ion-padding">
+      <ion-item lines="none">
+        <ion-checkbox slot="start" [(ngModel)]="isAccepted"></ion-checkbox>
+        <ion-label class="ion-text-wrap">{{ 'TERMS.ACCEPT_LABEL' | translate }}</ion-label>
+      </ion-item>
+      <ion-button expand="block" [disabled]="!isAccepted" (click)="closeModal(true)"
+        style="--padding-top: 15px; --padding-bottom: 15px;">
+        {{ 'TERMS.ACCEPT_BTN' | translate }}
+      </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-footer>

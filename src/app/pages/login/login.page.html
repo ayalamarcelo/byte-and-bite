@@ -1,0 +1,88 @@
+<ion-content class="ion-padding">
+  <div class="login-container">
+
+    <!-- Buttons -->
+    <div class="ion-text">
+      <ion-button fill="clear" size="medium" (click)="goToWelcome()"
+        style="font-weight: 300; text-transform: capitalize;">
+        <ion-icon name="chevron-back"></ion-icon>
+      </ion-button>
+
+      <ion-button fill="clear" size="medium" (click)="goToSignUp()"
+        style="font-weight: 300; text-transform: capitalize;">
+        {{ 'LOGIN.SIGN_UP' | translate }}
+      </ion-button>
+    </div>
+
+    <!-- Título LOGIN -->
+    <h1 class="ion-padding-bottom ion-text-center">{{ 'LOGIN.TITLE' | translate }}</h1>
+
+    <div 
+    class="ion-margin-bottom ion-justify-content-center" 
+    style="display: flex;">
+      <ion-avatar 
+      class="avatar"
+        style="width: 120px; height: 120px; background: var(--ion-color-light); display: flex; align-items: center; 
+        justify-content: center; border-radius: 50%;">
+        <ion-icon 
+        name="person-outline" 
+        style="font-size: 60px; color: var(--ion-color-medium);"></ion-icon>
+      </ion-avatar>
+    </div>
+
+    <ion-input 
+    label="{{ 'LOGIN.EMAIL_LABEL' | translate }}" 
+    label-placement="floating" 
+    fill="outline" 
+    type="email"
+      class="ion-margin-bottom" 
+      [(ngModel)]="email">
+      <ion-icon 
+      slot="start" 
+      name="mail-outline" 
+      aria-hidden="true"></ion-icon>
+    </ion-input>
+
+    <ion-input label="{{ 'LOGIN.PASSWORD_LABEL' | translate }}" 
+    label-placement="floating" 
+    fill="outline" 
+    type="password"
+      class="ion-margin-bottom" 
+      [(ngModel)]="password">
+      <ion-icon 
+      slot="start" 
+      name="lock-closed-outline" 
+      aria-hidden="true"></ion-icon>
+    </ion-input>
+
+    <ion-item 
+    lines="none" 
+    class="ion-margin-bottom" 
+    style="--background: transparent;">
+      <ion-checkbox 
+      label-placement="end" style="
+          --background: transparent; 
+          --border-color: var(--ion-color-medium); 
+          --background-checked: var(--ion-color-primary);
+          --border-color-checked: var(--ion-color-primary);
+        ">
+        <!-- Check para recibir información -->
+        <p style="font-size: 0.85rem; white-space: normal; margin: 0; color: var(--ion-color-step-600);">
+          {{ 'LOGIN.NEWSLETTER' | translate }}
+        </p>
+      </ion-checkbox>
+    </ion-item>
+
+    <ion-button expand="block" (click)="handleLogin()">
+      {{ 'LOGIN.LOGIN_BTN' | translate }}
+    </ion-button>
+
+    <!-- Direcciona a 'registrar' si el usuario no tiene cuenta -->
+    <div class="ion-text-center ion-margin-top">
+      <p>{{ 'LOGIN.NO_ACCOUNT' | translate }} <a 
+        (click)="goToSignUp()" 
+        style="cursor: pointer;">{{ 'LOGIN.REGISTER' | translate }}</a></p>
+    </div>
+
+  </div>
+</ion-content>

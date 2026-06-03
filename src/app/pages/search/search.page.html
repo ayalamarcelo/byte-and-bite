@@ -1,0 +1,220 @@
+<ion-content class="ion-padding">
+  <ion-searchbar 
+  [placeholder]="'SEARCH.TITLE' | translate" 
+  [(ngModel)]="query" 
+  (ionInput)="onSearchChange($event)"
+    debounce="800" 
+    show-clear-button="always" 
+    clear-icon="trash-bin">
+  </ion-searchbar>
+  
+  <!-- BUSCADOR -->
+  <ion-list 
+  *ngIf="resultadosBusqueda.length > 0" 
+  class="search-dropdown">
+    <ion-item 
+    *ngFor="let item of resultadosBusqueda.slice(0,3); trackBy: trackByFn" 
+    button (click)="seleccionarAlimento(item)">
+      <ion-label>
+        {{ item.food.label }}
+      </ion-label>
+      <div 
+      slot="end">
+        <ion-button 
+        fill="clear" 
+        color="medium" 
+        (click)="seleccionarAlimento(item)">
+          <ion-icon 
+          name="add-outline" 
+          mode="md"></ion-icon>
+        </ion-button>
+        <ion-button 
+        fill="clear" 
+        color="medium" 
+        (click)="guardarBookmark(item)">
+          <ion-icon 
+          name="bookmark-outline" 
+          mode="md"></ion-icon>
+        </ion-button>
+      </div>
+    </ion-item>
+  </ion-list>
+
+  <!--RECIENTES-->
+  <p style="font-size: 18px;">{{ 'SEARCH.RECENT' | translate }}</p>
+  <hr style="border: 0; border-top: 0.5px solid #5c5d61; margin: 10px 0;">
+
+  <div 
+  *ngIf="listaRecientes.length > 0; else noHayRecientes">
+
+    <ng-container 
+    *ngFor="let item of listaRecientes; trackBy: trackByFn">
+
+      <ion-item>
+        <ion-thumbnail slot="start">
+          <img 
+          [src]="item.food.image || 'https://ionicframework.com/docs/img/demos/thumbnail.svg'" />
+        </ion-thumbnail>
+
+        <ion-label>
+          <h2>{{ item.food.label }}</h2>
+          <p>{{ item.food.nutrients?.ENERC_KCAL | number:'1.0-0' }} kcal</p>
+        </ion-label>
+
+        <div slot="end" class="ion-no-margin">
+          <ion-button fill="clear" color="medium" (click)="mostrarInfo(item)">
+            <ion-icon name="chevron-down-outline" mode="md"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" color="medium" (click)="agregarAContador(item)">
+            <ion-icon name="add-outline" mode="md"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" color="medium" (click)="guardarBookmark(item)">
+            <ion-icon name="bookmark-outline" mode="md"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" color="medium" (click)="eliminarReciente(item)">
+            <ion-icon name="trash-outline" mode="md"></ion-icon>
+          </ion-button>
+        </div>
+      </ion-item>
+
+      <!-- DESPLEGABLE -->
+      <div *ngIf="itemExpandido === item" class="info-desplegable">
+        <ion-list>
+          <ion-item>
+            <ion-label>{{ 'SEARCH.CARBS' | translate }}</ion-label>
+            <ion-note slot="end">{{ item.food.nutrients.CHOCDF | number:'1.1-1' }} g</ion-note>
+          </ion-item>
+          <ion-item>
+            <ion-label>{{ 'SEARCH.FATS' | translate }}</ion-label>
+            <ion-note slot="end">{{ item.food.nutrients.FAT | number:'1.1-1' }} g</ion-note>
+          </ion-item>
+        </ion-list>
+      </div>
+
+    </ng-container>
+  </div>
+
+  <!-- MUESTRA -->
+  <ng-template #noHayRecientes>
+    <div class="ion-text-center ion-padding" style="color: #999;">
+      <ion-icon 
+      name="basket-outline" 
+      style="font-size: 35px; display: block; margin: 0 auto 10px;"></ion-icon>
+      <p>{{ 'SEARCH.NO_RECENT' | translate }}</p>
+    </div>
+  </ng-template>
+
+  <!-- MODAL CALCULO GRAMOS -->
+  <ion-modal 
+  [isOpen]="isModalOpen" 
+  (didDismiss)="isModalOpen = false" 
+  class="custom-floating-modal">
+    <ng-template>
+      <div 
+      class="modal-wrapper" 
+      *ngIf="alimentoParaEditar">
+        <h3 
+        class="ion-padding-bottom">{{ 'SEARCH.CONFIGURE_AMOUNT' | translate }}</h3>
+
+        <ion-item lines="none">
+          <ion-label position="stacked">{{ 'SEARCH.GRAMS' | translate }}</ion-label>
+          <ion-input 
+          type="number" 
+          [(ngModel)]="alimentoParaEditar.cantidad"></ion-input>
+        </ion-item>
+
+        <div class="ion-padding-top">
+          <ion-button 
+          expand="block" 
+          (click)="confirmarSeleccion()">{{ 'SEARCH.ADD' | translate }}</ion-button>
+          <ion-button 
+          expand="block" 
+          fill="clear" 
+          (click)="isModalOpen = false" color="medium">
+          {{ 'SEARCH.CANCEL' | translate }}</ion-button>
+        </div>
+      </div>
+    </ng-template>
+  </ion-modal>
+
+  <!-- PROMO CARD -->
+  <ion-card class="native-promo-card">
+    <ion-card-content class="ion-no-padding">
+      <ion-grid class="ion-padding">
+        <ion-row class="ion-align-items-center">
+          <ion-col size="4">
+            <div class="image-wrapper">
+              <img src="../../../assets/images/palta.png" alt="Palta" />
+            </div>
+          </ion-col>
+
+          <ion-col size="8">
+            <div class="text-wrapper">
+              <ion-card-title>{{ 'SEARCH.TIP_TITLE' | translate }}</ion-card-title>
+              <p>{{ 'SEARCH.TIP_TEXT' | translate }}</p>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- CONTADOR -->
+
+  <p style="font-size: 18px;">{{ 'SEARCH.COUNTER' | translate }}</p>
+  <hr style="border: 0; border-top: 0.5px solid #5c5d61; margin: 10px 0;">
+
+  <ion-card class="fixed-card">
+    <ion-card-content class="ion-no-padding content-wrapper">
+
+      <ion-list lines="none" class="scroll-container">
+        <ion-item *ngFor="let item of listaConsumo; let i = index; trackBy: trackByFn">
+          <ion-thumbnail slot="start">
+            <img [src]="item.food.image || 'https://ionicframework.com/docs/img/demos/thumbnail.svg'" />
+          </ion-thumbnail>
+          <ion-label>
+            <h2>{{ item.food.label }}</h2>
+            <p>{{ item.cantidad }}g</p>
+          </ion-label>
+          <ion-note slot="end" color="medium">
+            <strong>{{ (item.food.nutrients?.ENERC_KCAL * (item.cantidad / 100)) | number:'1.0-0' }} kcal</strong>
+          </ion-note>
+        </ion-item>
+
+        <!-- MUESTRA -->
+        <div 
+        *ngIf="listaConsumo.length === 0" 
+        style="text-align: center; color: #999; padding: 20px;">
+          <ion-icon 
+          name="basket-outline" 
+          style="font-size: 35px; display: block; margin: 0 auto 10px;"></ion-icon>
+          <p>{{ 'SEARCH.REGISTER_PROGRESS' | translate }}</p>
+        </div>
+      </ion-list>
+
+      <div>
+        <ion-item-divider 
+        class="custom-divider"></ion-item-divider>
+        <div class="ion-padding">
+          <ion-item lines="none">
+            <ion-label>{{ 'SEARCH.TOTAL_CALORIES' | translate }}</ion-label>
+            <ion-note 
+            slot="end" 
+            color="dark">
+              <strong 
+              class="total-value">{{ totalCalorias | number:'1.0-0' }} kcal</strong>
+            </ion-note>
+          </ion-item>
+          <ion-button 
+          expand="block" 
+          class="ion-margin-top" 
+          [disabled]="listaConsumo.length === 0"
+            (click)="transferirAlimentosAHome()">
+            {{ 'SEARCH.ADD' | translate }}
+          </ion-button>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

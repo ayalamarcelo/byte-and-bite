@@ -1,0 +1,163 @@
+<!-- Contenedor principal de la pantalla de inicio -->
+<ion-content [fullscreen]="true">
+
+  <!-- ENCABEZADO: Saludo de bienvenida, nombre del usuario y fecha de hoy -->
+  <div class="welcome-header">
+    <div class="text-container">
+      <p class="welcome-text">{{ 'HOME.WELCOME' | translate }}</p>
+      <h1 class="username"> {{ nombreUsuario }} {{ apellidoUsuario }} </h1>
+      <!-- Formateamos la fecha de manera elegante adaptada a Argentina -->
+      <p class="text-date">{{ currentDate | date:"EEEE, d 'de' MMMM 'de' yyyy":"":"es-AR" }}</p>
+    </div>
+    
+    <!-- Botón del perfil con el avatar animado del usuario -->
+    <div class="profile-button" (click)="goToProfile()">
+      <ion-avatar class="avatar-animated">
+        <img [src]="userAvatar || 'https://ionicframework.com/docs/img/demos/avatar.svg'" />
+        <img [src]="userAvatar || 'assets/default-avatar.png'" />
+        <ng-template #iconoGenerico> ... </ng-template>
+      </ion-avatar>
+    </div>
+  </div>
+
+    <!-- GRÁFICO CIRCULAR: Anillo interactivo SVG que muestra el progreso de calorías diarias -->
+  <div class="circular-container">
+      <svg viewBox="0 0 100 100" class="pie-chart">
+        <circle class="circle-background" cx="50" cy="50" r="40" />
+        
+        <circle class="progress-circle" 
+                [ngClass]="{'meta-reached': totalKcal >= metaKcal}"
+                cx="50" cy="50" r="40" 
+                stroke-dasharray="251.32" 
+                [attr.stroke-dashoffset]="strokeDashoffset" />
+                
+        <text x="50" y="35" class="text-ratio" [ngClass]="{'meta-reached': totalKcal >= metaKcal}">
+          {{ 'HOME.PROGRESS' | translate }}
+        </text>
+        <text x="50" y="55" class="text-number">{{ totalKcal }}</text>
+        <text x="50" y="68" class="subtitle-text">{{ 'HOME.CONSUMED_KCAL' | translate }}</text>
+      </svg>
+
+        <div class="meta-input-container">
+          <span class="meta-label">{{ 'HOME.GOAL' | translate }}</span>
+          <input type="number" 
+                [(ngModel)]="metaKcal" 
+                (input)="onMetaChange()" 
+                class="meta-editable-input" />
+          <span class="meta-unit">{{ 'HOME.KCAL' | translate }}</span>
+        </div>
+    </div>
+
+  <!-- CALENDARIO: Selector de fecha nativo de Ionic por si se quiere revisar el historial
+  <div class="date-selector-container ion-padding-horizontal ion-margin-bottom">
+    <ion-item lines="none" class="date-picker-item">
+      <ion-label>{{ 'HOME_PAGE.REGISTRATION_DATE' | translate }}</ion-label>
+      <ion-datetime-button datetime="datetime"></ion-datetime-button>
+    </ion-item>
+    
+    <ion-modal [keepContentsMounted]="true">
+      <ng-template>
+        <ion-datetime 
+          id="datetime" 
+          presentation="date" 
+          locale="es-AR">
+        </ion-datetime>
+      </ng-template>
+    </ion-modal>
+  </div>
+  -->
+
+  <!-- SECCIÓN PRINCIPAL DE NUTRICIÓN: Barras de progreso para Grasas, Proteínas y Carbohidratos -->
+  <ion-card class="nutrition-card">
+    <ion-card-content>
+      
+      <!-- Barra de Grasas -->
+      <div class="nutrient-row">
+        <div class="nutrient-info">
+          <ion-label>{{ 'HOME.FATS' | translate }}</ion-label>
+          <span class="percentage-text">{{ percentageFats }}%</span>
+        </div>
+        <ion-progress-bar [value]="percentageFats / 100"></ion-progress-bar>
+      </div>
+
+      <div class="nutrient-row">
+        <div class="nutrient-info">
+          <ion-label>{{ 'HOME.PROTEINS' | translate }}</ion-label>
+          <span class="percentage-text">{{ proteinPercentage }}%</span>
+        </div>
+        <ion-progress-bar [value]="proteinPercentage / 100"></ion-progress-bar>
+      </div>
+
+      <div class="nutrient-row">
+        <div class="nutrient-info">
+          <ion-label>{{ 'HOME.CARBS' | translate }}</ion-label>
+          <span class="percentage-text">{{ percentageCarbo }}%</span>
+        </div>
+        <ion-progress-bar [value]="percentageCarbo / 100"></ion-progress-bar>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- CONTADOR DE AGUA: Registro y botones rápidos para sumar mililitros -->
+      <div class="water-section-unified">
+        <div class="nutrient-info">
+          <ion-label>{{ 'HOME.WATER' | translate }}</ion-label>
+          <span class="percentage-text">{{ aguaConsumida }} / {{ aguaMeta }} ml</span>
+        </div>
+
+        <!-- Barra azul con el porcentaje numérico superpuesto -->
+        <div class="progress-water">
+          <ion-progress-bar class="water-bar" 
+                            [ngClass]="{'water-meta-reached': aguaConsumida >= aguaMeta}"
+                            [value]="porcentajeAgua">
+          </ion-progress-bar>
+          <div class="text-over-bar">{{ porcentajeAguaEntero }}%</div> 
+        </div>
+
+        <!-- Botones de selección de medida rápida -->
+        <div class="measure-selector">
+          <div class="custom-option">
+            <ion-icon name="water-outline"></ion-icon>
+            <span>150 ml</span>
+            <ion-button size="small" fill="clear" (click)="agregarAgua(150)">{{ 'HOME.ADD' | translate }}</ion-button>
+          </div>
+
+          <div class="custom-option">
+            <ion-icon name="cafe-outline"></ion-icon>
+            <span>250 ml</span>
+            <ion-button size="small" fill="clear" (click)="agregarAgua(250)">{{ 'HOME.ADD' | translate }}</ion-button>
+          </div>
+
+          <div class="custom-option">
+            <ion-icon name="beaker-outline"></ion-icon>
+            <span>500 ml</span>
+            <ion-button size="small" fill="clear" (click)="agregarAgua(500)">{{ 'HOME.ADD' | translate }}</ion-button>
+          </div>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- SECCIÓN DE MICRONUTRIENTES: Desglose detallado de Sodio, Fibra y Potasio acumulados -->
+  <ion-card class="nutrition-card">
+    <ion-card-content>
+      <ion-label class="micronutrient-title">{{ 'HOME.ADDITIONAL_DETAILS' | translate }}</ion-label>
+      <!-- Fila de Sodio -->
+      <div class="row-micronutrient" style="padding: 10px 0; border-bottom: 0.5px solid #5c5d61;">
+        <span>{{ 'HOME.SODIUM' | translate }}</span>
+        <strong color="dark">{{ sodioMg }} mg</strong>
+      </div>
+      <!-- Fila de Fibra -->
+      <div class="row-micronutrient" style="padding: 10px 0; border-bottom: 0.5px solid #5c5d61;">
+        <span>{{ 'HOME.FIBER' | translate }}</span>
+        <strong color="dark">{{ fibraG }} g</strong>
+      </div>
+      <!-- Fila de Potasio -->
+      <div class="row-micronutrient" style="padding: 10px 0;">
+        <span>{{ 'HOME.POTASSIUM' | translate }}</span>
+        <strong color="dark">{{ potasioMg }} mg</strong>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

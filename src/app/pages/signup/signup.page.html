@@ -1,0 +1,116 @@
+<ion-content class="ion-padding">
+  <div class="signup-container">
+
+    <!-- BUTTON Cerrar -->
+    <div class="ion-text-left">
+      <ion-button 
+      routerLink="/welcome" 
+      fill="clear" size="medium" 
+      style="font-weight: 300; text-transform: capitalize;">
+        {{ 'SIGNUP.CLOSE' | translate }}
+      </ion-button>
+    </div>
+
+    <!-- TITULO -->
+    <h1 class="ion-padding-bottom ion-text-center">{{ 'SIGNUP.TITLE' | translate }}</h1>
+
+    <div 
+    class="ion-margin-bottom ion-justify-content-center" 
+    style="display: flex;">
+      <ion-avatar 
+      class="avatar" 
+      style="width: 120px; height: 120px; background: var(--ion-color-light); 
+      display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+        <ion-icon 
+        name="person-outline" 
+        style="font-size: 60px; color: var(--ion-color-medium);"></ion-icon>
+      </ion-avatar>
+    </div>
+
+    <!-- FORMS -->
+    <div class="form-section">
+      <ion-grid class="ion-no-padding">
+        <ion-row>
+          <ion-col size="6" class="ion-padding-end">
+            <ion-input 
+            label="{{ 'SIGNUP.NAME' | translate }}" 
+            [(ngModel)]="name" 
+            label-placement="floating" 
+            fill="outline" type="text" 
+            placeholder="{{ 'SIGNUP.NAME_PLACEHOLDER' | translate }}" class="custom-input">
+            </ion-input>
+          </ion-col>
+          <ion-col size="6">
+            <ion-input label="{{ 'SIGNUP.LASTNAME' | translate }}" 
+            [(ngModel)]="lastname" 
+            label-placement="floating" 
+            fill="outline" 
+            type="text" 
+            placeholder="{{ 'SIGNUP.LASTNAME_PLACEHOLDER' | translate }}" class="custom-input">
+            </ion-input>
+          </ion-col>
+        </ion-row>
+      </ion-grid> 
+      
+      <ion-input label="{{ 'SIGNUP.EMAIL' | translate }}" 
+      [(ngModel)]="email" 
+      label-placement="floating" 
+      fill="outline" 
+      type="email" 
+      placeholder="{{ 'SIGNUP.EMAIL_PLACEHOLDER' | translate }}" 
+      class="custom-input ion-margin-top">
+      </ion-input>
+
+      <ion-input 
+      label="{{ 'SIGNUP.PASSWORD' | translate }}" 
+      [(ngModel)]="password" 
+      label-placement="floating" 
+      fill="outline" type="password" 
+      placeholder="{{ 'SIGNUP.PASSWORD_PLACEHOLDER' | translate }}" 
+      class="custom-input ion-margin-top">
+      </ion-input>
+
+      <ion-input 
+      label="{{ 'SIGNUP.REPEAT_PASSWORD' | translate }}" 
+      [(ngModel)]="repeatPassword" 
+      label-placement="floating" 
+      fill="outline" 
+      type="password" 
+      placeholder="{{ 'SIGNUP.REPEAT_PASSWORD_PLACEHOLDER' | translate }}" 
+      class="custom-input ion-margin-top"
+      [color]="(repeatPassword && password !== repeatPassword) ? 'danger' : ''">
+      </ion-input>
+
+      <ion-item 
+      class="terms-container ion-margin-vertical" 
+      lines="none" 
+      style="--background: transparent; background: transparent;">
+        <ion-checkbox 
+        [(ngModel)]="termsAccepted" 
+        mode="md" 
+        label-placement="end" 
+        style="--background: transparent; --border-color: var(--ion-color-medium);
+         --background-checked: var(--ion-color-primary); --border-color-checked: var(--ion-color-primary);">
+          <p style="font-size: 0.85rem; white-space: normal; margin: 0; color: var(--ion-color-step-600);">
+            {{ 'SIGNUP.TERMS_AGREE' | translate }}<span style="color: #4d8dff;">
+              {{ 'SIGNUP.TERMS_LINK' | translate }}</span>
+          </p>
+        </ion-checkbox>
+      </ion-item>
+    </div>
+
+    <ion-button 
+    (click)="handleSignUp()" 
+    expand="block" 
+    color="primary" 
+    class="main-button">
+      {{ 'SIGNUP.CREATE_ACCOUNT' | translate }}
+    </ion-button>
+
+    <p class="ion-text-center login-footer">
+      {{ 'SIGNUP.ALREADY_HAVE_ACCOUNT' | translate }} 
+      <a routerLink="/login"> {{ 'SIGNUP.LOG_IN' | translate }}</a>
+    </p>
+
+  </div>
+</ion-content>

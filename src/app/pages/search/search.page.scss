@@ -1,0 +1,126 @@
+/* --- Estilos Generales --- */
+.total-value {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--ion-color-primary);
+}
+
+.label-text {
+  font-size: 0.75rem;
+  color: var(--ion-color-medium);
+  font-weight: bold;
+}
+
+/* --- Card: Promo / Tip --- */
+.native-promo-card {
+  border-radius: 10px;
+  background-color: #91ff6f;
+  overflow: hidden;
+  transition: background-color 0.3s ease-out, transform 0.3s ease-out;
+
+  &:active {
+    background-color: #76d65a;
+    transform: scale(0.98);
+  }
+
+  .image-wrapper {
+    height: 100px;
+    display: flex;
+    align-items: center;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  .text-wrapper {
+    padding: 10px 15px;
+
+    ion-card-title {
+      font-size: medium;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: #1b5e20;
+      margin-bottom: 4px;
+    }
+
+    p {
+      font-size: 0.9rem;
+      color: #1b5e20;
+      margin: 0;
+      line-height: 1.4;
+    }
+  }
+}
+
+/* --- Modales --- */
+ion-modal {
+  --backdrop-opacity: 0.6;
+}
+
+.custom-floating-modal {
+  --width: 500px;
+  --height: auto;
+  --max-width: 90vw;
+}
+
+.modal-wrapper {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Contador / Lista de Consumo --- */
+.custom-divider {
+  --background: transparent;
+  min-height: 0.5px;
+  height: 0.5px;
+  background-color: #333;
+  opacity: 0.3;
+  margin: 0 16px;
+}
+
+.summary-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+
+  h3 {
+    margin: 0;
+    color: var(--ion-color-primary);
+    font-size: 1.5em;
+  }
+}
+
+.summary-footer {
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+}
+
+.contador-footer {
+  margin-top: 20px;
+  padding: 20px;
+  background: #1e1e1e;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
+
+ion-footer {
+  background: white;
+  padding: 16px;
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.05);
+
+  .footer-container {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+}
