@@ -1,47 +1,25 @@
 export const TRANSLATIONS: { [key: string]: any } = {
   es: {
-    // WELCOME
-    WELCOME_TITLE: "Bienvenido a",
-    TERMS_PART_1: "Al hacer clic en siguiente, aceptas los",
-    TERMS_LINK: "Términos y Condiciones de Uso",
-    TERMS_PART_2: "de Byte && Bite",
-    START_BTN: "Empezar",
-
-    // Perfil
-    LOGOUT: "Cerrar sesión",
-    PERSONAL_DATA: "DATOS PERSONALES",
-    AGE: "Edad",
-    YEARS: "años",
-    WEIGHT: "Peso",
-    HEIGHT: "Altura",
-    ACCOUNT: "CUENTA",
-    PASSWORD: "Contraseña",
-    PREFERENCES: "PREFERENCIAS",
-    LANGUAGE: "Idioma",
-    NOTIFICATIONS: "NOTIFICACIONES",
-    FOOD_REMINDERS: "Recordatorios de comida",
-    ALERTS: "Alertas",
-    YOUR_FIELD: "Tu {{field}}",
-    CHANGE_PASSWORD: "Cambiar Contraseña",
-    CURRENT_PASSWORD: "Contraseña Actual",
-    NEW_PASSWORD: "Nueva Contraseña",
-    UPDATE_PASSWORD: "Actualizar Contraseña",
-    CONFIRM: "Confirmar",
-
-    // Login
-    LOGIN_TITLE: "Bienvenido",
-    SIGN_UP: "Registrarse",
-    CONTINUE_GOOGLE: "Continuar con Google",
-    OR: "— O —",
-    EMAIL_LABEL: "Correo electrónico",
-    PASSWORD_LABEL: "Contraseña",
-    NEWSLETTER: "Me gustaría recibir su boletín informativo y otra información promocional.",
-    LOGIN_BTN: "Iniciar sesión",
-    NO_ACCOUNT: "¿No tienes una cuenta?",
-    REGISTER: "Regístrate",
-
-    // Signup (Ahora dentro de 'es')
-    SIGN_UP_PAGE: {
+    WELCOME: {
+      TITLE: "Bienvenido a",
+      TERMS_PART_1: "Al hacer clic en siguiente, aceptas los",
+      TERMS_LINK: "Términos y Condiciones de Uso",
+      TERMS_PART_2: "de Byte && Bite",
+      START_BTN: "Empezar"
+    },
+    LOGIN: {
+      TITLE: "Bienvenido",
+      SIGN_UP: "Registrarse",
+      CONTINUE_GOOGLE: "Continuar con Google",
+      OR: "— O —",
+      EMAIL_LABEL: "Correo electrónico",
+      PASSWORD_LABEL: "Contraseña",
+      NEWSLETTER: "Me gustaría recibir su boletín informativo y otra información promocional.",
+      LOGIN_BTN: "Iniciar sesión",
+      NO_ACCOUNT: "¿No tienes una cuenta?",
+      REGISTER: "Regístrate"
+    },
+    SIGNUP: {
       CLOSE: "Cerrar",
       TITLE: "Registrarse",
       NAME: "Nombre",
@@ -60,8 +38,7 @@ export const TRANSLATIONS: { [key: string]: any } = {
       ALREADY_HAVE_ACCOUNT: "¿Ya tienes una cuenta?",
       LOG_IN: "Inicia sesión"
     },
-    // Terms
-    TERMS_PAGE: {
+    TERMS: {
       TITLE: "Términos y Condiciones de Byte && Bite",
       UPDATED: "Última actualización: 11 de mayo de 2026",
       WELCOME: "Bienvenido a https://www.byteandbite.com",
@@ -79,8 +56,7 @@ export const TRANSLATIONS: { [key: string]: any } = {
       ACCEPT_LABEL: "He leído y acepto los Términos y Condiciones.",
       ACCEPT_BTN: "Aceptar y continuar"
     },
-    // HOME
-    HOME_PAGE: {
+    HOME: {
       WELCOME: "Bienvenido",
       PROGRESS: "PROGRESO",
       CONSUMED_KCAL: "Kcal Consumidas",
@@ -97,8 +73,7 @@ export const TRANSLATIONS: { [key: string]: any } = {
       FIBER: "Fibra",
       POTASSIUM: "Potasio"
     },
-    // Search
-    SEARCH_PAGE: {
+    SEARCH: {
       TITLE: "Buscar alimento",
       RECENT: "Recientes",
       NO_RECENT: "No tienes elementos recientes.",
@@ -114,8 +89,7 @@ export const TRANSLATIONS: { [key: string]: any } = {
       TOTAL_CALORIES: "Total calorías:",
       REGISTER_PROGRESS: "Registra tu progreso y míralo aquí."
     },
-    // Bookmarks
-    FAVORITES_PAGE: {
+    FAVORITES: {
       SEARCH: "Buscar alimentos...",
       ALL: "Todos",
       CARBS: "Carbohidratos",
@@ -128,7 +102,6 @@ export const TRANSLATIONS: { [key: string]: any } = {
       ADD_TO_LOG: "Agregar al registro",
       SELECTED: "Seleccionaste {{grams}}g"
     },
-    // Profile
     PROFILE: {
       LOGOUT: "Cerrar sesión",
       PERSONAL_DATA: "DATOS PERSONALES",
@@ -149,51 +122,40 @@ export const TRANSLATIONS: { [key: string]: any } = {
       NEW_PASSWORD: "Nueva Contraseña",
       UPDATE_PASSWORD: "Actualizar Contraseña",
       CONFIRM: "Confirmar"
+    },
+    VERIFY: {
+      TITLE: "Verificar cuenta",
+      CLOSE: "Cerrar",
+      CONFIRM_EMAIL: "Confirma tu correo electrónico",
+      INSTRUCTION: "Por favor, ingresa el código enviado a:",
+      CODE_LABEL: "Código de verificación",
+      CODE_PLACEHOLDER: "000000",
+      CONFIRM_BTN: "Confirmar registro",
+      RESEND_BTN: "Reenviar código"
     }
   },
+
   en: {
-    // Welcome
-    WELCOME_TITLE: "Welcome to",
-    TERMS_PART_1: "By clicking on next, you agree to",
-    TERMS_LINK: "Terms and Conditions of Use",
-    TERMS_PART_2: "of Byte && Bite",
-    START_BTN: "Start",
-
-    // Profile
-    LOGOUT: "Logout",
-    PERSONAL_DATA: "PERSONAL DATA",
-    AGE: "Age",
-    YEARS: "years",
-    WEIGHT: "Weight",
-    HEIGHT: "Height",
-    ACCOUNT: "ACCOUNT",
-    PASSWORD: "Password",
-    PREFERENCES: "PREFERENCES",
-    LANGUAGE: "Language",
-    NOTIFICATIONS: "NOTIFICATIONS",
-    FOOD_REMINDERS: "Food reminders",
-    ALERTS: "Alerts",
-    YOUR_FIELD: "Your {{field}}",
-    CHANGE_PASSWORD: "Change Password",
-    CURRENT_PASSWORD: "Current Password",
-    NEW_PASSWORD: "New Password",
-    UPDATE_PASSWORD: "Update Password",
-    CONFIRM: "Confirm",
-
-    // Login
-    LOGIN_TITLE: "Welcome",
-    SIGN_UP: "Sign Up",
-    CONTINUE_GOOGLE: "Continue with Google",
-    OR: "— O —",
-    EMAIL_LABEL: "Email",
-    PASSWORD_LABEL: "Password",
-    NEWSLETTER: "I would like to receive your newsletter and other promotional information.",
-    LOGIN_BTN: "Login",
-    NO_ACCOUNT: "Don't you have an account?",
-    REGISTER: "Register",
-
-    // Signup (Ahora dentro de 'en')
-    SIGN_UP_PAGE: {
+    WELCOME: {
+      TITLE: "Welcome to",
+      TERMS_PART_1: "By clicking on next, you agree to",
+      TERMS_LINK: "Terms and Conditions of Use",
+      TERMS_PART_2: "of Byte && Bite",
+      START_BTN: "Start"
+    },
+    LOGIN: {
+      TITLE: "Welcome",
+      SIGN_UP: "Sign Up",
+      CONTINUE_GOOGLE: "Continue with Google",
+      OR: "— O —",
+      EMAIL_LABEL: "Email",
+      PASSWORD_LABEL: "Password",
+      NEWSLETTER: "I would like to receive your newsletter and other promotional information.",
+      LOGIN_BTN: "Login",
+      NO_ACCOUNT: "Don't you have an account?",
+      REGISTER: "Register"
+    },
+    SIGNUP: {
       CLOSE: "Close",
       TITLE: "Sign Up",
       NAME: "Name",
@@ -212,8 +174,7 @@ export const TRANSLATIONS: { [key: string]: any } = {
       ALREADY_HAVE_ACCOUNT: "Already have an account?",
       LOG_IN: "Log In"
     },
-    // Terms
-    TERMS_PAGE: {
+    TERMS: {
       TITLE: "Terms and Conditions for Byte && Bite",
       UPDATED: "Last Updated: May 11, 2026",
       WELCOME: "Welcome to https://www.byteandbite.com",
@@ -231,8 +192,7 @@ export const TRANSLATIONS: { [key: string]: any } = {
       ACCEPT_LABEL: "I have read and agree to the Terms and Conditions.",
       ACCEPT_BTN: "Accept and Continue"
     },
-    // Home
-    HOME_PAGE: {
+    HOME: {
       WELCOME: "Welcome",
       PROGRESS: "PROGRESS",
       CONSUMED_KCAL: "Kcal Consumed",
@@ -249,8 +209,7 @@ export const TRANSLATIONS: { [key: string]: any } = {
       FIBER: "Fiber",
       POTASSIUM: "Potassium"
     },
-    // Search
-    SEARCH_PAGE: {
+    SEARCH: {
       TITLE: "Search food",
       RECENT: "Recent",
       NO_RECENT: "You have no recent items.",
@@ -266,8 +225,7 @@ export const TRANSLATIONS: { [key: string]: any } = {
       TOTAL_CALORIES: "Total calories:",
       REGISTER_PROGRESS: "Register your progress and see it here."
     },
-    // Bookmarks
-    FAVORITES_PAGE: {
+    FAVORITES: {
       SEARCH: "Search foods...",
       ALL: "All",
       CARBS: "Carbs",
@@ -280,7 +238,6 @@ export const TRANSLATIONS: { [key: string]: any } = {
       ADD_TO_LOG: "Add to log",
       SELECTED: "You selected {{grams}}g"
     },
-    // Profile
     PROFILE: {
       LOGOUT: "Logout",
       PERSONAL_DATA: "PERSONAL DATA",
@@ -301,6 +258,16 @@ export const TRANSLATIONS: { [key: string]: any } = {
       NEW_PASSWORD: "New Password",
       UPDATE_PASSWORD: "Update Password",
       CONFIRM: "Confirm"
+    },
+    VERIFY: {
+      TITLE: "Verify Account",
+      CLOSE: "Close",
+      CONFIRM_EMAIL: "Confirm your email",
+      INSTRUCTION: "Please enter the code sent to:",
+      CODE_LABEL: "Verification Code",
+      CODE_PLACEHOLDER: "000000",
+      CONFIRM_BTN: "Confirm Registration",
+      RESEND_BTN: "Resend Code"
     }
   }
-};
+}

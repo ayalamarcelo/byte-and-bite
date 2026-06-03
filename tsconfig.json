@@ -26,7 +26,7 @@
     ],
     "skipLibCheck": true,
     "useDefineForClassFields": false,
-    "types": ["jasmine"]
+    //"types": ["jasmine"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
