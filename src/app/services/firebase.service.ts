@@ -2,13 +2,15 @@ import { Injectable } from '@angular/core';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, addDoc, getDocs, query, where, deleteDoc, doc, setDoc, getDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadString, getDownloadURL } from 'firebase/storage';
+import { environment } from '../../environments/environment';
+
 const firebaseConfig = {
-  apiKey: "AIzaSyBzgOuPbzGfOGey_nIUWhAJ0WqGVM1nGgg",
-  authDomain: "byte-and-bite-a668c.firebaseapp.com",
-  projectId: "byte-and-bite-a668c",
-  storageBucket: "byte-and-bite-a668c.firebasestorage.app",
-  messagingSenderId: "92084492666",
-  appId: "1:92084492666:web:f1fc73818c55037dc3dec3"
+  apiKey: environment.firebaseConfig.apiKey,
+  authDomain: environment.firebaseConfig.authDomain,
+  projectId: environment.firebaseConfig.projectId,
+  storageBucket: environment.firebaseConfig.storageBucket,
+  messagingSenderId: environment.firebaseConfig.messagingSenderId,
+  appId: environment.firebaseConfig.appId
 };
 
 const app = initializeApp(firebaseConfig);
