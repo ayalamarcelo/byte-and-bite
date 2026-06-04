@@ -11,6 +11,11 @@ export class UserService {
 
   constructor() { }
 
+  /**
+   * @function loadUserData
+   * @description La función será ejecutada asíncronamente para recuperar los datos de identidad de la cuenta.
+   * Establece una conexión con el proveedor de AWS Amplify mediante fetchUserAttributes para mapear el nombre y apellido del usuario en propiedades globales de la aplicación.
+   */
   async loadUserData() {
     try {
       const attributes = await fetchUserAttributes();

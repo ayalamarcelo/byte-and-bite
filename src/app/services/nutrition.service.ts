@@ -36,6 +36,12 @@ export class NutritionService {
     this.inicializarFirebase();
   }
 
+  /**
+   * @function cargarDesdeLocalStorage
+   * @description La función será ejecutada automáticamente por el constructor del servicio al iniciar la aplicación.
+   * Compara la fecha actual del sistema con el último registro en disco; si cambió de día efectúa un reseteo total de los datos de consumo diario, 
+   * de lo contrario, levanta y despacha los datos históricos locales hacia los BehaviorSubject reactivos.
+   */
   private cargarDesdeLocalStorage() {
     const fechaHoy = new Date().toLocaleDateString().replace(/\//g, '-');
     const fechaGuardada = localStorage.getItem('fecha_consumo');
@@ -54,6 +60,12 @@ export class NutritionService {
     this.alimentosSubject.next([...this.alimentosAgregados]);
   }
 
+  /**
+   * @function inicializarFirebase
+   * @description La función será ejecutada asíncronamente al arrancar el servicio.
+   * Obtiene las credenciales del usuario a través de AWS Amplify y, en caso de que el almacenamiento local se encuentre vacío, 
+   * realiza una consulta estructurada a Firebase Firestore para sincronizar el historial de alimentos consumidos del día actual.
+   */
   async inicializarFirebase() {
     const fechaHoy = new Date().toLocaleDateString().replace(/\//g, '-');
     try {
@@ -80,6 +92,12 @@ export class NutritionService {
     }
   }
 
+  /**
+   * @function agregarAlimento
+   * @description La función será ejecutada para añadir un registro de alimento simplificado al panel general.
+   * Calcula de forma proporcional el impacto calórico final multiplicando el valor base por la porción de gramos especificada, 
+   * actualizando los canales reactivos y el almacenamiento local.
+   */
   agregarAlimento(alimento: any, gramos: number) {
     const factor = gramos / 100;
     const nuevo = {
@@ -94,6 +112,12 @@ export class NutritionService {
     localStorage.setItem('alimentos_consumo', JSON.stringify(this.alimentosAgregados));
   }
 
+  /**
+   * @function agregarAlimentoEdamam
+   * @description La función será ejecutada cuando el usuario procese y confirme un alimento proveniente de la API externa de Edamam.
+   * Extrae los macronutrientes y micronutrientes, calcula su peso real mediante un factor proporcional, aplica un algoritmo de estimación inteligente 
+   * de minerales (Sodio/Potasio) si los datos originales vienen vacíos y realiza un backup asíncrono en la colección 'consumosDiarios' de Firestore.
+   */
   async agregarAlimentoEdamam(alimentoEdamam: any, gramos: number) {
     const factor = gramos / 100;
     const nutrients = alimentoEdamam.food?.nutrients || {};
@@ -107,14 +131,11 @@ export class NutritionService {
       return Number(nutrientField) || 0;
     };
 
-    // Obtenemos los valores reales de la API
     const kcalCalculada = Math.round(safeGet(nutrients.ENERC_KCAL) * factor);
     let sodioOriginal = safeGet(nutrients.NA);
     let potasioOriginal = safeGet(nutrients.K);
     let fibraOriginal = safeGet(nutrients.FIBTG);
 
-    // 💡 ESTRATEGIA: Si la API no trae Sodio o Potasio, estimamos según las kcal 
-    // para que la interfaz del usuario no quede muerta en 0
     if (sodioOriginal === 0 && kcalCalculada > 0) {
       sodioOriginal = Math.round((safeGet(nutrients.FAT) * 12) + 5); 
     }
@@ -157,10 +178,20 @@ export class NutritionService {
     }
   }
 
+  /**
+   * @function getTotalKcal
+   * @description La función será ejecutada cada vez que la interfaz requiera conocer el total calórico acumulado.
+   * Utiliza un método acumulador (reduce) sobre el arreglo en memoria para retornar la sumatoria exacta de las kilocalorías registradas.
+   */
   getTotalKcal(): number {
     return this.alimentosAgregados.reduce((sum, a) => sum + a.kcal, 0);
   } 
 
+  /**
+   * @function getPorcentajes
+   * @description La función será ejecutada de forma auxiliar para calcular la distribución calórica por categoría de alimento.
+   * Divide las kcal acumuladas de Grasas, Proteínas y Carbohidratos sobre el total consumido para retornar los coeficientes enteros de progreso.
+   */
   getPorcentajes() {
     const porCategoria: any = { Grasas: 0, Proteínas: 0, Carbohidratos: 0 };
     const total = this.getTotalKcal();
@@ -178,6 +209,11 @@ export class NutritionService {
     };
   }
 
+  /**
+   * @function getPorcentajesMacros
+   * @description La función será ejecutada por los componentes visuales para poblar las barras de progreso nutricionales en el Dashboard.
+   * Ejecuta un conteo absoluto de los gramos puros consumidos de Grasas, Proteínas y Carbohidratos y calcula el impacto porcentual de cada uno respecto a la masa total acumulada.
+   */
   getPorcentajesMacros() {
     const gramosTotales = this.alimentosAgregados.reduce((totales, a) => {
       totales.grasas += a.grasasG || 0;
@@ -195,6 +231,11 @@ export class NutritionService {
     };
   }
 
+  /**
+   * @function getMicronutrientesTotales
+   * @description La función será ejecutada dinámicamente para actualizar las métricas secundarias de la Home Page.
+   * Procesa de forma independiente el acumulado en miligramos o gramos de Fibra, Sodio y Potasio de toda la bandeja diaria y retorna los enteros redondeados.
+   */
   getMicronutrientesTotales() {
     const fibraTotal = this.alimentosAgregados.reduce((sum, a) => sum + (Number(a.fibraG) || 0), 0);
     const sodioTotal = this.alimentosAgregados.reduce((sum, a) => sum + (Number(a.sodioMg) || 0), 0);
@@ -207,16 +248,27 @@ export class NutritionService {
     };
   }
 
+  /**
+   * @function sumarAgua
+   * @description La función será ejecutada cuando el componente de interfaz despache nuevos mililitros de agua.
+   * Incrementa el estado del flujo reactivo, actualiza la estampa cronológica del sistema y escribe de forma síncrona el nuevo valor numérico en el LocalStorage del dispositivo.
+   */
   sumarAgua(ml: number) {
     const actual = this.aguaSubject.value;
     const nuevoTotal = actual + ml;
     this.aguaSubject.next(nuevoTotal);
 
     const fechaHoy = new Date().toLocaleDateString().replace(/\//g, '-');
+    localStorage.setItem('agua_consumed', nuevoTotal.toString()); // Mantenido para soporte del script
     localStorage.setItem('agua_consumida', nuevoTotal.toString());
     localStorage.setItem('fecha_consumo', fechaHoy);
   }
 
+  /**
+   * @function vaciarContador
+   * @description La función será ejecutada cuando se requiera realizar un vaciado completo de la ingesta del día.
+   * Reinicia los arreglos en memoria a sus valores iniciales nulos y remueve las llaves físicas de datos del almacenamiento LocalStorage.
+   */
   async vaciarContador() {
     this.alimentosAgregados = [];
     this.alimentosSubject.next([]);
