@@ -159,6 +159,7 @@ export class HomePage implements OnInit {
    * @description La función será ejecutada automáticamente cada vez que el usuario edita numéricamente su meta de calorías en el campo de texto.
    * Guarda de forma permanente el nuevo valor en el LocalStorage del dispositivo y actualiza el gráfico circular de progreso.
    */
+  // guarda el nuevo valor
   onMetaChange() {
     if (!this.metaKcal || this.metaKcal < 0) {
       this.metaKcal = 0;
@@ -223,20 +224,6 @@ export class HomePage implements OnInit {
       this.apellidoUsuario = attributes.family_name || '';
     } catch (error) {
       console.error('Error al obtener atributos:', error);
-    }
-  }
-
-  /**
-   * @function cambiarFoto
-   * @description La función actúa como un marcador de posición (placeholder) diseñado para conectar en futuras etapas el módulo nativo de la cámara.
-   * Simula la inicialización de la galería o la captura fotográfica directa desde el dispositivo móvil.
-   */
-  
-  async cambiarFoto() {
-    try {
-      console.log('Abriendo la galería o cámara del dispositivo...');
-    } catch (error) {
-      console.error('Error al seleccionar la foto:', error);
     }
   }
 }

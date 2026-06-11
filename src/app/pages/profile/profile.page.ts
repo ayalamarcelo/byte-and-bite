@@ -72,19 +72,20 @@ export class ProfilePage implements OnInit {
    * @description La función será ejecutada automáticamente al inicializar la pantalla de perfil.
    * Obtiene de forma asíncrona el identificador único de AWS Cognito, descarga las propiedades físicas desde Firebase y mapea el email de la cuenta.
    */
+  // Maneja la inicialización asíncrona
   async ngOnInit() {
     try {
       const user = await getCurrentUser();
       this.userId = user.userId;
       await this.cargarPerfilUsuario();
-    } catch (e) {
-      console.log('No hay usuario logueado o error obteniendo ID', e);
-    }
 
-    await Promise.all([
+      await Promise.all([
       this.cargarEmailUsuario(),
       this.userService.loadUserData(),
     ]);
+    } catch (e) {
+      console.log('No hay usuario logueado o error obteniendo ID', e);
+    }
 
     console.log("Datos cargados correctamente");
   }
@@ -117,6 +118,8 @@ export class ProfilePage implements OnInit {
    * @description La función será ejecutada para consultar los atributos de seguridad del proveedor de identidad.
    * Invoca de forma asíncrona el método fetchUserAttributes de AWS Amplify para extraer y pintar el correo del usuario en la vista.
    */
+
+  // Carga el mail en la cards de profile
   async cargarEmailUsuario() {
     try {
       const attributes = await fetchUserAttributes();
@@ -229,16 +232,6 @@ export class ProfilePage implements OnInit {
     this.isModalOpen = false;
   }
 
-  /**
-   * @function onToggleChange
-   * @description La función será ejecutada automáticamente cada vez que el usuario activa o desactiva las palancas de configuración.
-   * Captura de manera reactiva el estado de los componentes de preferencias para futuras implementaciones de alertas en el dispositivo.
-   */
-  onToggleChange(tipo: string) {
-    const estado = tipo === 'recordatorios' ? this.recordatoriosActivos : this.alertasActivas;
-    console.log(`Estado de ${tipo}:`, estado);
-  }
-
   // ==========================================
   // UTILIDADES
   // ==========================================
@@ -289,6 +282,7 @@ export class ProfilePage implements OnInit {
    * @description La función será ejecutada de forma asíncrona para interactuar con los recursos de captura nativos del ecosistema móvil.
    * Lanza el SDK de Capacitor Camera para obtener una imagen (DataUrl), actualiza localmente la interfaz e inicia el proceso de carga en Firebase Storage.
    */
+  // lanzador
   async ejecutarCamara(usarCamara: boolean) {
     this.isMenuOpen = false; 
 
@@ -318,6 +312,8 @@ export class ProfilePage implements OnInit {
    * @description La función será ejecutada para componer y desplegar una hoja de acciones nativa (ActionSheetController) en la parte inferior.
    * Ofrece de manera elegante al usuario las opciones táctiles de activar la Cámara, abrir la Galería multimedia o abortar la operación.
    */
+
+  // Abre menú de opciones
   async abrirMenuOpciones() {
     const actionSheet = await this.actionSheetCtrl.create({
       header: 'Seleccionar imagen',
@@ -344,7 +340,7 @@ export class ProfilePage implements OnInit {
   /**
    * @function cerrarSesion
    * @description La función será ejecutada cuando el usuario haga click en el botón de deslogueo o abandono de cuenta.
-   * Introduce un retardo de tiempo de un segundo para suavizar la animación estética de salida y destruye la sesión en AWS Amplify.
+   * Introduce un retardo de tiempo de un segundo para suavizar la animación estética de salida y cierra la sesión en AWS Amplify.
    */
   async cerrarSesion() {
     await new Promise(resolve => setTimeout(resolve, 1000));

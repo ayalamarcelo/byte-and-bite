@@ -55,6 +55,7 @@ export class BookmarksPage implements OnInit {
    * @description Método del ciclo de vida de Ionic que se ejecuta justo antes de que la página entre y se vuelva activa.
    * Verifica si ya se tiene el userId, y si es así, recarga la lista. Si no, intenta obtenerlo nuevamente.
    */
+  // lazyload
   async ionViewWillEnter() {
     // Verificamos si ya tenemos el userId. Si es así, recargamos la lista
     if (this.userId) {

@@ -1,5 +1,6 @@
 <ion-content [fullscreen]="true" class="ion-padding">
   <div class="welcome-container">
+    
     <!-- Mensaje de Bienvenida -->
     <div class="top-content">
       <h1 class="welcome-title">{{ 'WELCOME.TITLE' | translate }}</h1>
@@ -24,7 +25,6 @@
         {{ 'WELCOME.TERMS_PART_2' | translate }}
       </p>
 
-      <!-- Realiza la validación de términos y condiciones y pasa a la siguiente página -->
       <ion-button (click)="validateAndGo()" expand="block" class="next-btn">
         {{ 'WELCOME.START_BTN' | translate }}
       </ion-button>
