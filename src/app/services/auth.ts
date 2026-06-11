@@ -9,6 +9,12 @@ import { signOut } from 'aws-amplify/auth';
 export class AuthService {
   constructor(private navCtrl:NavController) {}
 
+  /**
+   * @function logout
+   * @description La función será ejecutada cuando el usuario presione el botón de cierre de sesión en el perfil.
+   * Remueve de forma asíncrona los tokens de autenticación del pool de AWS Cognito, ejecuta una limpieza total de las memorias 
+   * LocalStorage y SessionStorage por seguridad, y redirige al usuario hacia la pantalla de Login anulando el historial de navegación.
+   */
   async logout() {
     try {
       // esto elimina los tokens de Cognito del almacenamiento local

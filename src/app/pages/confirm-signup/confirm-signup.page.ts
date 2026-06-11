@@ -8,12 +8,9 @@ import { confirmSignUp, resendSignUpCode, signIn } from 'aws-amplify/auth';
   styleUrls: ['./confirm-signup.page.scss'],
   standalone: false
 })
-export class ConfirmSignupPage {
-  /** Correo electrónico del usuario enviado desde el componente padre */
+export class ConfirmSignupPage { 
   @Input() email: string = ''; 
-  /** Contraseña del usuario (usada para login automático tras confirmar) */
   @Input() password: string = '';
-  /** Código de verificación ingresado por el usuario */
   code: string = '';
 
   constructor(
@@ -42,7 +39,7 @@ export class ConfirmSignupPage {
         confirmationCode: this.code.trim()
       });
 
-      // Intentar iniciar sesión automáticamente tras confirmar
+
       await signIn({ username: this.email, password: this.password });
       
       await loading.dismiss();

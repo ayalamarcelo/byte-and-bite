@@ -12,9 +12,6 @@ import { signInWithRedirect } from 'aws-amplify/auth';
 })
 export class LoginPage implements OnInit {
 
-  /**
-   * Variables para el formulario
-   */
   email = '';
   password = '';
   showPassword = false;
@@ -76,8 +73,6 @@ export class LoginPage implements OnInit {
       await loading.dismiss();
       console.error('Login Error:', error);
 
-      // Si el usuario intenta loguearse antes de confirmar, Amplify lanzará este error.
-      // Primero debe confirmar su cuenta.
       if (error.name === 'UserNotConfirmedException') {
         this.presentAlert('Not confirmed', 'Please check your email to confirm your account.');
       } else {
