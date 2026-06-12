@@ -15,21 +15,21 @@ import { getCurrentUser } from 'aws-amplify/auth';
   selector: 'app-bookmarks',
   templateUrl: './bookmarks.page.html',
   styleUrls: ['./bookmarks.page.scss'],
-  standalone: false, // Indica que este componente es independiente y no requiere estar declarado en un ngModule
+  standalone: false,
 })
 export class BookmarksPage implements OnInit {
 
-  // Variables de estado del componente
-  filtroActivo: string = 'Todos'; // Almacena qué categoría de filtro está seleccionada actualmente en la UI
-  busqueda: string = ''; // Almacena el texto que el usuario escribe en la barra de búsqueda
-  buscando: boolean = false; // Bandera para mostrar un indicador de carga (spinner) cuando se busca o carga algo
-  userId: string = ''; // Almacena el ID del usuario actualmente autenticado (obtenido de AWS Amplify)
-  bookmarks: any[] = []; // Arreglo que contiene la lista completa de alimentos guardados en favoritos
+  
+  filtroActivo: string = 'Todos';
+  busqueda: string = '';
+  buscando: boolean = false;
+  userId: string = '';
+  bookmarks: any[] = [];
 
-  // Inyección de dependencias en el constructor
+ 
   constructor(
-    private nutritionService: NutritionService, // Servicio para manejar la lógica nutricional (agregar al contador)
-    private firebaseService: FirebaseService, // Servicio para interactuar con la base de datos de Firebase
+    private nutritionService: NutritionService,
+    private firebaseService: FirebaseService, 
     private toastController: ToastController
   ) {}
 
@@ -40,10 +40,10 @@ export class BookmarksPage implements OnInit {
    */
   async ngOnInit() {
     try {
-      // Obtiene el usuario autenticado actualmente a través de AWS Amplify
+     
       const user = await getCurrentUser();
       this.userId = user.userId;
-      // Carga la lista de favoritos desde la base de datos
+     
       await this.cargarBookmarks();
     } catch (e) {
       console.log('No hay usuario logueado');
@@ -57,11 +57,11 @@ export class BookmarksPage implements OnInit {
    */
   // lazyload
   async ionViewWillEnter() {
-    // Verificamos si ya tenemos el userId. Si es así, recargamos la lista
+   
     if (this.userId) {
       await this.cargarBookmarks();
     } else {
-      // Si no tenemos el userId, intentamos obtenerlo nuevamente y luego cargamos la lista
+      
       try {
         const user = await getCurrentUser();
         this.userId = user.userId;
@@ -85,9 +85,9 @@ export class BookmarksPage implements OnInit {
    * @description Método para guardar un nuevo alimento en la base de datos de favoritos.
    */
   async toggleBookmark(alimento: any) {
-    if (!this.userId) return; // Si no hay usuario, cancelamos la acción
+    if (!this.userId) return;
     await this.firebaseService.agregarBookmark(this.userId, alimento);
-    await this.cargarBookmarks(); // Actualiza la lista para reflejar los cambios en pantalla
+    await this.cargarBookmarks(); 
   }
 
   /**
@@ -95,12 +95,10 @@ export class BookmarksPage implements OnInit {
    * @description Método para eliminar un alimento específico de la lista de favoritos en Firebase.
    */
   async eliminarBookmark(alimento: any) {
-    if (!alimento.id) return; // Si el alimento no tiene ID, no se puede eliminar
+    if (!alimento.id) return;
     await this.firebaseService.eliminarBookmark(alimento.id);
-    await this.cargarBookmarks(); // Recarga la lista para que el elemento desaparezca de la pantalla
+    await this.cargarBookmarks(); 
   }
-
-
 
   /**
    * @function alimentosMostrados
@@ -108,21 +106,20 @@ export class BookmarksPage implements OnInit {
    * Filtra por categoría y texto de búsqueda.
    */
   get alimentosMostrados() {
-    let lista = this.bookmarks; // Empezamos con la lista completa
+    let lista = this.bookmarks;
     
-    // 1. Filtrado por categoría (Carbohidratos, Proteínas, etc.)
+    
     if (this.filtroActivo !== 'Todos') {
       lista = lista.filter((a: any) => a.categoria === this.filtroActivo);
     }
     
-    // 2. Filtrado por texto (lo que el usuario tipeó en la barra de búsqueda)
     if (this.busqueda.trim() !== '') {
       lista = lista.filter((a: any) =>
         a.nombre.toLowerCase().includes(this.busqueda.toLowerCase())
       );
     }
     
-    return lista; // Devuelve la lista ya filtrada
+    return lista;
   }
 
   /**
@@ -138,7 +135,7 @@ export class BookmarksPage implements OnInit {
    * @description Método para abrir o cerrar el submenú de un alimento (donde se seleccionan los gramos).
    */
   toggleMenu(alimento: any) {
-    alimento.menuAbierto = !alimento.menuAbierto; // Invierte el valor actual (de verdadero a falso o viceversa)
+    alimento.menuAbierto = !alimento.menuAbierto;
   }
 
   /**
