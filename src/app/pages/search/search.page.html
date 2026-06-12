@@ -8,7 +8,6 @@
     clear-icon="trash-bin">
   </ion-searchbar>
   
-  <!-- BUSCADOR -->
   <ion-list 
   *ngIf="resultadosBusqueda.length > 0" 
   class="search-dropdown">
@@ -40,7 +39,6 @@
     </ion-item>
   </ion-list>
 
-  <!--RECIENTES-->
   <p style="font-size: 18px;">{{ 'SEARCH.RECENT' | translate }}</p>
   <hr style="border: 0; border-top: 0.5px solid #5c5d61; margin: 10px 0;">
 
@@ -77,7 +75,6 @@
         </div>
       </ion-item>
 
-      <!-- DESPLEGABLE -->
       <div *ngIf="itemExpandido === item" class="info-desplegable">
         <ion-list>
           <ion-item>
@@ -94,7 +91,6 @@
     </ng-container>
   </div>
 
-  <!-- MUESTRA -->
   <ng-template #noHayRecientes>
     <div class="ion-text-center ion-padding" style="color: #999;">
       <ion-icon 
@@ -104,7 +100,6 @@
     </div>
   </ng-template>
 
-  <!-- MODAL CALCULO GRAMOS -->
   <ion-modal 
   [isOpen]="isModalOpen" 
   (didDismiss)="isModalOpen = false" 
