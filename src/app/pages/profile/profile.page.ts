@@ -35,9 +35,6 @@ export class ProfilePage implements OnInit {
   campoEditando: string = '';
   valorTemporal: any = 0; 
 
-  alertasActivas: boolean = false;
-  recordatoriosActivos: boolean = true;
-
   isMenuOpen = false;
 
   showOldPassword: boolean = false;
