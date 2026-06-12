@@ -8,7 +8,7 @@ import { AvatarService } from '../../services/avatar.service';
 import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
 import { getCurrentUser } from 'aws-amplify/auth';
 import { environment } from '../../../environments/environment';
-import { initializeApp } from 'firebase/app';
+import { initializeApp, getApps, getApp } from 'firebase/app';
 
 const firebaseConfig = {
   apiKey: environment.firebaseConfig.apiKey,
@@ -19,7 +19,7 @@ const firebaseConfig = {
   appId: environment.firebaseConfig.appId 
 };
 
-const app = initializeApp(firebaseConfig);
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const db = getFirestore(app);
 
 

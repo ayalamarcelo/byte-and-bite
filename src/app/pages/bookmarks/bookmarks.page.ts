@@ -100,15 +100,7 @@ export class BookmarksPage implements OnInit {
     await this.cargarBookmarks(); // Recarga la lista para que el elemento desaparezca de la pantalla
   }
 
-  /**
-   * @function buscar
-   * @description Método que se activa cada vez que el usuario escribe en la barra de búsqueda.
-   * Actualiza la variable de búsqueda.
-   */
-  buscar(evento: any) {
-    const query = evento.target.value; // Obtiene el texto escrito en el input
-    this.busqueda = query; // Actualiza la variable de búsqueda
-  }
+
 
   /**
    * @function alimentosMostrados
