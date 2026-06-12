@@ -29,10 +29,9 @@ export class SearchPage implements OnInit {
   /** @member {any} alimentoSeleccionado - Ítem actualmente seleccionado para inspección. */
   alimentoSeleccionado: any = null;
 
-  historial: any[] = []; // Últimas 5 búsquedas que hizo el usuario (Mantenido para compatibilidad)
-  userId: string = ''; // ID del usuario logueado en Amplify
+  historial: any[] = [];
+  userId: string = ''; 
 
-  // Variables agregadas por el equipo para el nuevo diseño
   listaRecientes: any[] = [];
   listaConsumo: any[] = [];
   alimentoParaEditar: any = null;
@@ -43,18 +42,16 @@ export class SearchPage implements OnInit {
 
   private searchSubject = new Subject<string>();
 
-  // Objeto para organizar las comidas ingresadas manualmente (no lo usamos en el home actualmente)
   comidas: any = {
     desayuno: [],
     almuerzo: [],
     cena: []
   };
 
-  tipoComida: 'desayuno' | 'almuerzo' | 'cena' = 'desayuno'; // Por defecto agrega al desayuno
-  cantidad: number = 100; // Gramos por defecto que se muestran en el contador
-  defaultImage: string = 'https://ionicframework.com/docs/img/demos/card-media.png'; // Imagen de relleno por si falla la original
+  tipoComida: 'desayuno' | 'almuerzo' | 'cena' = 'desayuno';
+  cantidad: number = 100;
+  defaultImage: string = 'https://ionicframework.com/docs/img/demos/card-media.png';
 
-  // Inyectamos el servicio usando forwardRef para evitar dependencias circulares y añadimos nuestros servicios
   constructor(
     @Inject(forwardRef(() => EdamamService)) private edamamService: EdamamService,
     private firebaseService: FirebaseService,
@@ -68,7 +65,6 @@ export class SearchPage implements OnInit {
    * @function ngOnInit
    */
   async ngOnInit() {
-    // La suscripción se mueve aquí para asegurar la inicialización correcta del buscador con RxJS
     this.searchSubject.pipe(
       debounceTime(500),
       distinctUntilChanged(),
@@ -78,7 +74,7 @@ export class SearchPage implements OnInit {
       error: (err) => console.error("Error en búsqueda:", err)
     });
 
-    // 1. Recupera si había un alimento seleccionado anteriormente de la memoria local
+  
     const guardado = localStorage.getItem('ultimoAlimento');
     if (guardado) this.alimentoSeleccionado = JSON.parse(guardado);
   }
@@ -96,7 +92,7 @@ export class SearchPage implements OnInit {
     } else {
       this.resultadosBusqueda = [];
     }
-    // 2. Intenta obtener el ID del usuario de AWS Amplify para usarlo en Firebase luego
+  
     try {
       const user = await getCurrentUser();
       this.userId = user.userId;
@@ -190,18 +186,18 @@ export class SearchPage implements OnInit {
    */
   seleccionarAlimento(item: any) {
     const food = item.food;
-    this.query = food.label; // Pone el nombre en el buscador
+    this.query = food.label;
     this.alimentoSeleccionado = {
       ...food,
       image: food.image || this.defaultImage
     };
-    this.cantidad = 100; // Resetea los gramos a 100
+    this.cantidad = 100;
 
-    // Lo guarda en localStorage por si el usuario recarga la app
+    
     localStorage.setItem('ultimoAlimento', JSON.stringify(this.alimentoSeleccionado));
-    this.resultadosBusqueda = []; // Esconde la lista desplegable
+    this.resultadosBusqueda = [];
 
-    // Lógica combinada de historial reciente
+    
     if (!this.listaRecientes.find(i => i.food.foodId === item.food.foodId)) {
       this.listaRecientes.unshift(item);
       localStorage.setItem('recientes', JSON.stringify(this.listaRecientes));
@@ -209,13 +205,12 @@ export class SearchPage implements OnInit {
 
     if (!this.historial.find(h => h.food.label === food.label)) {
       this.historial.unshift(item);
-      this.historial = this.historial.slice(0, 5); // Corta el array para que solo queden 5
+      this.historial = this.historial.slice(0, 5);
     }
     this.query = '';
     this.resultadosBusqueda = [];
   }
 
-  // Borra un ítem del historial reciente de búsquedas
   eliminarDeHistorial(item: any) {
     this.historial = this.historial.filter(h => h.food.label !== item.food.label);
   }
@@ -228,29 +223,31 @@ export class SearchPage implements OnInit {
     if (!this.alimentoSeleccionado) return;
     const food = this.alimentoSeleccionado;
 
-    // Estructura limpia que el Home entiende
     const alimentoParaHome = {
       nombre: food.label,
-      categoria: this.determinarCategoria(food.nutrients), // Categoría inteligente
+      categoria: this.determinarCategoria(food.nutrients),
       kcal: Math.round(food.nutrients?.ENERC_KCAL || 0),
       img: food.image || this.defaultImage
     };
 
-    // Llama al servicio centralizado para que impacte en la UI principal
+  
     this.nutritionService.agregarAlimento(alimentoParaHome, this.cantidad);
 
-    // Limpia la pantalla para que puedas buscar otra cosa
     this.alimentoSeleccionado = null;
     this.cantidad = 100;
     this.query = '';
   }
 
-  // Agrega el alimento a un registro local (desayuno, almuerzo, cena) con los macros calculados 
-  // Nota: por ahora esto es para registro interno, el Home usa agregarAlimentoDesdeContador()
+  /**
+   * @function agregarAlimentoManual - Agrega el alimento a un registro local (desayuno, almuerzo, cena) con los macros calculados 
+   * Nota: por ahora esto es para registro interno, el Home usa agregarAlimentoDesdeContador()
+   * @param item 
+   * @returns 
+   */
   agregarAlimentoManual(item?: any) {
     const food = item ? item.food : this.alimentoSeleccionado;
     if (!food) return;
-    const factor = this.cantidad / 100; // Sirve para multiplicar por la cantidad de gramos reales
+    const factor = this.cantidad / 100;
 
     const alimento = {
       nombre: food.label,
@@ -274,27 +271,37 @@ export class SearchPage implements OnInit {
   determinarCategoria(nutrients: any): string {
     if (!nutrients) return 'General';
 
-    const prot = nutrients.PROCNT || 0; // Proteínas
-    const carb = nutrients.CHOCDF || 0; // Carbohidratos
-    const fat = nutrients.FAT || 0;     // Grasas
+    const prot = nutrients.PROCNT || 0;
+    const carb = nutrients.CHOCDF || 0;
+    const fat = nutrients.FAT || 0;
 
-    const max = Math.max(prot, carb, fat); // ¿Cuál de los 3 números es mayor?
-    if (max === 0) return 'General'; // Si todos son cero (ej: agua), es General
+    const max = Math.max(prot, carb, fat);
+    if (max === 0) return 'General';
 
-    // Devuelve el nombre del filtro exacto según el macro que ganó
+
     if (max === carb) return 'Carbohidratos';
     if (max === prot) return 'Proteínas';
     if (max === fat) return 'Grasas';
 
-    return 'General'; // Por las dudas
+    return 'General';
   }
 
-  // Funciones agregadas por el equipo para el nuevo diseño modal y tracking
+  /**
+   * Prepara un alimento para ser editado y abre el modal de edición.
+   * Crea una copia del objeto item para evitar mutaciones directas y establece una cantidad inicial.
+   * 
+   * @param {any} item - El objeto de alimento seleccionado originalmente.
+   */
   agregarAContador(item: any) {
     this.alimentoParaEditar = { ...item, cantidad: 100 };
     this.isModalOpen = true;
   }
 
+  /**
+   * @function confirmarSeleccion
+   * Confirma la selección del alimento editado y lo agrega a la lista de consumo.
+   * Cierra el modal, limpia la variable de edición y guarda el registro en la lista.
+   */
   confirmarSeleccion() {
     if (this.alimentoParaEditar) {
       this.listaConsumo.push(this.alimentoParaEditar);
