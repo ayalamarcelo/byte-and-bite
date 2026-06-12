@@ -15,11 +15,11 @@
 
 .main-card {
   margin: 0 16px;
-  padding-top: 40px; // Evita que el contenido quede oculto debajo del avatar
+  padding-top: 40px; 
   border-radius: 10px;
 }
 
-// Estructura de navegación superior
+
 .nav-actions {
   display: flex;
   justify-content: space-between;
@@ -32,7 +32,7 @@
   margin-bottom: 20px;
 }
 
-// Volvemos al formato de nombres e identificadores nativos
+
 .user-name {
   margin-top: 40px !important;
   font-weight: bold;
@@ -43,7 +43,7 @@
   margin-top: 2px;
 }
 
-// Tarjetas con comportamiento nativo 
+
 .data-card,
 .info-card {
   margin: 15px 16px;
@@ -54,7 +54,7 @@
   padding: 16px;
 }
 
-// Estructura de filas internas para toggles y controles
+
 .info-row {
   display: flex;
   justify-content: space-between;
@@ -77,7 +77,7 @@
   }
 }
 
-// Iconografía adaptada a tamaños nativos estables
+
 ion-icon {
   font-size: 26px;
   margin: 0;
@@ -91,7 +91,7 @@ ion-icon[name="create-outline"] {
   font-size: 22px;
 }
 
-// Reset de utilitarios de Ionic para conservar transparencias funcionales
+
 ion-toolbar {
   --background: transparent;
   --border-style: none;

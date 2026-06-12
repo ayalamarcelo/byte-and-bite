@@ -7,14 +7,10 @@ import { addIcons } from 'ionicons';
 import { createOutline, globeOutline } from 'ionicons/icons';
 import { UserService } from '../../services/user.service';
 import { LanguageService } from '../../services/language.service';
-
-import { TranslateService } from '@ngx-translate/core';
 import { AvatarService } from '../../services/avatar.service';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { ActionSheetController } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
-
-// Importaciones de AWS Amplify
 import { fetchUserAttributes, updatePassword, getCurrentUser, signOut } from 'aws-amplify/auth';
 import { FirebaseService } from '../../services/firebase.service';
 import { LoadingController } from '@ionic/angular';
@@ -26,27 +22,22 @@ import { LoadingController } from '@ionic/angular';
   standalone: false
 })
 export class ProfilePage implements OnInit {
-  // Datos Físicos
   edad: number = 25;
   peso: number = 68;
   altura: number = 1.78;
 
-  // Datos de Cuenta (AWS Amplify)
   userEmail: string = 'Cargando...';
   userId: string = '';
   oldPasswordInput: string = '';
   newPasswordInput: string = '';
 
-  // Control del Modal
   isModalOpen: boolean = false;
   campoEditando: string = '';
-  valorTemporal: any = 0; // Cambiado a 'any' para soportar tanto números (edad) como texto   
+  valorTemporal: any = 0; 
 
-  // Preferencias
   alertasActivas: boolean = false;
   recordatoriosActivos: boolean = true;
 
-  // menu
   isMenuOpen = false;
 
   showOldPassword: boolean = false;
@@ -54,7 +45,7 @@ export class ProfilePage implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private alertController: AlertController, // Agregado para los mensajes de éxito/error
+    private alertController: AlertController,
     public userService: UserService,
     public languageService: LanguageService,
     public avatarService: AvatarService,
@@ -63,7 +54,6 @@ export class ProfilePage implements OnInit {
     private loadingCtrl: LoadingController,
     private navCtrl: NavController
   ) {
-    // Aseguramos que los iconos estén registrados
     addIcons({ createOutline, globeOutline });
   }
 
@@ -72,7 +62,6 @@ export class ProfilePage implements OnInit {
    * @description La función será ejecutada automáticamente al inicializar la pantalla de perfil.
    * Obtiene de forma asíncrona el identificador único de AWS Cognito, descarga las propiedades físicas desde Firebase y mapea el email de la cuenta.
    */
-  // Maneja la inicialización asíncrona
   async ngOnInit() {
     try {
       const user = await getCurrentUser();
@@ -109,9 +98,6 @@ export class ProfilePage implements OnInit {
     }
   }
 
-  // ==========================================
-  // LÓGICA DE SEGURIDAD (AWS COGNITO)
-  // ==========================================
 
   /**
    * @function cargarEmailUsuario
@@ -119,7 +105,6 @@ export class ProfilePage implements OnInit {
    * Invoca de forma asíncrona el método fetchUserAttributes de AWS Amplify para extraer y pintar el correo del usuario en la vista.
    */
 
-  // Carga el mail en la cards de profile
   async cargarEmailUsuario() {
     try {
       const attributes = await fetchUserAttributes();
@@ -142,15 +127,11 @@ export class ProfilePage implements OnInit {
     }
 
     try {
-      // Impacta directamente en el backend de AWS
       await updatePassword({
         oldPassword: this.oldPasswordInput,
         newPassword: this.newPasswordInput
       });
-
       this.presentAlert('Éxito', 'Tu contraseña ha sido actualizada correctamente.');
-
-      // Cerramos modal y limpiamos campos por seguridad
       this.isModalOpen = false;
       this.oldPasswordInput = '';
       this.newPasswordInput = '';
@@ -161,9 +142,6 @@ export class ProfilePage implements OnInit {
     }
   }
 
-  // ==========================================
-  // LÓGICA DE LA INTERFAZ Y MODAL
-  // ==========================================
 
   /**
    * @function openEditModal
@@ -178,7 +156,6 @@ export class ProfilePage implements OnInit {
     if (campo === 'peso') this.valorTemporal = this.peso;
     if (campo === 'altura') this.valorTemporal = this.altura;
     if (campo === 'contrasena') {
-      // Limpiamos los inputs temporales antes de abrir el modal
       this.oldPasswordInput = '';
       this.newPasswordInput = '';
       this.showOldPassword = false;
@@ -205,18 +182,15 @@ export class ProfilePage implements OnInit {
    * Transfiere el dato temporal al estado de las propiedades físicas y actualiza asíncronamente el documento del perfil en Google Firebase Firestore.
    */
   async saveChanges() {
-    // Si estamos editando la contraseña, delegamos la acción a AWS y salimos de la función
     if (this.campoEditando === 'contrasena') {
       this.actualizarPasswordCognito();
       return;
     }
 
-    // Si son datos físicos, se actualizan las variables locales
     if (this.campoEditando === 'edad') this.edad = this.valorTemporal;
     if (this.campoEditando === 'peso') this.peso = this.valorTemporal;
     if (this.campoEditando === 'altura') this.altura = this.valorTemporal;
 
-    // Persistir en Firebase si tenemos el ID del usuario
     if (this.userId && ['edad', 'peso', 'altura'].includes(this.campoEditando)) {
       try {
         await this.firebaseService.updateProfile(this.userId, {
@@ -232,9 +206,6 @@ export class ProfilePage implements OnInit {
     this.isModalOpen = false;
   }
 
-  // ==========================================
-  // UTILIDADES
-  // ==========================================
 
   /**
    * @function presentAlert
@@ -268,21 +239,12 @@ export class ProfilePage implements OnInit {
     this.languageService.setLanguage(event.detail.value);
   }
 
-  /**
-   * @function abrirMenu
-   * @description La función será ejecutada cuando se presione sobre el área táctil de la fotografía del perfil del usuario.
-   * Modifica a verdadero la propiedad booleana encargada de renderizar el menú emergente flotante en la interfaz visual.
-   */
-  abrirMenu() {
-    this.isMenuOpen = true;
-  }
 
   /**
    * @function ejecutarCamara
    * @description La función será ejecutada de forma asíncrona para interactuar con los recursos de captura nativos del ecosistema móvil.
    * Lanza el SDK de Capacitor Camera para obtener una imagen (DataUrl), actualiza localmente la interfaz e inicia el proceso de carga en Firebase Storage.
    */
-  // lanzador
   async ejecutarCamara(usarCamara: boolean) {
     this.isMenuOpen = false; 
 
@@ -313,7 +275,6 @@ export class ProfilePage implements OnInit {
    * Ofrece de manera elegante al usuario las opciones táctiles de activar la Cámara, abrir la Galería multimedia o abortar la operación.
    */
 
-  // Abre menú de opciones
   async abrirMenuOpciones() {
     const actionSheet = await this.actionSheetCtrl.create({
       header: 'Seleccionar imagen',
