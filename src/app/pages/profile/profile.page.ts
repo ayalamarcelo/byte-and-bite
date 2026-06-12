@@ -62,6 +62,7 @@ export class ProfilePage implements OnInit {
    * @description La función será ejecutada automáticamente al inicializar la pantalla de perfil.
    * Obtiene de forma asíncrona el identificador único de AWS Cognito, descarga las propiedades físicas desde Firebase y mapea el email de la cuenta.
    */
+
   async ngOnInit() {
     try {
       const user = await getCurrentUser();

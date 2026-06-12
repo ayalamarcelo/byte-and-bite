@@ -1,16 +1,16 @@
 <!-- Contenedor principal de la pantalla de inicio -->
 <ion-content [fullscreen]="true">
 
-  <!-- ENCABEZADO: Saludo de bienvenida, nombre del usuario y fecha de hoy -->
+  <!-- ENCABEZADO -->
   <div class="welcome-header">
     <div class="text-container">
       <p class="welcome-text">{{ 'HOME.WELCOME' | translate }}</p>
       <h1 class="username"> {{ nombreUsuario }} {{ apellidoUsuario }} </h1>
-      <!-- Formateamos la fecha de manera elegante adaptada a Argentina -->
+    
       <p class="text-date">{{ currentDate | date:"EEEE, d 'de' MMMM 'de' yyyy":"":"es-AR" }}</p>
     </div>
     
-    <!-- Botón del perfil con el avatar animado del usuario -->
+    
     <div class="profile-button" (click)="goToProfile()">
       <ion-avatar class="avatar-animated">
         <img [src]="userAvatar || 'https://ionicframework.com/docs/img/demos/avatar.svg'" />
@@ -20,7 +20,7 @@
     </div>
   </div>
 
-    <!-- GRÁFICO CIRCULAR: Anillo interactivo SVG que muestra el progreso de calorías diarias -->
+    <!-- GRÁFICO CIRCULAR -->
   <div class="circular-container">
       <svg viewBox="0 0 100 100" class="pie-chart">
         <circle class="circle-background" cx="50" cy="50" r="40" />
@@ -47,25 +47,6 @@
           <span class="meta-unit">{{ 'HOME.KCAL' | translate }}</span>
         </div>
     </div>
-
-  <!-- CALENDARIO: Selector de fecha nativo de Ionic por si se quiere revisar el historial
-  <div class="date-selector-container ion-padding-horizontal ion-margin-bottom">
-    <ion-item lines="none" class="date-picker-item">
-      <ion-label>{{ 'HOME_PAGE.REGISTRATION_DATE' | translate }}</ion-label>
-      <ion-datetime-button datetime="datetime"></ion-datetime-button>
-    </ion-item>
-    
-    <ion-modal [keepContentsMounted]="true">
-      <ng-template>
-        <ion-datetime 
-          id="datetime" 
-          presentation="date" 
-          locale="es-AR">
-        </ion-datetime>
-      </ng-template>
-    </ion-modal>
-  </div>
-  -->
 
   <!-- SECCIÓN PRINCIPAL DE NUTRICIÓN: Barras de progreso para Grasas, Proteínas y Carbohidratos -->
   <ion-card class="nutrition-card">

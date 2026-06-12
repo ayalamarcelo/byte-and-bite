@@ -86,9 +86,9 @@ export class LoginPage implements OnInit {
  * * Utiliza el `AlertController` de Ionic para desplegar un aviso con un botón de confirmación.
  * * @function presentAlert
  * @async
- * @param {string} header - El título o encabezado que aparecerá en la parte superior de la alerta.
- * @param {string} message - El cuerpo del mensaje informativo para el usuario.
- * @returns {Promise<void>} Una promesa que se resuelve cuando la alerta ha sido presentada.
+ * @param {string} header
+ * @param {string} message
+ * @returns {Promise<void>}
  */
   async presentAlert(header: string, message: string) {
     const alert = await this.alertController.create({

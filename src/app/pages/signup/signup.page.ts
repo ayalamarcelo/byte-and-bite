@@ -3,11 +3,6 @@ import { signUp } from 'aws-amplify/auth';
 import { AlertController, LoadingController, NavController, ModalController } from '@ionic/angular';
 import { ConfirmSignupPage } from '../confirm-signup/confirm-signup.page';
 
-/**
- * Componente encargado del registro de nuevos usuarios en la aplicación.
- * Gestiona la captura de datos, validaciones de formulario y la comunicación 
- * con AWS Amplify para la creación de cuentas.
- */
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.page.html',
@@ -16,7 +11,6 @@ import { ConfirmSignupPage } from '../confirm-signup/confirm-signup.page';
 })
 export class SignupPage implements OnInit {
 
-  // Variables para el formulario
   name = '';
   lastname = '';
   email = '';
@@ -57,7 +51,6 @@ export class SignupPage implements OnInit {
    * @returns {Promise<void>}
    */
   async handleSignUp() {
-    // Validación de integridad de datos
     if (this.password !== this.repeatPassword) {
       this.presentAlert('Error', 'Las contraseñas no coinciden.');
       return;
@@ -74,7 +67,6 @@ export class SignupPage implements OnInit {
     await loading.present();
 
     try {
-      // Registro en AWS Amplify
       const { nextStep } = await signUp({
         username: this.email,
         password: this.password,
@@ -89,7 +81,6 @@ export class SignupPage implements OnInit {
 
       await loading.dismiss();
 
-      // Manejo de flujo según el estado del registro
       if (nextStep.signUpStep === 'CONFIRM_SIGN_UP') {
         const modal = await this.modalController.create({
           component: ConfirmSignupPage,
@@ -101,7 +92,6 @@ export class SignupPage implements OnInit {
 
         await modal.present();
 
-        // Espera el resultado del modal de confirmación
         const { data } = await modal.onDidDismiss();
 
         if (data?.confirmed) {
